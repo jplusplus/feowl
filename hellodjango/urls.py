@@ -6,6 +6,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', view=hello_view, name='hell_page'),
+    url(r'^$', view=hello_view, name='hello_page'),
     url(r'^admin/', include(admin.site.urls)),
 )
