@@ -11,7 +11,7 @@ To run this code on DotCloud, you need a `DotCloud account
 <https://www.dotcloud.com/accounts/register/>`_ (free tier available).
 Then clone this repository, and push it to DotCloud::
 
-  $ git clone git://github.com/jpetazzo/django.git
+  $ git clone git://github.com/dotcloud/django-on-dotcloud.git
   $ cd django
   $ dotcloud push hellodjango
 
@@ -25,7 +25,7 @@ You can view the whole tutorial, and the modified files at each step,
 with at least three different methods:
 
 * by using GitHub's awesome `compare view
-  <https://github.com/jpetazzo/django/compare/begin...end>`_:
+  <https://github.com/dotcloud/django-on-dotcloud/compare/begin...end>`_:
   you will see the list of commits involved in the tutorial, and by
   clicking on each individual commit, you will see the file modifications
   for this step;
