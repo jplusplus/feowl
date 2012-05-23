@@ -1,10 +1,10 @@
 
 # ============
 from tastypie.resources import ModelResource
-from models import HelloWorld
+from models import HelloFeowl
 
 
 class EntryResource(ModelResource):
     class Meta:
-        queryset = HelloWorld.objects.all()
+        queryset = HelloFeowl.objects.all()
         resource_name = 'entry'
