@@ -119,7 +119,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'helloapp',
     'tastypie',
-    'django.contrib.gis'
+    'django.contrib.gis',
+    'feowl'
 )
 
 # A sample logging configuration. The only tangible logging
