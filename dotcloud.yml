@@ -2,5 +2,7 @@ www:
   type: python
 db:
   type: postgis
+git:
+  type: develop
 
 
