@@ -2,10 +2,13 @@ createdb -U postgres
 createdb -U postgres feowl
 createuser -U postgres -D -R -S -l  feowl_django
 
-ALTER USER feowl_django with password 'passwd123';
-GRANT CONNECT ON DATABASE feowl TO feowl_django;
+
 
 psql -h localhost -U postgres -d feowl -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
 psql -h localhost -U postgres -d feowl -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
+
+ALTER USER feowl_django with password 'passwd123';
+GRANT CONNECT ON DATABASE feowl TO feowl_django;
+ALTER DATABASE feowl OWNER TO feowl_django ;
 
 python ./manage.py syncdb
