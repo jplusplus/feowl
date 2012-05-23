@@ -1,7 +1,7 @@
 import MySQLdb
 import psycopg2
 import os
-from wsgi import *
+#from wsgi import *
 
 
 def create_dbs():
