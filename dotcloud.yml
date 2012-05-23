@@ -1,6 +1,6 @@
 www:
   type: python
 db:
-  type: postgresql
-cache:
-  type: redis
+  type: postgis
+
+
