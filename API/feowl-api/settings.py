@@ -153,7 +153,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'verbose',
-            'filename': here('logs/blogapp.log'),
+            'filename': here('logs/feowl.log'),
             'maxBytes': 1024 * 1024 * 25,  # 25 MB
             'backupCount': 5,
         },

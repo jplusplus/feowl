@@ -5,11 +5,13 @@
     <script>
         //create some test data
         var randomNum = Math.ceil(Math.random()*100);
+        var currentDate = new Date()
         $.ajax({
           type: 'POST',
-          url: 'http://localhost:8000/api/v1/hellofeowl/',
-          data: '{"text_1":"hello", "text_2":"world", "int_1": '+randomNum+', "geographic_point_1":"POINT(-101.25 30.751277)", "date_1": "11/2/1934"}',
+          url: 'http://localhost:8000/api/v1/reports/',
+          data: '{"createdAt": "'+currentDate+'", "modifiedAt": "'+currentDate+'", "reportType":"power", "location": "POINT('+ randomNum +'.00 30.751277)"}',
           success: function(data){console.log(data)},
+          error: function(data){console.log(data)},
           dataType: "application/json",
           processData:  false,
           contentType: "application/json"
@@ -20,3 +22,5 @@
     testy testy
 </body>    
 </html>
+
+
