@@ -1,0 +1,22 @@
+<!DOCTYPE>
+<html>
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+    <script>
+        //create some test data
+        var randomNum = Math.ceil(Math.random()*100);
+        $.ajax({
+          type: 'POST',
+          url: 'http://localhost:8000/api/v1/hellofeowl/',
+          data: '{"text_1":"hello", "text_2":"world", "int_1": '+randomNum+', "geographic_point_1":"POINT(-101.25 30.751277)", "date_1": "11/2/1934"}',
+          success: function(data){console.log(data)},
+          dataType: "application/json",
+          processData:  false,
+          contentType: "application/json"
+        });
+    </script>
+</head>    
+<body>
+    testy testy
+</body>    
+</html>

@@ -1,16 +1,15 @@
-# Django settings for hellodjango project.
+
+#for relative paths
 import os
+here = lambda x: os.path.join(os.path.abspath(os.path.dirname(__file__)), x)
 
-
-settings_dir = os.path.dirname(__file__)
-#PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
-PROJECT_ROOT = settings_dir
+PROJECT_ROOT = here('.')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-     ('alexander', 'alex@tesobe.com'),
+     ('Alexander Slabiak', 'alex@tesobe.com'),
 )
 
 MANAGERS = ADMINS
@@ -25,6 +24,11 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+#proper geos path for os x
+import sys
+if sys.platform == 'darwin':
+    GEOS_LIBRARY_PATH = '/opt/local/lib/libgeos_c.dylib'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -51,7 +55,7 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/home/akendo/Work/Tesobe/Projects/Feowl/basic/django-on-dotcloud/django/media/'
+MEDIA_ROOT = here('/django/media/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -62,7 +66,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/akendo/Work/Tesobe/Projects/Feowl/basic/django-on-dotcloud/django/static/'
+STATIC_ROOT = here('django/static/')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -70,7 +74,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static/'),
+    here('static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -101,9 +105,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'urls'
 
-print PROJECT_ROOT
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'templates/'),
+   here('templates'),
 )
 
 INSTALLED_APPS = (
@@ -113,11 +116,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'helloapp',
     'tastypie',
     'django.contrib.gis',
     'feowl'
@@ -153,7 +153,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'verbose',
-            'filename': '/var/log/feowl/blogapp.log',
+            'filename': here('logs/blogapp.log'),
             'maxBytes': 1024 * 1024 * 25,  # 25 MB
             'backupCount': 5,
         },
