@@ -1,12 +1,10 @@
 # Django settings for hellodjango project.
 import os
 
-import json
-with open('/home/dotcloud/environment.json') as f:
-  env = json.load(f)
 
 settings_dir = os.path.dirname(__file__)
-PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
+#PROJECT_ROOT = os.path.abspath(os.path.dirname(settings_dir))
+PROJECT_ROOT = settings_dir
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -20,11 +18,11 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'happydb',
-        'USER': env['DOTCLOUD_DB_SQL_LOGIN'],
-        'PASSWORD': env['DOTCLOUD_DB_SQL_PASSWORD'],
-        'HOST': env['DOTCLOUD_DB_SQL_HOST'],
-        'PORT': int(env['DOTCLOUD_DB_SQL_PORT']),
+        'NAME': 'feowl',
+        'USER': 'feowl_django',
+        'PASSWORD': 'passwd123',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -53,7 +51,7 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/home/dotcloud/data/media/'
+MEDIA_ROOT = '/home/akendo/Work/Tesobe/Projects/Feowl/basic/django-on-dotcloud/django/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -64,7 +62,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/dotcloud/volatile/static/'
+STATIC_ROOT = '/home/akendo/Work/Tesobe/Projects/Feowl/basic/django-on-dotcloud/django/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -101,10 +99,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'django.urls'
+ROOT_URLCONF = 'urls'
 
+print PROJECT_ROOT
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'django/templates/'),
+    os.path.join(PROJECT_ROOT, 'templates/'),
 )
 
 INSTALLED_APPS = (
@@ -119,6 +118,9 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'helloapp',
+    'tastypie',
+    'django.contrib.gis',
+    'feowl'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -151,7 +153,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'verbose',
-            'filename': '/var/log/supervisor/blogapp.log',
+            'filename': '/var/log/feowl/blogapp.log',
             'maxBytes': 1024 * 1024 * 25,  # 25 MB
             'backupCount': 5,
         },

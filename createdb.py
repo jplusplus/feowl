@@ -1,7 +1,11 @@
 import MySQLdb
 import psycopg2
 import os
-from wsgi import *
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'django')))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'django.settings'
+
 
 def create_dbs():
     print("create_dbs: let's go.")
@@ -36,7 +40,7 @@ def create_dbs():
             else:
                 print("database already exists, moving on to next step.")
         # see if it is postgresql
-        elif db_type.endswith('postgresql_psycopg2'):
+        elif db_type.endswith('postgis'):
             print 'creating database %s on %s' % (db_name, host)
             con = psycopg2.connect(host=host, user=user, password=password, port=port, database='postgres')
             con.set_isolation_level(0)
@@ -51,8 +55,6 @@ def create_dbs():
 
 
 if __name__ == '__main__':
-    import sys
     print("create_dbs start")
     create_dbs()
     print("create_dbs all done")
-
