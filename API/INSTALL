@@ -5,6 +5,7 @@ postgres 9.1
 postgis 1.5
 python >=2.6
 requirements.txt (use virtual env or pip with it)
+cmd: pip install -r requirements.txt
 
 ### create database users and set up for postgis
 
