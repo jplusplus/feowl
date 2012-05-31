@@ -1,5 +1,5 @@
 from django.test import TestCase
-from models import Reports
+from models import Report
 import datetime
 
 class ReportsTest(TestCase):
