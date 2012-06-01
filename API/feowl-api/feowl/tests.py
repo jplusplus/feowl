@@ -1,6 +1,6 @@
 from django.test import TestCase
 from models import Report
-import datetime
+from datetime import datetime
 
 class ReportsTest(TestCase):
     def test_basic_stack(self):
