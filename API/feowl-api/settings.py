@@ -1,4 +1,3 @@
-
 #for relative paths
 import os
 here = lambda x: os.path.join(os.path.abspath(os.path.dirname(__file__)), x)
@@ -10,6 +9,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
      ('Alexander Slabiak', 'alex@tesobe.com'),
+     ('Tim Kleinschmidt', 'timk@tesobe.com')
 )
 
 MANAGERS = ADMINS
@@ -117,9 +117,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    # 'django.contrib.admindocs',
-    'tastypie',
     'django.contrib.gis',
+    'tastypie',
     'feowl'
 )
 
