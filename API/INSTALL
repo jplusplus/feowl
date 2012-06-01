@@ -1,26 +1,40 @@
-
-### install framework software
+# Installation
+## Install software dependency
 
 postgres 9.1
 postgis 1.5
 python >=2.6
-requirements.txt (use virtual env or pip with it)
-cmd: pip install -r requirements.txt
 
-### create database users and set up for postgis
+#### Python Packages (Should use a virtual environment)
+```$ pip install -r requirements.txt```
 
+# Database
 (try sudo su; su - postgres)
- 
-createdb -U postgres feowl
-createuser -U postgres -D -R -S -l feowl_django
 
-psql -h localhost -U postgres -d feowl -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql
-psql -h localhost -U postgres -d feowl -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql
+### Install Postgis
 
-$ psql -h localhost -U postgres -d feowl
+```sudo su postgres -c'createdb -E UTF8 -U postgres template_postgis'
+sudo su postgres -c'createlang -d template_postgis plpgsql;'
+sudo su postgres -c'psql -U postgres -d template_postgis -c"CREATE EXTENSION hstore;"'
+sudo su postgres -c'psql -U postgres -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/postgis.sql'
+sudo su postgres -c'psql -U postgres -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-1.5/spatial_ref_sys.sql'
+sudo su postgres -c'psql -U postgres -d template_postgis -c"select postgis_lib_version();"'
+sudo su postgres -c'psql -U postgres -d template_postgis -c "GRANT ALL ON geometry_columns TO PUBLIC;"'
+sudo su postgres -c'psql -U postgres -d template_postgis -c "GRANT ALL ON spatial_ref_sys TO PUBLIC;"'
+sudo su postgres -c'psql -U postgres -d template_postgis -c "GRANT ALL ON geography_columns TO PUBLIC;"'
+```
 
-ALTER USER feowl_django with password 'passwd123';
-GRANT CONNECT ON DATABASE feowl TO feowl_django;
-ALTER DATABASE feowl OWNER TO feowl_django ;
+### Make a real template
+```UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template_postgis';```
 
-python ./manage.py syncdb
+### Create database user for Django
+
+```createuser -U postgres --createdb --no-createrole --no-superuser --login --pwprompt feowl_django```
+
+Enter password *passwd123*
+
+### Create Database
+```createdb --template=template_postgis --owner=feowl_django feowl```
+
+### Create Database Tables
+```python ./manage.py syncdb```
