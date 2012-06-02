@@ -1,0 +1,26 @@
+<!DOCTYPE>
+<html>
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+    <script>
+        //create some test data
+        var randomNum = Math.ceil(Math.random()*100);
+        var currentDate = new Date()
+        $.ajax({
+          type: 'POST',
+          url: 'http://localhost:8000/api/v1/reports/',
+          data: '{"createdAt": "'+currentDate+'", "modifiedAt": "'+currentDate+'", "reportType":"power", "location": "POINT('+ randomNum +'.00 30.751277)"}',
+          success: function(data){console.log(data)},
+          error: function(data){console.log(data)},
+          dataType: "application/json",
+          processData:  false,
+          contentType: "application/json"
+        });
+    </script>
+</head>    
+<body>
+    testy testy
+</body>    
+</html>
+
+
