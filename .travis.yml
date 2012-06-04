@@ -18,7 +18,5 @@ before_script:
 	- psql -d template_postgis -c "GRANT ALL ON spatial_ref_sys TO PUBLIC;" -U postgres 
 	- psql -d template_postgis -c "GRANT ALL ON geography_columns TO PUBLIC;" -U postgres
 	- psql -c 'UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template_postgis';' -U postgres
-	- psql -c 'create database feowl;' -U postgres
 script:
-	- python API/feowl-api/manage.py syncdb
 	- python API/feowl-api/manage.py test
