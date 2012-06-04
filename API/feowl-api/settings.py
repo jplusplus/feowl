@@ -1,5 +1,6 @@
-#for relative paths
 import os
+import sys
+#for relative paths
 here = lambda x: os.path.join(os.path.abspath(os.path.dirname(__file__)), x)
 
 PROJECT_ROOT = here('.')
@@ -25,8 +26,10 @@ DATABASES = {
     }
 }
 
+if 'test' in sys.argv:
+    DATABASES['default'].update({'USER': 'postgres', 'PASSWORD': ''})
+
 #proper geos path for os x
-import sys
 if sys.platform == 'darwin':
     GEOS_LIBRARY_PATH = '/opt/local/lib/libgeos_c.dylib'
 
