@@ -11,11 +11,12 @@ The file are placed in /assets/css and /assets/js
 
 To make it light we just load five(5) modules :  auth, cache, database, orm, userguide
 
- Kohana::modules(array(
-	 'auth'       => MODPATH.'auth',       // Basic authentication
-	// 'cache'      => MODPATH.'cache',      // Caching with multiple backends
-	 'database'   => MODPATH.'database',   // Database access
-	 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
-	 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
-	));
+ Kohana::modules(array(\n
+	 'auth'       => MODPATH.'auth',\n       
+	// 'cache'      => MODPATH.'cache',\n      
+	 'database'   => MODPATH.'database',\n  
+	 'orm'        => MODPATH.'orm',\n        
+	 'userguide'  => MODPATH.'userguide',\n 
+	));\n
  
+###
