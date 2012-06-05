@@ -1,5 +1,7 @@
 [![Build Status](https://secure.travis-ci.org/jplusplus/feowl.png?branch=master)](http://travis-ci.org/jplusplus/feowl)
 
+![Feowl Logo](http://www.feowl.com/comingsoon/assets/feowl_150px.png)
+
 Feowl will provide the citizens, journalists and businesses of Douala, Cameroon, with reliable data about the electricity supply. Local media will leverage a network of SMS-enabled contributors, whom the Feowl platform will automatically poll at regular intervals.
 
 Feowl is financed by the International Press Institute's News Contest.
