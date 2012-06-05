@@ -20,8 +20,8 @@
   padding-left:  20px;
   padding-right: 20px;
   #gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
-  .border-radius(4px);
-  .box-shadow(~"0 1px 3px rgba(0,0,0,.25), inset 0 -1px 0 rgba(0,0,0,.1)");
+  .border-radius(@inputBorderRadius);
+  .box-shadow(~"0 1px 3px rgba(0,0,0,.25)");
 }
 
 // Set width to auto for default container
@@ -117,7 +117,7 @@
   .search-query {
     padding: 4px 9px;
     #font > .sans-serif(13px, normal, 1);
-    color: @white;
+    
     background-color: @navbarSearchBackground;
     border: 1px solid @navbarSearchBorder;
     .box-shadow(~"inset 0 1px 2px rgba(0,0,0,.1), 0 1px 0 rgba(255,255,255,.15)");
@@ -128,11 +128,11 @@
     // Focus states (we use .focused since IE7-8 and down doesn't support :focus)
     &:focus,
     &.focused {
-      padding: 5px 10px;
+      
       color: @grayDark;
       text-shadow: 0 1px 0 @white;
       background-color: @navbarSearchBackgroundFocus;
-      border: 0;
+      
       .box-shadow(0 0 3px rgba(0,0,0,.15));
       outline: 0;
     }
@@ -204,7 +204,7 @@
   line-height: 19px;
   color: @navbarLinkColor;
   text-decoration: none;
-  text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+  //text-shadow: 0 -1px 0 rgba(0,0,0,.25);
 }
 // Buttons
 .navbar .btn {
