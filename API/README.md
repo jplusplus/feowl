@@ -1,4 +1,4 @@
-# Installation
+# Installation of the FEOWL API
 ## Install software dependency
 
 postgres 9.1
