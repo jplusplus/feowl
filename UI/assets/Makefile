@@ -1,9 +1,9 @@
 BOOTSTRAP = ./css/bootstrap.css
 BOOTSTRAP_MIN = ./css/bootstrap.min.css
-BOOTSTRAP_LESS = ./less/bootstrap.less
+BOOTSTRAP_LESS = ./less/bootstrap/bootstrap.less
 BOOTSTRAP_RESPONSIVE = ./css/bootstrap-responsive.css
 BOOTSTRAP_RESPONSIVE_MIN = ./css/bootstrap-responsive.min.css
-BOOTSTRAP_RESPONSIVE_LESS = ./less/responsive.less
+BOOTSTRAP_RESPONSIVE_LESS = ./less/bootstrap/responsive.less
 
 DATE=$(shell date +%I:%M%p)
 CHECK=\033[32m✔\033[39m
