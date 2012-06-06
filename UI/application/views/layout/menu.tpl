@@ -22,8 +22,6 @@
       <div class="nav-collapse">
         <ul class="nav">
           <li class="active"><a href="#">Home</a></li>
-          <li><a href="http://feowl.tumblr.com/">About</a></li>
-          <li><a href="mailto:contact@feowl.com">Contact</a></li>
         </ul>
       </div><!--/.nav-collapse -->
 
