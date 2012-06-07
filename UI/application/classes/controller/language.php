@@ -12,13 +12,16 @@ class Controller_Language extends Controller {
 
 	function action_change($lang) {
 
-	   if(!in_array($lang, array('fr', 'en') )) {
-	      $lang = 'en';
-	   }
+		// Supported language URIs
+		$lang_uris_supported = array_keys(Kohana::config('multilang.languages.supported'));
 
-	   Cookie::set('lang', $lang);
-	   I18n::lang($lang);
-	   Request::current()->redirect('/');
+	   	if(!in_array($lang, $lang_uris_supported )) {
+	    	$lang = $lang_uris_supported[0];
+	   	}
+
+		Cookie::set('lang', $lang);
+		I18n::lang($lang);
+		Request::current()->redirect('/');
 	}
 
 }
