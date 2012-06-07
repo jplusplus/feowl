@@ -6,7 +6,7 @@
 	<div class="container">
 
 		<div class="page-header">
-			<h1>Lorem ipsum</h1>
+			<h1>{__ t='Hello, world!'}</h1>
 			<h2>Dolor si amet</h2>	
 		</div>
 		
