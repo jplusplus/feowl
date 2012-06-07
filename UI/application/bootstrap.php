@@ -50,10 +50,9 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
 
 // -- Configuration and initialization -----------------------------------------
 
-/**
- * Set the default language
- */
-I18n::lang('en-us');
+// Cookie salt
+Cookie::$salt = 'd4qvbJXVCT93T8hAxBFg';
+
 
 /**
  * Set Kohana::$environment if a 'KOHANA_ENV' environment variable has been supplied.
@@ -109,11 +108,30 @@ Kohana::modules(array(
 	'smarty' 	 => MODPATH.'smarty'	  // Smarty Template Engine
 ));
 
+
+/**
+ * Current language definition
+ */
+$lang_uris_supported = array_keys(Kohana::config('multilang.languages.supported'));
+
+// Default value for the cookie is 'en' for English, the first element
+$lang = Cookie::get('lang', $lang_uris_supported[0] );
+if(!in_array($lang, $lang_uris_supported ) ) {
+   // check the allowed languages, and force the default
+   $lang = $lang_uris_supported[0];
+}
+// Set the target language
+i18n::lang($lang);
+
+
+
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
-Route::set('default', '(/)')
+
+// Route to the index
+Route::set('default', '(<controller>(/<action>(/<id>)))')
 	->defaults(array(
 		'controller' => 'welcome',
 		'action'     => 'index',
