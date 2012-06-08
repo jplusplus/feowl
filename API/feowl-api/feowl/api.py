@@ -26,7 +26,7 @@ class DeviceResource(ModelResource):
 
         authorization = Authorization()
 
-        fields = ['categorie', 'phone_number']
+        fields = ['category', 'phone_number']
 
 
 class  UserResource(ModelResource):

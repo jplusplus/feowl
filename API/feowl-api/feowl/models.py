@@ -9,13 +9,13 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User)
     credibility = models.DecimalField(max_digits=3, decimal_places=2, default=1.00)
-    langugae = models.CharField(max_length=5, default="EN")
+    language = models.CharField(max_length=5, default="EN")
 
 
 class Device(models.Model):
     """Models for the Device"""
 
-    categorie = models.CharField(max_length=50)
+    category = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=30)
     user = models.ForeignKey(User, blank=True, null=True)
 
