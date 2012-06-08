@@ -23,6 +23,9 @@ DATABASES = {
         'PASSWORD': 'passwd123',
         'HOST': 'localhost',
         'PORT': '',
+        'OPTIONS': {
+            'autocommit': True,
+        }
     }
 }
 
@@ -122,7 +125,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.gis',
     'tastypie',
-    'feowl'
+    'feowl',
+    'django_extensions'
 )
 
 # A sample logging configuration. The only tangible logging
