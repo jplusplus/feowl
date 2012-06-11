@@ -6,7 +6,7 @@
     <head>
 
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	    <meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 
         
@@ -17,7 +17,7 @@
 
         <title>Feowl - {$smarty.const.SITE_DESCRIPTION}</title>
 
-        {include file='tool/header-file.tpl' type='css' list=$files_stylesheet after="" before=""}            
+        {include file='tool/header-file.tpl' type='stylesheet' list=$files_stylesheet after="" before=""}             
 
         <meta property="og:title" content="{$smarty.const.SITE_DESCRIPTION}" />
         <meta property="og:type" content="website" />
