@@ -18,12 +18,7 @@
 		<input type="submit" class="btn btn-warning" value="hello "/>
 		<input type="submit" class="btn btn-danger" value="hello "/>
 		<input type="submit" class="btn btn-info" value="hello "/>
-
-		<hr>
-		<footer>
-			<p>&copy; Feowl 2012 | <a href="mailto:contact@feowl.com">contact</a> | <a href="http://feowl.tumblr.com/">blog</a></p> 
-		</footer>
-
+		
 	</div>
 	
 
