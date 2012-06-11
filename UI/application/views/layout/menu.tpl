@@ -53,7 +53,9 @@
 
       <div class="nav-collapse">
         <ul class="nav">
-          <li class="active"><a href="#">Home</a></li>
+          <li class="active"><a href="/">Home</a></li>
+          <li class="active"><a href="/explore">Explore</a></li>
+          <li class="active"><a href="/submit">Submit</a></li>
         </ul>
       </div><!--/.nav-collapse -->
 
