@@ -20,6 +20,9 @@ class Controller_Explore extends Controller_Template {
 			url::base()."assets/js/less.min.js",
 			url::base()."assets/js/bootstrap/bootstrap.min.js",
 			url::base()."assets/js/bootstrap/bs-dropdown.min.js",
+			url::base()."assets/js/chroma.min.js",
+			url::base()."assets/js/kartograph.js",
+			url::base()."assets/js/raphael.min.js",
 			url::base()."assets/js/global.js"
 		);	
 	}
