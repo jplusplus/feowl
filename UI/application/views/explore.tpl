@@ -8,6 +8,10 @@
 		<div class="page-header">
 			<h1>{__ t='Explore the data collected by Feowl'}</h1>
 		</div>
+
+		<div class="row">
+			<div id="explore-map" class="span12"></div>
+		</div>
 		
 	</div>
 	
