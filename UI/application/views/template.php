@@ -49,6 +49,7 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
+              <li><a href="<?=url::site('Contribute/index')?>">Contribute</a></li>
               <li><a href="<?=url::site('user/index')?>">Profile</a></li>
               <li class="divider"></li>
               <li><a href="<?=url::site('user/logout')?>">Sign Out</a></li>
