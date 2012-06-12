@@ -23,6 +23,9 @@ DATABASES = {
         'PASSWORD': 'passwd123',
         'HOST': 'localhost',
         'PORT': '',
+        'OPTIONS': {
+            'autocommit': True,
+        }
     }
 }
 
@@ -32,6 +35,7 @@ if 'test' in sys.argv:
 #proper geos path for os x
 if sys.platform == 'darwin':
     GEOS_LIBRARY_PATH = '/opt/local/lib/libgeos_c.dylib'
+    GDAL_LIBRARY_PATH ='/opt/local/lib/libgdal.dylib'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -41,7 +45,7 @@ if sys.platform == 'darwin':
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'Europe/Berlin'
-
+ 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
@@ -55,6 +59,9 @@ USE_I18N = True
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
 USE_L10N = True
+
+# enable Timezone support
+USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -116,13 +123,14 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+    #'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.gis',
     'tastypie',
-    'feowl'
+    'feowl',
+    'django_extensions'
 )
 
 # A sample logging configuration. The only tangible logging

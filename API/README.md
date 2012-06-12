@@ -4,6 +4,7 @@
 postgres 9.1
 postgis 1.5
 python >=2.6
+python-gdal
 
 #### Python Packages (Should use a virtual environment)
 `$ pip install -r requirements.txt`
