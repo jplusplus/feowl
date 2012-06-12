@@ -13,16 +13,10 @@
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-<<<<<<< HEAD
           <li><a href="{url::site('Contribute/index')}">Contribute</a></li>
           <li><a href="{url::site('user/index')}">Profile</a></li>
           <li class="divider"></li>
           <li><a href="{url::site('user/logout')}">Sign Out</a></li>
-=======
-          <li><a href="<?=url::site('user/index')?>">Profile</a></li>
-          <li class="divider"></li>
-          <li><a href="<?=url::site('user/logout')?>">Sign Out</a></li>
->>>>>>> e27bf4a698bac9fe0d5e2ed0a6a42d10d47ec42f
         </ul>
       </div>          
 
