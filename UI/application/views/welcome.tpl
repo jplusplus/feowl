@@ -2,11 +2,10 @@
 
 	{include file='layout/menu.tpl'}
 
-    {$content|default:'No content supplied'}
-	<hr>
-	<footer>
-		<p>&copy; Feowl 2012</p>
-	</footer>
-	
+	<div class="container">
 
+    	{$content|default:'No content supplied'}
+		
+	</div>
+	
 {include file='layout/footer.tpl'}
