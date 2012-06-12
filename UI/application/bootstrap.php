@@ -132,6 +132,6 @@ i18n::lang($lang);
 // Route to the index
 Route::set('default', '(<controller>(/<action>(/<id>)))')
 	->defaults(array(
-		'controller' => 'contribute',
+		'controller' => 'welcome',
 		'action'     => 'index',
 	));
