@@ -29,7 +29,7 @@ class Area(models.Model):
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     pop_per_sq_km = models.DecimalField(max_digits=8, decimal_places=2)
-    geometry = models.LineStringField()
+    geometry = models.PolygonField()
 
     def kml(self):
         return self.geometry.kml
