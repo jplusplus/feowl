@@ -5,15 +5,30 @@
     <script>
         //create some test data
         var randomNum = Math.ceil(Math.random()*100);
+        var dummyArea;
+        
         $.ajax({
-          type: 'POST',
-          url: 'http://localhost:8000/api/v1/reports/',
-          data: '{}',
-          success: function(data){console.log(data)},
-          error: function(data){console.log(data)},
-          dataType: "application/json",
-          processData:  false,
-          contentType: "application/json"
+            type: 'GET',
+            url: 'http://localhost:8000/api/v1/areas/',
+            error: function(data){console.log(data)},
+            success: function(data){
+                if (data) {
+                    dummyArea = data['objects'][0]['resource_uri'];
+                    
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://localhost:8000/api/v1/reports/',
+                        data: '{"report_type":"power", "location": "POINT('+ randomNum +'.00 30.751277)", "area": "'+dummyArea+'"}',
+                        success: function(data){console.log(data)},
+                        error: function(data){console.log(data)},
+                        dataType: "application/json",
+                        processData:  false,
+                        contentType: "application/json"
+                    });
+                    
+                }
+            },
+            contentType: "application/json"
         });
     </script>
 </head>    

@@ -35,6 +35,7 @@ if 'test' in sys.argv:
 #proper geos path for os x
 if sys.platform == 'darwin':
     GEOS_LIBRARY_PATH = '/opt/local/lib/libgeos_c.dylib'
+    GDAL_LIBRARY_PATH ='/opt/local/lib/libgdal.dylib'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

@@ -11,10 +11,8 @@ class ReportsTest(TestCase):
 
         #create dummy data
         Report(
-            createdAt=datetime.now(),
-            modifiedAt=datetime.now(),
-            reportType='power',
-            location='Point(151.207555, -33.88576)'
+            report_type='power',
+            location='POINT(151.207555, -33.88576)'
         )
 
         #use api method to get data again
