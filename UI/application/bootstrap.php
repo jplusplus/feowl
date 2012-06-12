@@ -81,7 +81,7 @@ if (isset($_SERVER['KOHANA_ENV']))
  */
 Kohana::init(array(
 	'base_url'   => '/',
-	'index_file' =>'',
+	'index_file' => '',
 ));
 
 /**
@@ -98,23 +98,33 @@ Kohana::$config->attach(new Config_File);
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
 Kohana::modules(array(
-	 'auth'       => MODPATH.'auth',       // Basic authentication
 	// 'cache'      => MODPATH.'cache',      // Caching with multiple backends
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
-	 'database'   => MODPATH.'database',   // Database access
 	// 'image'      => MODPATH.'image',      // Image manipulation
-	 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
+<<<<<<< HEAD
 	 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
          'smarty' 	 => MODPATH.'smarty'	  // Smarty Template Engine
 	));
+=======
+	'auth'       => MODPATH.'auth',       // Basic authentication
+	'database'   => MODPATH.'database',   // Database access
+	'orm'        => MODPATH.'orm',        // Object Relationship Mapping
+	'userguide'  => MODPATH.'userguide',  // User guide and API documentation
+	'smarty' 	 => MODPATH.'smarty'	  // Smarty Template Engine
+));
+>>>>>>> e27bf4a698bac9fe0d5e2ed0a6a42d10d47ec42f
 
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
-Route::set('default', '(<controller>(/<action>(/<id>)))')
+Route::set('default', '(/)')
 	->defaults(array(
+<<<<<<< HEAD
 		'controller' => 'contribute',
+=======
+		'controller' => 'welcome',
+>>>>>>> e27bf4a698bac9fe0d5e2ed0a6a42d10d47ec42f
 		'action'     => 'index',
 	));

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 /**
  * Smarty plugin
@@ -30,4 +31,38 @@ function smarty_modifiercompiler_strip($params, $compiler)
     return "preg_replace('!\s+!u', {$params[1]},{$params[0]})";
 }
 
+=======
+<?php
+/**
+ * Smarty plugin
+ *
+ * @package Smarty
+ * @subpackage PluginsModifierCompiler
+ */
+
+/**
+ * Smarty strip modifier plugin
+ *
+ * Type:     modifier<br>
+ * Name:     strip<br>
+ * Purpose:  Replace all repeated spaces, newlines, tabs
+ *              with a single space or supplied replacement string.<br>
+ * Example:  {$var|strip} {$var|strip:"&nbsp;"}<br>
+ * Date:     September 25th, 2002
+ *
+ * @link http://www.smarty.net/manual/en/language.modifier.strip.php strip (Smarty online manual)
+ * @author Uwe Tews
+ * @param array $params parameters
+ * @return string with compiled code
+ */
+
+function smarty_modifiercompiler_strip($params, $compiler)
+{
+    if (!isset($params[1])) {
+        $params[1] = "' '";
+    }
+    return "preg_replace('!\s+!u', {$params[1]},{$params[0]})";
+}
+
+>>>>>>> e27bf4a698bac9fe0d5e2ed0a6a42d10d47ec42f
 ?>
