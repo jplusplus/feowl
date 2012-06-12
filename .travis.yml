@@ -18,4 +18,4 @@ before_script:
     - psql -c "UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template_postgis';" -U postgres
     - createdb --template=template_postgis --owner=postgres feowl
 script:
-    - python API/feowl-api/manage.py test
+    - python API/feowl-api/manage.py test feowl
