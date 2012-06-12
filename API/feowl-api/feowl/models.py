@@ -1,7 +1,6 @@
 #rom django.db import models
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models
-from jsonfield import JSONField
 
 
 class UserProfile(models.Model):
