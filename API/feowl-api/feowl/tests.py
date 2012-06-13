@@ -1,5 +1,5 @@
 from django.test import TestCase
-from models import Report
+from models import PowerReport
 from datetime import datetime
 
 
@@ -10,10 +10,10 @@ class ReportsTest(TestCase):
         """
 
         #create dummy data
-        Report(
-            report_type='power',
-            location='POINT(151.207555, -33.88576)'
-        )
+        #PowerReport(
+        #
+        #    location='POINT(151.207555, -33.88576)'
+        #)
 
         #use api method to get data again
         #...
