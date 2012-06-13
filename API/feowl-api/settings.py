@@ -35,7 +35,7 @@ if 'test' in sys.argv:
 #proper geos path for os x
 if sys.platform == 'darwin':
     GEOS_LIBRARY_PATH = '/opt/local/lib/libgeos_c.dylib'
-    GDAL_LIBRARY_PATH ='/opt/local/lib/libgdal.dylib'
+    GDAL_LIBRARY_PATH = '/opt/local/lib/libgdal.dylib'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -45,7 +45,7 @@ if sys.platform == 'darwin':
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'Europe/Berlin'
- 
+
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
@@ -81,6 +81,10 @@ STATIC_ROOT = here('django/static/')
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
+
+ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
+
+GRAPPELLI_ADMIN_TITLE = "FEOWL Admin"
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -126,6 +130,7 @@ INSTALLED_APPS = (
     #'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.gis',
     'tastypie',
