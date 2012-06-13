@@ -48,22 +48,21 @@ class PowerReport(models.Model):
     #SRID 4326 is WGS84 is lon/lat
     #stay with geometries since they support more postgis functions
     #see: http://postgis.refractions.net/documentation/manual-1.5/ch04.html#PostGIS_GeographyVSGeometry
-    location = models.PointField(srid=4326, geography=False, blank=True, null=True, help_text="String in form of POINT(lon, lat)")
     quality = models.DecimalField(max_digits=3, decimal_places=2, default='1.00')
-    duration = models.IntegerField(null=False, blank=False, help_text="Duration in minutes (positive integer)")
+    duration = models.PositiveIntegerField(null=False, blank=False, help_text="Duration in minutes")
     happened_at = models.DateTimeField(null=False, blank=False, help_text="Datetime preferrably with timezone")
-    has_experienced_outage = models.BooleanField(null=False, blank=False, default=True, help_text = "Boolean that indicates if user reported a power cut.")
-    
+    has_experienced_outage = models.BooleanField(null=False, blank=False, default=True, help_text="Boolean that indicates if user reported a power cut.")
+
     area = models.ForeignKey(Area, blank=False, null=False)
     user = models.ForeignKey(User, blank=True, null=True)
     device = models.ForeignKey(Device, blank=True, null=True)
 
     deleted = models.BooleanField(default=False)
     flagged = models.BooleanField(default=False)
+    location = models.PointField(srid=4326, geography=False, blank=True, null=True, help_text="String in form of POINT(lon, lat)")
 
     def __unicode__(self):
-        if self.user:            
+        if self.user:
             return "%s at %s" % (self.user, self.happened_at)
         else:
             return "%s" % self.happened_at
-        
