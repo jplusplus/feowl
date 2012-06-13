@@ -1,2 +1,2 @@
-
-{include file="smarty_test/included_file.tpl"}
+
+{include file="smarty_test/included_file.tpl"}

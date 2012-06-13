@@ -8,7 +8,7 @@
         <a href="{url::site('')}" class="brand">
             <img src="{url::site('assets/img/logo_small.png')}" class="pull-left logo"/>
             <span>Feowl</span>
-        </a>
+        </a>    
 
         <ul class="nav pull-right">
             <li class="dropdown">
@@ -17,7 +17,7 @@
                     <b class="caret"></b>
                 </a>
 
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu">                    
                     <li><a href="{url::site('user/index')}">Profile</a></li>
                     <li class="divider"></li>
                     <li><a href="{url::site('user/logout')}">Sign Out</a></li>
@@ -57,7 +57,7 @@
         <ul class="nav">
             <li class="active"><a href="{url::site('')}">Home</a></li>
             <li class="active"><a href="{url::site('/explore')}">Explore</a></li>
-            <li class="active"><a href="{url::site('/submit')}">Submit</a></li>
+            <li class="active"><a href="{url::site('/contribute')}">Contribute</a></li>
             <li>
                 <form action="" class="navbar-search pull-left">
                     <input type="text" placeholder="Search" class="search-query span2">

@@ -1,2 +1,2 @@
-
-Parent template provided [{$variable}]
+
+Parent template provided [{$variable}]

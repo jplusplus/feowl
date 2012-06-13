@@ -1,5 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+      define('SITE_URL','http://www.feowl.com');
+      
 class Controller_Welcome extends Controller_Template {
 
 	public $template = 'welcome.tpl';
@@ -23,6 +24,9 @@ class Controller_Welcome extends Controller_Template {
 			url::base()."assets/js/bootstrap/bs-dropdown.min.js",
 			url::base()."assets/js/global.js"
 		);	
+		 $this->template->content = View::factory('user/info.tpl')
+            ->bind('user', $user);
+
 	}
 
 } // End Welcome
