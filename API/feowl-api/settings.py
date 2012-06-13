@@ -130,7 +130,7 @@ INSTALLED_APPS = (
     #'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'grappelli',
+    # 'grappelli',
     'django.contrib.admin',
     'django.contrib.gis',
     'tastypie',
