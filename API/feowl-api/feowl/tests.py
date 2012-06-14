@@ -62,9 +62,11 @@ class PowerReportResourceTest(ResourceTestCase):
         return {"username": self.username, "api_key": self.api_key}
 
     def test_get_list_unauthorzied(self):
+        """Get reports from the API without authenticated"""
         self.assertHttpUnauthorized(self.c.get('/api/v1/reports/'))
 
     def test_get_list_json(self):
+        """Get reports from the API with authenticated. With checks if all keys are available"""
         resp = self.c.get('/api/v1/reports/', self.get_credentials())
         self.assertValidJSONResponse(resp)
 
@@ -82,6 +84,7 @@ class PowerReportResourceTest(ResourceTestCase):
         })
 
     def test_get_detail_unauthenticated(self):
+        """Try to Get a single report from the API without authenticated"""
         self.assertHttpUnauthorized(self.c.get(self.detail_url))
 
     def test_get_detail_json(self):
@@ -94,7 +97,7 @@ class PowerReportResourceTest(ResourceTestCase):
         self.assertEqual(self.deserialize(resp)['duration'], 121)
 
     def test_post_list_unauthenticated(self):
-        """Post a single report to the API without authenticated"""
+        """Try to Post a single report to the API without authenticated"""
         self.assertHttpUnauthorized(self.c.post('/api/v1/reports/', data=self.post_data))
 
     def test_post_list(self):
