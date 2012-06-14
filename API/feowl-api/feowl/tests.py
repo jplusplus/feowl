@@ -1,7 +1,6 @@
 from django.utils import unittest
 from django.test.client import Client
-from models import PowerReport
-import datetime
+from models import PowerReport, Area
 from django.contrib.auth.models import User
 from tastypie_test import ResourceTestCase
 from django.db import models
@@ -130,3 +129,105 @@ class PowerReportResourceTest(ResourceTestCase):
     def test_delete_detail(self):
         """Delete a single report is not allowed from the API with authenticated"""
         self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url, self.get_credentials()))
+
+
+class AreaResourceTest(ResourceTestCase):
+
+    def setUp(self):
+        super(AreaResourceTest, self).setUp()
+
+        # Create a user.
+        self.username = u'john'
+        self.password = u'doe'
+        self.user = User.objects.create_user(self.username, 'john@example.com', self.password)
+        self.api_key = self.user.api_key.key
+        self.c = Client()
+        self.post_data = {
+           "area": {"pk": 1},
+           "happened_at": "2012-06-14T12:37:50+00:00",
+           "has_experienced_outage": True,
+           "duration": 60
+        }
+
+        # Fetch the ``Entry`` object we'll use in testing.
+        # Note that we aren't using PKs because they can change depending
+        # on what other tests are running.
+        self.area_1 = Area.objects.get(name="Douala I")
+
+        # We also build a detail URI, since we will be using it all over.
+        # DRY, baby. DRY.
+        self.detail_url = '/api/v1/areas/{0}/'.format(self.area_1.pk)
+
+    def get_credentials(self):
+        return {"username": self.username, "api_key": self.api_key}
+
+    def test_get_list_unauthorzied(self):
+        """Get areas from the API without authenticated"""
+        self.assertHttpOK(self.c.get('/api/v1/areas/'))
+
+    def test_get_list_json(self):
+        """Get areas from the API with authenticated. With checks if all keys are available"""
+        resp = self.c.get('/api/v1/areas/', self.get_credentials())
+        self.assertValidJSONResponse(resp)
+
+        # Scope out the data for correctness.
+        self.assertEqual(len(self.deserialize(resp)['objects']), 5)
+        # Here, we're checking an entire structure for the expected data.
+        self.assertEqual(self.deserialize(resp)['objects'][0], {
+            'city': 'Douala',
+            'country': 'Cameroon',
+            'name': 'Douala I',
+            'pop_per_sq_km': '223214.00',
+            'resource_uri': '/api/v1/areas/1/'
+        })
+
+    def test_get_detail_unauthenticated(self):
+        """Try to Get a single area from the API without authenticated"""
+        self.assertHttpOK(self.c.get(self.detail_url))
+
+    def test_get_detail_json(self):
+        """Get a single area from the API with authenticated. With checks if all keys are available"""
+        resp = self.c.get(self.detail_url, self.get_credentials())
+        self.assertValidJSONResponse(resp)
+
+        # We use ``assertKeys`` here to just verify the keys, not all the data.
+        self.assertKeys(self.deserialize(resp), ['city', 'country', 'name', 'pop_per_sq_km', 'resource_uri'])
+        self.assertEqual(self.deserialize(resp)['name'], "Douala I")
+
+    def test_post_list_unauthenticated(self):
+        """Try to Post a single area to the API without authenticated"""
+        self.assertHttpUnauthorized(self.c.post('/api/v1/areas/', data=self.post_data))
+
+    def test_post_list_without_permissions(self):
+        """Try to Post a single ara to the API with authenticated and without add permissions"""
+        # Check how many are there first.
+        self.assertEqual(Area.objects.count(), 5)
+        self.assertHttpUnauthorized(self.c.post('/api/v1/areas/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        # Verify that nothing was added to the db
+        self.assertEqual(Area.objects.count(), 5)
+
+    def test_post_list_with_permissions(self):
+        """Try to Post a single area to the API with authenticated and with add permissions"""
+        add_area = Permission.objects.get(codename="add_area")
+        self.user.user_permissions.add(add_area)
+        # Check how many are there first.
+        self.assertEqual(Area.objects.count(), 5)
+        self.assertHttpUnauthorized(self.c.post('/api/v1/areas/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        # Verify a new one has been added.
+        self.assertEqual(Area.objects.count(), 5)
+
+    def test_put_detail_unauthenticated(self):
+        """Try to Put a single area is not allowed from the API with authenticated"""
+        self.assertHttpUnauthorized(self.c.put(self.detail_url))
+
+    def test_put_detail(self):
+        """Try to Put a single area is not allowed from the API with authenticated"""
+        self.assertHttpUnauthorized(self.c.put(self.detail_url, self.get_credentials()))
+
+    def test_delete_detail_unauthenticated(self):
+        """Try to Delete a single area is not allowed from the API without authenticated"""
+        self.assertHttpUnauthorized(self.c.delete(self.detail_url))
+
+    def test_delete_detail(self):
+        """Try to Delete a single area is not allowed from the API with authenticated"""
+        self.assertHttpUnauthorized(self.c.delete(self.detail_url, self.get_credentials()))
