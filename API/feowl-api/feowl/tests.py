@@ -107,24 +107,10 @@ class PowerReportResourceTest(ResourceTestCase):
         self.assertHttpUnauthorized(self.api_client.put(self.detail_url, format='json', data={}))
 
     def test_put_detail(self):
-        # Grab the current data & modify it slightly.
-        original_data = self.deserialize(self.api_client.get(self.detail_url, format='json', authentication=self.get_credentials()))
-        new_data = original_data.copy()
-        new_data['title'] = 'Updated: First Post'
-        new_data['created'] = '2012-05-01T20:06:12'
-
-        self.assertEqual(PowerReport.objects.count(), 5)
-        self.assertHttpAccepted(self.api_client.put(self.detail_url, format='json', data=new_data, authentication=self.get_credentials()))
-        # Make sure the count hasn't changed & we did an update.
-        self.assertEqual(PowerReport.objects.count(), 5)
-        # Check for updated data.
-        self.assertEqual(PowerReport.objects.get(pk=25).title, 'Updated: First Post')
-        self.assertEqual(PowerReport.objects.get(pk=25).slug, 'first-post')
-        self.assertEqual(PowerReport.objects.get(pk=25).created, datetime.datetime(2012, 3, 1, 13, 6, 12))
+        self.assertHttpMethodNotAllowed(self.c.put(self.detail_url, self.get_credentials()))
 
     def test_delete_detail_unauthenticated(self):
         self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url))
 
     def test_delete_detail(self):
-        self.assertEqual(PowerReport.objects.count(), 5)
         self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url, self.get_credentials()))
