@@ -85,6 +85,7 @@ class PowerReportResourceTest(ResourceTestCase):
         self.assertHttpUnauthorized(self.c.get(self.detail_url))
 
     def test_get_detail_json(self):
+        """Get a single report from the API with authenticated. With checks if all keys are available"""
         resp = self.c.get(self.detail_url, self.get_credentials())
         self.assertValidJSONResponse(resp)
 
@@ -93,24 +94,29 @@ class PowerReportResourceTest(ResourceTestCase):
         self.assertEqual(self.deserialize(resp)['duration'], 121)
 
     def test_post_list_unauthenticated(self):
+        """Post a single report to the API without authenticated"""
         self.assertHttpUnauthorized(self.c.post('/api/v1/reports/', data=self.post_data))
 
     def test_post_list(self):
+        """Post a single report to the API with authenticated"""
         # Check how many are there first.
         self.assertEqual(PowerReport.objects.count(), 5)
-        data = self.post_data
-        self.assertHttpCreated(self.c.post('/api/v1/reports/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(data), content_type="application/json"))
+        self.assertHttpCreated(self.c.post('/api/v1/reports/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
         # Verify a new one has been added.
         self.assertEqual(PowerReport.objects.count(), 6)
 
     def test_put_detail_unauthenticated(self):
+        """Put a single report is not allowed from the API with authenticated"""
         self.assertHttpMethodNotAllowed(self.c.put(self.detail_url))
 
     def test_put_detail(self):
+        """Put a single report is not allowed from the API with authenticated"""
         self.assertHttpMethodNotAllowed(self.c.put(self.detail_url, self.get_credentials()))
 
     def test_delete_detail_unauthenticated(self):
+        """Delete a single report is not allowed from the API without authenticated"""
         self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url))
 
     def test_delete_detail(self):
+        """Delete a single report is not allowed from the API with authenticated"""
         self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url, self.get_credentials()))
