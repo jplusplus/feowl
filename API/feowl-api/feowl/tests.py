@@ -7,6 +7,7 @@ from tastypie_test import ResourceTestCase
 from django.db import models
 from tastypie.models import create_api_key
 from django.contrib.auth.models import Permission
+import json
 
 models.signals.post_save.connect(create_api_key, sender=User)
 
@@ -83,11 +84,9 @@ class PowerReportResourceTest(ResourceTestCase):
     def test_get_detail_unauthenticated(self):
         self.assertHttpUnauthorized(self.api_client.get(self.detail_url, format='json'))
 
-    # def test_get_detail_json(self):
-    #     resp = self.api_client.get(self.detail_url, format='json', authentication=self.get_credentials())
-    #     import pdb
-    #     pdb.set_trace()
-    #     self.assertValidJSONResponse(resp)
+    def test_get_detail_json(self):
+        resp = self.api_client.get(self.detail_url, format='json', authentication=self.get_credentials())
+        self.assertValidJSONResponse(resp)
 
     #     # # We use ``assertKeys`` here to just verify the keys, not all the data.
     #     # self.assertKeys(self.deserialize(resp), ['created', 'slug', 'title', 'user'])
@@ -97,12 +96,9 @@ class PowerReportResourceTest(ResourceTestCase):
         self.assertHttpUnauthorized(self.api_client.post('/api/v1/reports/', format='json', data=self.post_data))
 
     def test_post_list(self):
-        import json
         # Check how many are there first.
         self.assertEqual(PowerReport.objects.count(), 5)
         data = self.post_data
-        import pdb
-        pdb.set_trace()
         self.assertHttpCreated(self.c.post('/api/v1/reports/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(data), content_type="application/json"))
         # Verify a new one has been added.
         self.assertEqual(PowerReport.objects.count(), 6)
