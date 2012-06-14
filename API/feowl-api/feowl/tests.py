@@ -46,9 +46,6 @@ class PowerReportResourceTest(ResourceTestCase):
            "duration": 60
         }
 
-        add_powerreport = Permission.objects.get(codename="add_powerreport")
-        self.user.user_permissions.add(add_powerreport)
-
         # Fetch the ``Entry`` object we'll use in testing.
         # Note that we aren't using PKs because they can change depending
         # on what other tests are running.
@@ -100,8 +97,18 @@ class PowerReportResourceTest(ResourceTestCase):
         """Try to Post a single report to the API without authenticated"""
         self.assertHttpUnauthorized(self.c.post('/api/v1/reports/', data=self.post_data))
 
-    def test_post_list(self):
-        """Post a single report to the API with authenticated"""
+    def test_post_list_without_permissions(self):
+        """Post a single report to the API with authenticated and without add permissions"""
+        # Check how many are there first.
+        self.assertEqual(PowerReport.objects.count(), 5)
+        self.assertHttpUnauthorized(self.c.post('/api/v1/reports/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        # Verify that nothing was added to the db
+        self.assertEqual(PowerReport.objects.count(), 5)
+
+    def test_post_list_with_permissions(self):
+        """Post a single report to the API with authenticated and with add permissions"""
+        add_powerreport = Permission.objects.get(codename="add_powerreport")
+        self.user.user_permissions.add(add_powerreport)
         # Check how many are there first.
         self.assertEqual(PowerReport.objects.count(), 5)
         self.assertHttpCreated(self.c.post('/api/v1/reports/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
