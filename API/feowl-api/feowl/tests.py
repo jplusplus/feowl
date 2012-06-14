@@ -62,7 +62,7 @@ class PowerReportResourceTest(ResourceTestCase):
         return {"username": self.username, "api_key": self.api_key}
 
     def test_get_list_unauthorzied(self):
-        self.assertHttpUnauthorized(self.api_client.get('/api/v1/reports/', format='json'))
+        self.assertHttpUnauthorized(self.c.get('/api/v1/reports/'))
 
     def test_get_list_json(self):
         resp = self.c.get('/api/v1/reports/', self.get_credentials())
@@ -82,7 +82,7 @@ class PowerReportResourceTest(ResourceTestCase):
         })
 
     def test_get_detail_unauthenticated(self):
-        self.assertHttpUnauthorized(self.api_client.get(self.detail_url, format='json'))
+        self.assertHttpUnauthorized(self.c.get(self.detail_url))
 
     def test_get_detail_json(self):
         resp = self.c.get(self.detail_url, self.get_credentials())
@@ -93,7 +93,7 @@ class PowerReportResourceTest(ResourceTestCase):
         self.assertEqual(self.deserialize(resp)['duration'], 121)
 
     def test_post_list_unauthenticated(self):
-        self.assertHttpUnauthorized(self.api_client.post('/api/v1/reports/', format='json', data=self.post_data))
+        self.assertHttpUnauthorized(self.c.post('/api/v1/reports/', data=self.post_data))
 
     def test_post_list(self):
         # Check how many are there first.
@@ -104,7 +104,7 @@ class PowerReportResourceTest(ResourceTestCase):
         self.assertEqual(PowerReport.objects.count(), 6)
 
     def test_put_detail_unauthenticated(self):
-        self.assertHttpUnauthorized(self.api_client.put(self.detail_url, format='json', data={}))
+        self.assertHttpMethodNotAllowed(self.c.put(self.detail_url))
 
     def test_put_detail(self):
         self.assertHttpMethodNotAllowed(self.c.put(self.detail_url, self.get_credentials()))
