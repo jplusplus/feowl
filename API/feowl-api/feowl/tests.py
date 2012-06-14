@@ -85,12 +85,12 @@ class PowerReportResourceTest(ResourceTestCase):
         self.assertHttpUnauthorized(self.api_client.get(self.detail_url, format='json'))
 
     def test_get_detail_json(self):
-        resp = self.api_client.get(self.detail_url, format='json', authentication=self.get_credentials())
+        resp = self.c.get(self.detail_url, self.get_credentials())
         self.assertValidJSONResponse(resp)
 
-    #     # # We use ``assertKeys`` here to just verify the keys, not all the data.
-    #     # self.assertKeys(self.deserialize(resp), ['created', 'slug', 'title', 'user'])
-    #     # self.assertEqual(self.deserialize(resp)['name'], 'First post')
+        # We use ``assertKeys`` here to just verify the keys, not all the data.
+        self.assertKeys(self.deserialize(resp), ['area', 'happened_at', 'has_experienced_outage', 'location', 'duration', 'quality', 'resource_uri'])
+        self.assertEqual(self.deserialize(resp)['duration'], 121)
 
     def test_post_list_unauthenticated(self):
         self.assertHttpUnauthorized(self.api_client.post('/api/v1/reports/', format='json', data=self.post_data))
