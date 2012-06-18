@@ -3,7 +3,7 @@ python:
     - 2.6
     - 2.7
 before_install:
-    - sudo apt-get install postgresql-9.1-postgis
+    - sudo apt-get install postgresql-9.1-postgis python-gdal
 install:
     - pip install -r API/feowl-api/requirements.txt --use-mirrors
 before_script:
