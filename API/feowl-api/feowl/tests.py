@@ -100,7 +100,7 @@ class PowerReportResourceTest(ResourceTestCase):
         """Post a single report to the API with authenticated and without add permissions"""
         # Check how many are there first.
         self.assertEqual(PowerReport.objects.count(), 5)
-        self.assertHttpUnauthorized(self.c.post('/api/v1/reports/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        self.assertHttpUnauthorized(self.c.post('/api/v1/reports/?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
         # Verify that nothing was added to the db
         self.assertEqual(PowerReport.objects.count(), 5)
 
@@ -110,7 +110,7 @@ class PowerReportResourceTest(ResourceTestCase):
         self.user.user_permissions.add(add_powerreport)
         # Check how many are there first.
         self.assertEqual(PowerReport.objects.count(), 5)
-        self.assertHttpCreated(self.c.post('/api/v1/reports/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        self.assertHttpCreated(self.c.post('/api/v1/reports/?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
         # Verify a new one has been added.
         self.assertEqual(PowerReport.objects.count(), 6)
 
@@ -143,10 +143,10 @@ class AreaResourceTest(ResourceTestCase):
         self.api_key = self.user.api_key.key
         self.c = Client()
         self.post_data = {
-           "area": {"pk": 1},
-           "happened_at": "2012-06-14T12:37:50+00:00",
-           "has_experienced_outage": True,
-           "duration": 60
+            'city': 'Douala',
+            'country': 'Cameroon',
+            'name': 'Douala VI',
+            'pop_per_sq_km': '12323.00',
         }
 
         # Fetch the ``Entry`` object we'll use in testing.
@@ -159,11 +159,11 @@ class AreaResourceTest(ResourceTestCase):
         self.detail_url = '/api/v1/areas/{0}/'.format(self.area_1.pk)
 
     def get_credentials(self):
-        return {"username": self.username, "api_key": self.api_key}
+        return {"user_name": self.username, "api_key": self.api_key}
 
     def test_get_list_unauthorzied(self):
         """Get areas from the API without authenticated"""
-        self.assertHttpOK(self.c.get('/api/v1/areas/'))
+        self.assertHttpUnauthorized(self.c.get('/api/v1/areas/'))
 
     def test_get_list_json(self):
         """Get areas from the API with authenticated. With checks if all keys are available"""
@@ -183,7 +183,7 @@ class AreaResourceTest(ResourceTestCase):
 
     def test_get_detail_unauthenticated(self):
         """Try to Get a single area from the API without authenticated"""
-        self.assertHttpOK(self.c.get(self.detail_url))
+        self.assertHttpUnauthorized(self.c.get(self.detail_url))
 
     def test_get_detail_json(self):
         """Get a single area from the API with authenticated. With checks if all keys are available"""
@@ -196,38 +196,24 @@ class AreaResourceTest(ResourceTestCase):
 
     def test_post_list_unauthenticated(self):
         """Try to Post a single area to the API without authenticated"""
-        self.assertHttpUnauthorized(self.c.post('/api/v1/areas/', data=self.post_data))
+        self.assertHttpMethodNotAllowed(self.c.post('/api/v1/areas/', data=self.post_data))
 
-    def test_post_list_without_permissions(self):
-        """Try to Post a single ara to the API with authenticated and without add permissions"""
-        # Check how many are there first.
-        self.assertEqual(Area.objects.count(), 5)
-        self.assertHttpUnauthorized(self.c.post('/api/v1/areas/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
-        # Verify that nothing was added to the db
-        self.assertEqual(Area.objects.count(), 5)
-
-    def test_post_list_with_permissions(self):
-        """Try to Post a single area to the API with authenticated and with add permissions"""
-        add_area = Permission.objects.get(codename="add_area")
-        self.user.user_permissions.add(add_area)
-        # Check how many are there first.
-        self.assertEqual(Area.objects.count(), 5)
-        self.assertHttpUnauthorized(self.c.post('/api/v1/areas/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
-        # Verify a new one has been added.
-        self.assertEqual(Area.objects.count(), 5)
+    def test_post_list(self):
+        """Try to Post a single area to the API with authenticated"""
+        self.assertHttpMethodNotAllowed(self.c.post('/api/v1/areas/?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
 
     def test_put_detail_unauthenticated(self):
         """Try to Put a single area is not allowed from the API with authenticated"""
-        self.assertHttpUnauthorized(self.c.put(self.detail_url))
+        self.assertHttpMethodNotAllowed(self.c.put(self.detail_url))
 
     def test_put_detail(self):
         """Try to Put a single area is not allowed from the API with authenticated"""
-        self.assertHttpUnauthorized(self.c.put(self.detail_url, self.get_credentials()))
+        self.assertHttpMethodNotAllowed(self.c.put(self.detail_url, self.get_credentials()))
 
     def test_delete_detail_unauthenticated(self):
         """Try to Delete a single area is not allowed from the API without authenticated"""
-        self.assertHttpUnauthorized(self.c.delete(self.detail_url))
+        self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url))
 
     def test_delete_detail(self):
         """Try to Delete a single area is not allowed from the API with authenticated"""
-        self.assertHttpUnauthorized(self.c.delete(self.detail_url, self.get_credentials()))
+        self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url, self.get_credentials()))
