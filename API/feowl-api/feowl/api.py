@@ -91,9 +91,13 @@ class AreaResource(ModelResource):
         queryset = Area.objects.all()
         resource_name = 'areas'
 
+        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
+        authorization = DjangoAuthorization()
+
         fields = ['name', 'city', 'country', 'pop_per_sq_km']
 
-        list_allowed_methods = ['get', 'post']
+        list_allowed_methods = ['get']
+        detail_allowed_methods = ['get']
 
         #allow filtering on the collection to do things like /api/v1/areas/?name_ilike=douala
         filtering = {
