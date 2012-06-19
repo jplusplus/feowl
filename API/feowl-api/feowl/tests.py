@@ -217,3 +217,70 @@ class AreaResourceTest(ResourceTestCase):
     def test_delete_detail(self):
         """Try to Delete a single area is not allowed from the API with authenticated"""
         self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url, self.get_credentials()))
+
+
+class UserResourceTest(ResourceTestCase):
+
+    def setUp(self):
+        super(UserResourceTest, self).setUp()
+
+        # Create a user.
+        self.username = u'john'
+        self.password = u'doe'
+        self.email = u'john@example.com'
+        self.user = User.objects.create_user(self.username, self.email, self.password)
+        self.api_key = self.user.api_key.key
+        self.c = Client()
+        self.post_data = {
+            'username': 'john',
+            'email': 'john@example.com',
+            'password': self.user.__dict__["password"],
+            'profile': {'credibility': '1.00', 'language': 'EN'},
+            'resource_uri': '/api/v1/users/1/'
+        }
+
+        # Fetch the ``Entry`` object we'll use in testing.
+        # Note that we aren't using PKs because they can change depending
+        # on what other tests are running.
+        self.user_1 = User.objects.get(pk=1)
+
+        # We also build a detail URI, since we will be using it all over.
+        # DRY, baby. DRY.
+        self.list_url = '/api/v1/users/'
+        self.detail_url = '{0}{1}/'.format(self.list_url, self.user_1.pk)
+
+    def get_credentials(self):
+        return {"user_name": self.username, "api_key": self.api_key}
+
+    def test_get_list_unauthorzied(self):
+        """Get areas from the API without authenticated"""
+        self.assertHttpUnauthorized(self.c.get(self.list_url))
+
+    def test_get_list_json(self):
+        """Get areas from the API with authenticated. With checks if all keys are available"""
+        resp = self.c.get(self.list_url, self.get_credentials())
+        self.assertValidJSONResponse(resp)
+
+        # Scope out the data for correctness.
+        self.assertEqual(len(self.deserialize(resp)['objects']), 1)
+        # Here, we're checking an entire structure for the expected data.
+        self.assertEqual(self.deserialize(resp)['objects'][0], {
+            'username': 'john',
+            'email': 'john@example.com',
+            'password': self.user.__dict__["password"],
+            'profile': {'credibility': '1.00', 'language': 'EN'},
+            'resource_uri': '/api/v1/users/1/'
+        })
+
+    def test_get_detail_unauthenticated(self):
+        """Try to Get a single area from the API without authenticated"""
+        self.assertHttpUnauthorized(self.c.get(self.detail_url))
+
+    def test_get_detail_json(self):
+        """Get a single area from the API with authenticated. With checks if all keys are available"""
+        resp = self.c.get(self.detail_url, self.get_credentials())
+        self.assertValidJSONResponse(resp)
+
+        # We use ``assertKeys`` here to just verify the keys, not all the data.
+        self.assertKeys(self.deserialize(resp), ['username', 'email', 'password', 'profile', 'resource_uri'])
+        self.assertEqual(self.deserialize(resp)['username'], "john")
