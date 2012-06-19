@@ -97,7 +97,8 @@ class AreaResource(ModelResource):
         fields = ['name', 'city', 'country', 'pop_per_sq_km']
 
         list_allowed_methods = ['get']
-        detail_allowed_methods = ['get']
+        # TODO: Why we need a put if we're creating a report with a area with {"pk":1}
+        detail_allowed_methods = ['put', 'get']
 
         #allow filtering on the collection to do things like /api/v1/areas/?name_ilike=douala
         filtering = {
