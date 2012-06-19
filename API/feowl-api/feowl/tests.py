@@ -55,7 +55,7 @@ class PowerReportResourceTest(ResourceTestCase):
         self.detail_url = '/api/v1/reports/{0}/'.format(self.power_report_1.pk)
 
     def get_credentials(self):
-        return {"username": self.username, "api_key": self.api_key}
+        return {"user_name": self.username, "api_key": self.api_key}
 
     def test_get_list_unauthorzied(self):
         """Get reports from the API without authenticated"""
@@ -204,11 +204,11 @@ class AreaResourceTest(ResourceTestCase):
 
     def test_put_detail_unauthenticated(self):
         """Try to Put a single area is not allowed from the API with authenticated"""
-        self.assertHttpMethodNotAllowed(self.c.put(self.detail_url))
+        self.assertHttpUnauthorized(self.c.put(self.detail_url))
 
     def test_put_detail(self):
         """Try to Put a single area is not allowed from the API with authenticated"""
-        self.assertHttpMethodNotAllowed(self.c.put(self.detail_url, self.get_credentials()))
+        self.assertHttpUnauthorized(self.c.put(self.detail_url, self.get_credentials()))
 
     def test_delete_detail_unauthenticated(self):
         """Try to Delete a single area is not allowed from the API without authenticated"""
