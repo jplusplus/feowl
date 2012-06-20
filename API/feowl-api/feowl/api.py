@@ -91,9 +91,14 @@ class AreaResource(ModelResource):
         queryset = Area.objects.all()
         resource_name = 'areas'
 
+        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
+        authorization = DjangoAuthorization()
+
         fields = ['name', 'city', 'country', 'pop_per_sq_km']
 
-        list_allowed_methods = ['get', 'post']
+        list_allowed_methods = ['get']
+        # TODO: Why we need a put if we're creating a report with a area with {"pk":1}
+        detail_allowed_methods = ['put', 'get']
 
         #allow filtering on the collection to do things like /api/v1/areas/?name_ilike=douala
         filtering = {

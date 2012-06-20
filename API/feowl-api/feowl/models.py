@@ -26,7 +26,7 @@ class Area(models.Model):
     name = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
-    overall_population = models.IntegerField()    
+    overall_population = models.IntegerField()
     pop_per_sq_km = models.DecimalField(max_digits=8, decimal_places=2)
     geometry = models.PolygonField()
 
