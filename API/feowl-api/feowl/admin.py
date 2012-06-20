@@ -1,5 +1,5 @@
 from django.contrib.gis import admin
-from models import PowerReport, Area, Device
+from models import PowerReport, Area, Device, UserProfile
 
 from tastypie.admin import ApiKeyInline
 from tastypie.models import ApiAccess, ApiKey
@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 admin.site.register(PowerReport, admin.OSMGeoAdmin)
 admin.site.register(Area, admin.OSMGeoAdmin)
 admin.site.register(Device)
+admin.site.register(UserProfile)
 
 admin.site.register(ApiKey)
 admin.site.register(ApiAccess)
