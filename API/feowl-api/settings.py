@@ -7,6 +7,7 @@ PROJECT_ROOT = here('.')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+TASTYPIE_FULL_DEBUG = DEBUG
 
 ADMINS = (
      ('Alexander Slabiak', 'alex@tesobe.com'),
