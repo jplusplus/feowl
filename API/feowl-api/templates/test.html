@@ -72,7 +72,14 @@
                                 set[start.resource_uri] = start
                             }
 
-                            //pick reports that are not too far away in time space
+                            //pick reports that are not too far away in time space.
+                            //this currently looks into the past and future by the same distance even though the random
+                            //report could be directly after or long after the actual event.
+                            //it is probably better to decrease the threshold to get lower chance of running into another cluster
+                            //so we should always pick the earlist report that was already found and look further into the future
+                            //than into the past for new reports
+                            //   <-- <earliest> --------->
+                            //however, this might be less stable because the reference drifts (threshold would have to more exact?)
                             var timediff = 0
                             data.objects.forEach(function(r){
                                 timediff = Math.abs(new Date(start.happened_at) - new Date(r.happened_at)) / 1000 / 60  //distance in minutes
