@@ -113,7 +113,6 @@ class PowerReportResource(ModelResource):
         queryset = PowerReport.objects.all()
         resource_name = 'reports'
 
-        #danger: this exposes all permissions for anybody, switch to use api key auth soon
         #see: http://www.infoq.com/news/2010/01/rest-api-authentication-schemes
         authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
         authorization = DjangoAuthorization()
@@ -159,8 +158,11 @@ class PowerReportAggregatedResource(Resource):
         object_class = AggregationObject
         include_resource_uri = False
 
-        list_allowed_methods = ['get', 'post']
+        list_allowed_methods = ['get']
         detail_allowed_methods = []
+
+        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
+        authorization = DjangoAuthorization()
 
     def base_urls(self):
         return [
