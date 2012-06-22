@@ -13,6 +13,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from tastypie.models import create_api_key
 
+from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from tastypie.exceptions import BadRequest
 
@@ -45,7 +47,7 @@ class UserProfileResource(ModelResource):
         authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
         authorization = DjangoAuthorization()
 
-        fields = ['credibility', 'language']
+        excludes = ['id']
 
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'put']
@@ -57,11 +59,11 @@ class UserProfileResource(ModelResource):
 
 
 class UserResource(ModelResource):
-    profile = fields.ToOneField(UserProfileResource, 'get_profile', full=True)
+    profile = fields.ToOneField(UserProfileResource, attribute='userprofile', related_name='user',  full=True, blank=True)
 
     class Meta:
-        resource_name = 'users'
         queryset = User.objects.all()
+        resource_name = 'users'
 
         authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
         authorization = DjangoAuthorization()
@@ -76,13 +78,53 @@ class UserResource(ModelResource):
             "email": ALL,
         }
 
+    def hydrate_password(self, bundle):
+        """Turn our password into a hash usable by Django."""
+        bundle.data['password'] = make_password(bundle.data.get('password'))
+        return bundle
+
     def obj_create(self, bundle, request=None, **kwargs):
         try:
             bundle = super(UserResource, self).obj_create(bundle, request, **kwargs)
-            bundle.obj.set_password(bundle.data.get('password'))
             bundle.obj.save()
+            bundle.obj.userprofile.language = bundle.data.get("profile", {u'language': u'EN'}).get("language", u"EN")
+            bundle.obj.userprofile.save()
         except IntegrityError:
             raise BadRequest('That username already exists')
+        return bundle
+
+    def obj_update(self, bundle, request=None, skip_errors=False, **kwargs):
+        """ A ORM-specific implementation of ``obj_update``--monkey patched
+        to prevent multiple calls to hydrate.
+        """
+        if not bundle.obj or not bundle.obj.pk:
+            try:
+                bundle.obj = self.obj_get(bundle.request, **kwargs)
+            except ObjectDoesNotExist:
+                raise NotFound("A model instance matching the provided arguments could not be found.")
+
+        bundle = self.full_hydrate(bundle)
+
+        self.is_valid(bundle, request)
+
+        if bundle.errors and not skip_errors:
+            self.error_response(bundle.errors, request)
+
+        # Save FKs just in case.
+        self.save_related(bundle)
+
+        # Save the main object.
+        bundle.obj.save()
+
+        # Update userprofile language
+        language = bundle.data.get("profile").get("language")
+        if language:
+            bundle.obj.userprofile.language = language
+            bundle.obj.userprofile.save()
+
+        # Now pick up the M2M bits.
+        m2m_bundle = self.hydrate_m2m(bundle)
+        self.save_m2m(m2m_bundle)
         return bundle
 
 
