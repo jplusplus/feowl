@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models
+from django.core.exceptions import ValidationError
 
 
 class UserProfile(models.Model):
@@ -66,3 +67,13 @@ class PowerReport(models.Model):
             return "%s at %s" % (self.user, self.happened_at)
         else:
             return "%s" % self.happened_at
+
+    def clean_fields(self, exclude):
+        message_dict = {}
+
+        #ensure that duration is a positive number (PositiveInteger fields can be == 0)
+        if 'duration' not in exclude and self.duration == 0:
+            message_dict['duration'] = ('Duration values must be larger than 0.',)
+
+        if message_dict:
+            raise ValidationError(message_dict)
