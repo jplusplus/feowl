@@ -232,11 +232,10 @@ class UserResourceTest(ResourceTestCase):
         self.api_key = self.user.api_key.key
         self.c = Client()
         self.post_data = {
-            'username': 'john',
-            'email': 'john@example.com',
+            'username': 'james',
+            'email': 'james@example.com',
             'password': self.user.__dict__["password"],
-            'profile': {'credibility': '1.00', 'language': 'EN'},
-            'resource_uri': '/api/v1/users/1/'
+            'profile': {'language': 'DE'},
         }
 
         # Fetch the ``Entry`` object we'll use in testing.
@@ -257,7 +256,7 @@ class UserResourceTest(ResourceTestCase):
         self.assertHttpUnauthorized(self.c.get(self.list_url))
 
     def test_get_list_json(self):
-        """Get areas from the API with authenticated. With checks if all keys are available"""
+        """Get users from the API with authenticated. With checks if all keys are available"""
         resp = self.c.get(self.list_url, self.get_credentials())
         self.assertValidJSONResponse(resp)
 
@@ -273,14 +272,30 @@ class UserResourceTest(ResourceTestCase):
         })
 
     def test_get_detail_unauthenticated(self):
-        """Try to Get a single area from the API without authenticated"""
+        """Try to Get a single user from the API without authenticated"""
         self.assertHttpUnauthorized(self.c.get(self.detail_url))
 
     def test_get_detail_json(self):
-        """Get a single area from the API with authenticated. With checks if all keys are available"""
+        """Get a single user from the API with authenticated. With checks if all keys are available"""
         resp = self.c.get(self.detail_url, self.get_credentials())
         self.assertValidJSONResponse(resp)
 
         # We use ``assertKeys`` here to just verify the keys, not all the data.
         self.assertKeys(self.deserialize(resp), ['username', 'email', 'password', 'profile', 'resource_uri'])
         self.assertEqual(self.deserialize(resp)['username'], "john")
+
+    def test_post_list_unauthenticated(self):
+        """Try to Post a single user to the API without authenticated"""
+        self.assertHttpUnauthorized(self.c.post(self.list_url, data=self.post_data))
+
+    def test_post_list_without_permissions(self):
+        """Try to Post a single area to the API with authenticated and without permissions"""
+        self.assertHttpUnauthorized(self.c.post(self.list_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+
+    def test_post_list_with_permissions(self):
+        """Try to Post a single area to the API with authenticated and permissions"""
+        add_user = Permission.objects.get(codename="add_user")
+        self.user.user_permissions.add(add_user)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertHttpCreated(self.c.post(self.list_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        self.assertEqual(User.objects.count(), 2)
