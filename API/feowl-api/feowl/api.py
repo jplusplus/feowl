@@ -87,9 +87,11 @@ class UserResource(ModelResource):
         try:
             bundle = super(UserResource, self).obj_create(bundle, request, **kwargs)
             bundle.obj.save()
-            bundle.obj.userprofile.language = bundle.data.get("profile", {u'language': u'EN'}).get("language", u"EN")
-            bundle.obj.userprofile.save()
-        except IntegrityError:
+            profile = UserProfile.objects.get(user_id=bundle.obj.pk)
+            profile.language = bundle.data.get("profile", {u'language': u'EN'}).get("language", u"EN")
+            profile.save()
+        except IntegrityError, e:
+            print e
             raise BadRequest('That username already exists')
         return bundle
 
