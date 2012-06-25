@@ -109,8 +109,9 @@ class UserResource(ModelResource):
 
         self.is_valid(bundle, request)
 
-        if bundle.errors and not skip_errors:
-            self.error_response(bundle.errors, request)
+        # TODO: take a look that we can activate this with a later tastypie version
+        # if bundle.errors and not skip_errors:
+        #     self.error_response(bundle.errors, request)
 
         # Save FKs just in case.
         self.save_related(bundle)
@@ -119,10 +120,13 @@ class UserResource(ModelResource):
         bundle.obj.save()
 
         # Update userprofile language
-        language = bundle.data.get("profile").get("language")
-        if language:
-            bundle.obj.userprofile.language = language
-            bundle.obj.userprofile.save()
+        profile_data = bundle.data.get("profile")
+        if profile_data:
+            language = profile_data.get("language")
+            if language:
+                profile = UserProfile.objects.get(user_id=bundle.obj.pk)
+                profile.language = language
+                profile.save()
 
         # Now pick up the M2M bits.
         m2m_bundle = self.hydrate_m2m(bundle)
