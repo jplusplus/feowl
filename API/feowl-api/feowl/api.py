@@ -34,7 +34,7 @@ class DeviceResource(ModelResource):
         fields = ['category', 'phone_number']
 
         list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get']
+        detail_allowed_methods = ['get', 'put', 'delete']
 
 
 class UserProfileResource(ModelResource):
