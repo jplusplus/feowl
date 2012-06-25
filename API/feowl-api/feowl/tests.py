@@ -1,6 +1,6 @@
 from django.utils import unittest
 from django.test.client import Client
-from models import PowerReport, Area
+from models import PowerReport, Area, UserProfile
 from django.contrib.auth.models import User
 from tastypie_test import ResourceTestCase
 from django.db import models
@@ -235,7 +235,11 @@ class UserResourceTest(ResourceTestCase):
             'username': 'james',
             'email': 'james@example.com',
             'password': self.user.__dict__["password"],
-            'profile': {'language': 'DE'},
+            'profile': {'language': 'DE'}
+        }
+        self.put_data = {
+            'email': 'jonny@example.com',
+            'profile': {'language': 'DE'}
         }
 
         # Fetch the ``Entry`` object we'll use in testing.
@@ -289,13 +293,39 @@ class UserResourceTest(ResourceTestCase):
         self.assertHttpUnauthorized(self.c.post(self.list_url, data=self.post_data))
 
     def test_post_list_without_permissions(self):
-        """Try to Post a single area to the API with authenticated and without permissions"""
+        """Try to Post a single user to the API with authenticated and without permission"""
         self.assertHttpUnauthorized(self.c.post(self.list_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
 
     def test_post_list_with_permissions(self):
-        """Try to Post a single area to the API with authenticated and permissions"""
+        """Try to Post a single user to the API with authenticated and permission"""
         add_user = Permission.objects.get(codename="add_user")
         self.user.user_permissions.add(add_user)
         self.assertEqual(User.objects.count(), 1)
         self.assertHttpCreated(self.c.post(self.list_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
         self.assertEqual(User.objects.count(), 2)
+
+    def test_put_detail_unauthenticated(self):
+        """Try to Put a single user is not allowed from the API with authenticated"""
+        self.assertHttpUnauthorized(self.c.put(self.detail_url))
+
+    def test_put_detail_without_permission(self):
+        """Try to Put a single user is not allowed from the API with authenticated and without permission"""
+        self.assertHttpUnauthorized(self.c.put(self.detail_url, self.get_credentials()))
+
+    def test_put_detail_with_permission(self):
+        """Try to Put a single user is not allowed from the API with authenticated abd permission"""
+        change_user = Permission.objects.get(codename="change_user")
+        self.user.user_permissions.add(change_user)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertHttpAccepted(self.c.put(self.detail_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.put_data), content_type="application/json"))
+        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(User.objects.get(pk=self.user_1.pk).email, self.put_data.get("email"))
+        self.assertEqual(UserProfile.objects.get(user_id=self.user_1.pk).language, self.put_data.get("profile").get("language"))
+
+    def test_delete_detail_unauthenticated(self):
+        """Delete a single user is not allowed from the API without authenticated"""
+        self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url))
+
+    def test_delete_detail(self):
+        """Delete a single user is not allowed from the API with authenticated"""
+        self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url, self.get_credentials()))
