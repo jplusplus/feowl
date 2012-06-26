@@ -98,7 +98,8 @@ class PowerReportResourceTest(ResourceTestCase):
 
     def test_post_list_without_permissions(self):
         """Post a single report to the API with authenticated and without add permissions"""
-        # Check how many are there first.
+        add_powerreport = Permission.objects.get(codename="add_powerreport")
+        self.user.user_permissions.remove(add_powerreport)
         self.assertEqual(PowerReport.objects.count(), 5)
         self.assertHttpUnauthorized(self.c.post('/api/v1/reports/?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
         # Verify that nothing was added to the db
