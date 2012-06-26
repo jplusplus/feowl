@@ -268,6 +268,7 @@ class UserResourceTest(ResourceTestCase):
         self.assertEqual(len(self.deserialize(resp)['objects']), 1)
         # Here, we're checking an entire structure for the expected data.
         self.assertEqual(self.deserialize(resp)['objects'][0], {
+            'id': '1',
             'username': 'john',
             'email': 'john@example.com',
             'password': self.user.__dict__["password"],
@@ -285,7 +286,7 @@ class UserResourceTest(ResourceTestCase):
         self.assertValidJSONResponse(resp)
 
         # We use ``assertKeys`` here to just verify the keys, not all the data.
-        self.assertKeys(self.deserialize(resp), ['username', 'email', 'password', 'profile', 'resource_uri'])
+        self.assertKeys(self.deserialize(resp), ['id', 'username', 'email', 'password', 'profile', 'resource_uri'])
         self.assertEqual(self.deserialize(resp)['username'], "john")
 
     def test_post_list_unauthenticated(self):

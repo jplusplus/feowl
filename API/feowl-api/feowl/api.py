@@ -68,7 +68,7 @@ class UserResource(ModelResource):
         authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
         authorization = DjangoAuthorization()
 
-        fields = ['email', 'password', 'username']
+        fields = ['id', 'email', 'password', 'username']
 
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'put']
