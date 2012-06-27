@@ -24,6 +24,7 @@ class Controller_Explore extends Controller_Template {
 			url::base()."assets/js/chroma.min.js",
 			url::base()."assets/js/kartograph.js",
 			url::base()."assets/js/raphael.min.js",
+			url::base()."assets/js/jquery.qtip-1.0.0-rc3.min.js",				
 			url::base()."assets/js/jquery-ui-1.8.16.custom.min.js",			
 			url::base()."assets/js/jQAllRangeSliders-min.js",
 			url::base()."assets/js/global.js",

@@ -10,10 +10,10 @@
 						{__ t='Feowl files under an Apache licence'}
 					</p>
 				</div>
-				<div class="span4">
+				<div class="offset1 span3">
 					<p>&copy; Feowl 2012 | <a href="mailto:contact@feowl.com">{__ t='contact'}</a> | <a href="http://feowl.tumblr.com/">{__ t='blog'}</a></p> 
 				</div>
-				<div class="offset1 span4">
+				<div class="offset1 span3">
 					<p>
 						{__ t='Feowl is financed by the <a href="http://www.freemedia.at/">International Press Institute</a>.'}
 					</p>

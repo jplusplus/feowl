@@ -9,14 +9,14 @@
 
 	explore.drawMap = function(data) {
 
-		var $map  = $(""),
+		var $map  = $("#explore-map"),
 		mapWidth  = $map.innerWidth(),
 		mapHeight = $map.innerHeight();
 
-		explore.most_active = data;
 		explore.dep_data = data;
 
 		explore.map = $K.map('#explore-map', mapWidth, mapHeight);
+
 		explore.map.loadMap('/assets/data/douala-districts.svg', function() {
 			
 				explore.map.addLayer({
@@ -25,7 +25,8 @@
 				});
 
 				explore.updateMap(explore.map);
-				
+
+
 		});
 	};
 
@@ -36,8 +37,8 @@
 	 */
 	explore.updateMap = function() {
 
-		var prop = "uptime",
-			scale = "q";
+		var prop = "uptime"
+		,  scale = "q";
 
 		try {
 
@@ -46,15 +47,8 @@
 				limits: chroma.limits(explore.dep_data, scale, 7, prop)
 			});
 
-		} catch (err) {
-
-			console && console.log(err);
-		}
-
-
-		try {
-
 			explore.map.choropleth({
+   			layer: 'douala-arrts',
 				data: explore.dep_data,
 				key: 'id',
 				colors: function(d) {
@@ -62,6 +56,25 @@
 					return explore.colorscale.getColor(d[prop]);
 				},
 				duration: 0
+			});
+
+			explore.map.tooltips({
+			  layer: 'douala-arrts',
+			  content: function(id) {
+
+			  	var uptime = null;
+			  	// Look for the updatime
+			  	for(var index in explore.dep_data) {
+			  		if(explore.dep_data[index].id == id) {
+			  			uptime = explore.dep_data[index].uptime;
+			  		}
+			  	}
+
+			    return [id, uptime];
+			  },
+				style: {
+					classes: 'ui-tooltip-shadow'
+				}
 			});
 
 		} catch (err) {
