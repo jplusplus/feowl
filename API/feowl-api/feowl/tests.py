@@ -191,11 +191,11 @@ class AreaResourceTest(ResourceTestCase):
 
     def test_put_detail_unauthenticated(self):
         """Try to Put a single area is not allowed from the API with authenticated"""
-        self.assertHttpUnauthorized(self.c.put(self.detail_url))
+        self.assertHttpMethodNotAllowed(self.c.put(self.detail_url))
 
     def test_put_detail(self):
         """Try to Put a single area is not allowed from the API with authenticated"""
-        self.assertHttpUnauthorized(self.c.put(self.detail_url, self.get_credentials()))
+        self.assertHttpMethodNotAllowed(self.c.put(self.detail_url, self.get_credentials()))
 
     def test_delete_detail_unauthenticated(self):
         """Try to Delete a single area is not allowed from the API without authenticated"""
@@ -260,7 +260,8 @@ class ContributorResourceTest(ResourceTestCase):
             'name': 'Tobias',
             'email': 'tobias@test.de',
             'password': settings.DUMMY_PASSWORD,
-            'resource_uri': self.detail_url
+            'resource_uri': self.detail_url,
+            'language': 'EN'    #EN is the default value
         })
 
     def test_get_detail_unauthenticated(self):
@@ -273,7 +274,7 @@ class ContributorResourceTest(ResourceTestCase):
         self.assertValidJSONResponse(resp)
 
         # We use ``assertKeys`` here to just verify the keys, not all the data.
-        self.assertKeys(self.deserialize(resp), ['id', 'name', 'email', 'password', 'resource_uri'])
+        self.assertKeys(self.deserialize(resp), ['id', 'name', 'email', 'password', 'resource_uri', 'language'])
         self.assertEqual(self.deserialize(resp)['name'], "Tobias")
 
     def test_post_list_unauthenticated(self):
