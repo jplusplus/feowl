@@ -5,7 +5,7 @@
       "fields":{
          "category":"Device",
          "phone_number":"3479237418923",
-         "user":null
+         "contributor":null
       }
    },
    {
@@ -79,7 +79,7 @@
          "device":null,
          "happened_at":"2012-06-13T12:37:50Z",
          "has_experienced_outage":true,
-         "user":null,
+         "contributor":null,
          "duration":240,
          "quality":"1.00",
          "flagged":false,
@@ -97,7 +97,7 @@
          "device":null,
          "happened_at":"2012-06-13T12:38:06Z",
          "has_experienced_outage":true,
-         "user":null,
+         "contributor":null,
          "duration":32,
          "quality":"1.00",
          "flagged":false,
@@ -115,7 +115,7 @@
          "device":null,
          "happened_at":"2012-06-13T12:38:18Z",
          "has_experienced_outage":true,
-         "user":null,
+         "contributor":null,
          "duration":1231,
          "quality":"1.00",
          "flagged":false,
@@ -133,7 +133,7 @@
          "device":null,
          "happened_at":"2012-06-13T12:38:27Z",
          "has_experienced_outage":true,
-         "user":null,
+         "contributor":null,
          "duration":564,
          "quality":"1.00",
          "flagged":false,
@@ -151,7 +151,7 @@
          "device":null,
          "happened_at":"2012-06-13T09:56:25Z",
          "has_experienced_outage":true,
-         "user":null,
+         "contributor":null,
          "duration":121,
          "quality":"1.00",
          "flagged":false,
