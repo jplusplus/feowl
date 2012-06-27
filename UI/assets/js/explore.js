@@ -76,12 +76,15 @@
 
 
 	(explore.init = function() {
+		"use strict";
 
 		$.ajax({
 			url: '/assets/data/districts.json',
 			dataType: 'json',
 			success: explore.drawMap
 		});
+
+		$("#explore-range-slider").dateRangeSlider({});			
 
 	})();
 

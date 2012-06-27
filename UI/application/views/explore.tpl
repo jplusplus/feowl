@@ -11,7 +11,9 @@
 
 		<div class="row">
 			<div id="explore-map" class="span12"></div>
-		</div>
+			
+			<div id="explore-range-slider" class="span12"></div>
+		</div>		
 		
 	</div>
 	

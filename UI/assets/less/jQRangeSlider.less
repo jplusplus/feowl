@@ -1,0 +1,120 @@
+@import "bootstrap/variables.less";
+@import "bootstrap/mixins.less";
+/**
+ * default development theme for jQRangeSlider
+ * Using fam fam icon set from Mark James, http://www.famfamfam.com/lab/icons/silk/ (Creative Commons Attribution 2.5 License)
+ */
+
+.ui-rangeSlider{
+	margin-top:20px;
+	height:22px;
+}
+
+.ui-rangeSlider .ui-rangeSlider-innerBar{
+	height:14px;
+	margin:3px 6px;
+	border:1px solid #A6A6A6;
+	background-color: #F2F2F2;
+	.box-shadow(0 0 3px rgba(0, 0, 0, 0.15));
+	.border-radius(@inputBorderRadius);
+}
+
+.ui-rangeSlider .ui-rangeSlider-handle{
+	width:6px;
+	height:22px;
+	background:@linkColor;
+	cursor:col-resize;
+}
+
+.ui-rangeSlider .ui-rangeSlider-bar{
+	margin: 2px 0;
+	background:#9AD3D7;
+	height:16px;
+	cursor:move;
+	cursor:grab;
+	cursor: -moz-grab;
+	border:1px solid @linkColor;
+	border-right:0;
+	border-left:0;
+}
+
+.ui-rangeSlider .ui-rangeSlider-bar.ui-draggable-dragging{
+	cursor:	-moz-grabbing;
+	cursor:grabbing;
+}
+
+.ui-rangeSlider-arrow{
+	height:16px;
+	margin:2px 0;
+	width:16px;
+	background-repeat:no-repeat;
+}
+
+.ui-rangeSlider-arrow.ui-rangeSlider-leftArrow{
+	background-image: url('../img/glyphicons-halflings.png');
+	background-position:-433px center;
+}
+
+.ui-rangeSlider-arrow.ui-rangeSlider-rightArrow{
+	background-image: url('../img/glyphicons-halflings.png');
+	background-position:center right;
+}
+
+.ui-rangeSlider-arrow-inner{
+	display: none;
+}
+
+.ui-rangeSlider-container{
+	height:22px;
+}
+
+.ui-rangeSlider-withArrows .ui-rangeSlider-container{
+	margin:0 11px;
+}
+
+.ui-rangeSlider-noArrow .ui-rangeSlider-container{
+	margin:0;
+}
+
+.ui-rangeSlider-label{
+	margin:0 2px 2px;
+	background:@linkColor;
+	color:lighten(@linkColor, 100%);
+  white-space: nowrap;
+  bottom:30px;
+  padding:3px 7px;
+  cursor:col-resize;
+	.border-radius(@inputBorderRadius);
+
+	&:after {
+		
+		position:absolute;
+		z-index:-1;
+		bottom:-5px;
+		left:50%;
+
+		margin-left:-5px;
+		width:10px;
+		height:10px;
+
+		content:"";
+		display:block;
+
+		background-color: @linkColor;
+		.rotate(45deg);
+	}
+}
+
+.ui-rangeSlider-label-inner{
+	display:none;
+}
+
+/*
+ * Edit slider
+ */
+
+input.ui-editRangeSlider-inputValue{
+	width:3em;
+	vertical-align: middle;
+	text-align:center;
+}
