@@ -1,11 +1,9 @@
-from django.utils import unittest
 from django.test.client import Client
 from models import PowerReport, Area, Contributor, Device
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from tastypie_test import ResourceTestCase
 from django.db import models
 from tastypie.models import create_api_key
-from django.contrib.auth.models import Permission
 import json
 from django.conf import settings
 
@@ -96,7 +94,7 @@ class PowerReportResourceTest(ResourceTestCase):
         add_powerreport = Permission.objects.get(codename="add_powerreport")
         self.user.user_permissions.add(add_powerreport)
         # Check how many there are first.
-        self.assertEqual(PowerReport.objects.count(), 5) 
+        self.assertEqual(PowerReport.objects.count(), 5)
         self.assertHttpCreated(self.c.post('/api/v1/reports/?user_name=%s&api_key=%s' % (self.username, self.api_key), data=json.dumps(self.post_data), content_type="application/json"))
         # Verify a new one has been added.
         self.assertEqual(PowerReport.objects.count(), 6)
@@ -260,7 +258,7 @@ class UserResourceTest(ResourceTestCase):
             'id': '1',
             'username': 'john',
             'email': 'john@example.com',
-            'password': settings.DUMMY_PASSWORD, #self.user.__dict__["password"],
+            'password': settings.DUMMY_PASSWORD,
             'profile': {'credibility': '1.00', 'language': 'EN'},
             'resource_uri': '/api/v1/users/1/'
         })
@@ -310,7 +308,7 @@ class UserResourceTest(ResourceTestCase):
         self.assertHttpAccepted(self.c.put(self.detail_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.put_data), content_type="application/json"))
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.get(pk=self.user_1.pk).email, self.put_data.get("email"))
-        self.assertEqual(UserProfile.objects.get(user_id=self.user_1.pk).language, self.put_data.get("profile").get("language"))
+        self.assertEqual(Contributor.objects.get(pk=self.user_1.pk).language, self.put_data.get("profile").get("language"))
 
     def test_delete_detail_unauthenticated(self):
         """Delete a single user is not allowed from the API without authenticated"""
