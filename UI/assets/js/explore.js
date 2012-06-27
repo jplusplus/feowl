@@ -13,7 +13,6 @@
 		mapWidth  = $map.innerWidth(),
 		mapHeight = $map.innerHeight();
 
-		explore.most_active = data;
 		explore.dep_data = data;
 
 		explore.map = $K.map('#explore-map', mapWidth, mapHeight);
@@ -27,13 +26,6 @@
 
 				explore.updateMap(explore.map);
 
-				explore.map.tooltips({
-				   layer: 'douala-arrts',
-				   content: function(data, id) {
-				   		console.log(explore.dep_data);
-				      return data;
-				   }
-				});
 
 		});
 	};
@@ -56,6 +48,7 @@
 			});
 
 			explore.map.choropleth({
+   			layer: 'douala-arrts',
 				data: explore.dep_data,
 				key: 'id',
 				colors: function(d) {
@@ -63,6 +56,25 @@
 					return explore.colorscale.getColor(d[prop]);
 				},
 				duration: 0
+			});
+
+			explore.map.tooltips({
+			  layer: 'douala-arrts',
+			  content: function(id) {
+
+			  	var uptime = null;
+			  	// Look for the updatime
+			  	for(var index in explore.dep_data) {
+			  		if(explore.dep_data[index].id == id) {
+			  			uptime = explore.dep_data[index].uptime;
+			  		}
+			  	}
+
+			    return [id, uptime];
+			  },
+				style: {
+					classes: 'ui-tooltip-shadow'
+				}
 			});
 
 		} catch (err) {
