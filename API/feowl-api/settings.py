@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 import os
 import sys
 #for relative paths
@@ -204,3 +205,9 @@ LOGGING = {
         }
     }
 }
+
+# some common values
+
+#replace the real user password with some text when user records are fetched via the api
+DUMMY_PASSWORD = u'✌ & ♥'           #peace and love, yo!
+
