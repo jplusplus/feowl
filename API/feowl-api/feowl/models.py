@@ -88,8 +88,8 @@ class PowerReport(models.Model):
     location = models.PointField(srid=4326, geography=False, blank=True, null=True, help_text="String in form of POINT(lon, lat)")
 
     def __unicode__(self):
-        if self.user:
-            return "%s at %s" % (self.user, self.happened_at)
+        if self.contributor:
+            return "%s at %s" % (self.contributor, self.happened_at)
         else:
             return "%s" % self.happened_at
 
