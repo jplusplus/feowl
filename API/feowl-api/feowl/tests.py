@@ -339,7 +339,10 @@ class DeviceResourceTest(ResourceTestCase):
             'phone_number': "4267486238"
         }
 
-        Device(phone_number="01234567890", category="MainDevice", user=self.user).save()
+        Contributor(name="Tobias", email="tobias@test.de").save()
+        self.contributor = Contributor.objects.get(pk=1)
+
+        Device(phone_number="01234567890", category="MainDevice", contributor=self.contributor).save()
         # Fetch the ``Entry`` object we'll use in testing.
         # Note that we aren't using PKs because they can change depending
         # on what other tests are running.
@@ -349,7 +352,7 @@ class DeviceResourceTest(ResourceTestCase):
         # DRY, baby. DRY.
         self.list_url = u'/api/v1/devices/'
         self.detail_url = u'{0}{1}/'.format(self.list_url, self.device_1.pk)
-        self.user_url = u'/api/v1/users/{0}/'.format(self.user.id)
+        self.user_url = u'/api/v1/contributors/{0}/'.format(self.contributor.id)
 
     def get_credentials(self):
         return {"user_name": self.username, "api_key": self.api_key}
@@ -370,7 +373,7 @@ class DeviceResourceTest(ResourceTestCase):
             u"category": u"MainDevice",
             u"phone_number": u"01234567890",
             u"resource_uri": self.detail_url,
-            u"user": self.user_url
+            u"contributor": self.user_url
         })
 
     def test_get_detail_unauthenticated(self):
@@ -383,7 +386,7 @@ class DeviceResourceTest(ResourceTestCase):
         self.assertValidJSONResponse(resp)
 
         # We use ``assertKeys`` here to just verify the keys, not all the data.
-        self.assertKeys(self.deserialize(resp), ['category', 'phone_number', 'resource_uri', 'user'])
+        self.assertKeys(self.deserialize(resp), ['category', 'phone_number', 'resource_uri', 'contributor'])
         self.assertEqual(self.deserialize(resp)['category'], "MainDevice")
 
     def test_post_list_unauthenticated(self):
