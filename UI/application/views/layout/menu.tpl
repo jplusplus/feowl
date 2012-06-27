@@ -58,11 +58,6 @@
             <li class="active"><a href="{url::site('')}">Home</a></li>
             <li class="active"><a href="{url::site('/explore')}">Explore</a></li>
             <li class="active"><a href="{url::site('/contribute')}">Contribute</a></li>
-            <li>
-                <form action="" class="navbar-search pull-left">
-                    <input type="text" placeholder="Search" class="search-query span2">
-                </form>
-            </li>
         </ul>
 
     </div>

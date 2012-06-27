@@ -12,6 +12,7 @@ class Controller_Welcome extends Controller_Template {
 			url::base()."assets/css/bootstrap.min.css",
 			url::base()."assets/css/bootstrap-responsive.min.css",
 			url::base()."assets/less/style.less",
+			url::base()."assets/css/jquery.qtip.css",	
 			url::base()."assets/less/jQRangeSlider.less",	
 			"http://fonts.googleapis.com/css?family=Pacifico"
 		);
@@ -25,7 +26,8 @@ class Controller_Welcome extends Controller_Template {
 			url::base()."assets/js/chroma.min.js",
 			url::base()."assets/js/kartograph.js",
 			url::base()."assets/js/raphael.min.js",
-			url::base()."assets/js/jquery-ui-1.8.16.custom.min.js",			
+			url::base()."assets/js/jquery-ui-1.8.16.custom.min.js",	
+			url::base()."assets/js/jquery.qtip.min.js",				
 			url::base()."assets/js/jQAllRangeSliders-min.js",
 			url::base()."assets/js/global.js",
 			url::base()."assets/js/explore.js",
