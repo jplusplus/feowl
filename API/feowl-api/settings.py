@@ -88,6 +88,8 @@ ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 
 GRAPPELLI_ADMIN_TITLE = "FEOWL Admin"
 
+SOUTH_TESTS_MIGRATE = False
+
 # Additional locations of static files
 STATICFILES_DIRS = (
     here('static'),
@@ -139,7 +141,8 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'tastypie',
     'feowl',
-    'django_extensions'
+    'django_extensions',
+    'south'
 )
 
 # A sample logging configuration. The only tangible logging

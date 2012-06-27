@@ -6,34 +6,28 @@ from tastypie.authorization import DjangoAuthorization
 # from tastypie.authentication import ApiKeyAuthentication
 from tastypie_auth import ConfigurableApiKeyAuthentication
 # from django.contrib.gis.geos import Point
-from models import PowerReport, Device, UserProfile, Area
+from models import PowerReport, Device, Contributor, Area
 
 from django.conf.urls.defaults import url
-from django.contrib.auth.models import User
-from django.db import models
-from tastypie.models import create_api_key
 
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from tastypie.exceptions import BadRequest
 from django.conf import settings
 
-models.signals.post_save.connect(create_api_key, sender=User)
-
 from decimal import *
 
-class UserProfileResource(ModelResource):
+
+class ContributorResource(ModelResource):
     class Meta:
-        queryset = UserProfile.objects.all()
-        resource_name = 'userprofiles'
-        include_resource_uri = False
-        include_absolute_url = False
+        queryset = Contributor.objects.all()
+        resource_name = 'contributors'
 
         authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
         authorization = DjangoAuthorization()
 
-        excludes = ['id']
+        fields = ['id', 'email', 'password', 'name', 'language']
 
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'put']
@@ -41,90 +35,53 @@ class UserProfileResource(ModelResource):
         filtering = {
             "credibility": ALL,
             "language": ALL,
-        }
-
-
-class UserResource(ModelResource):
-    profile = fields.ToOneField(UserProfileResource, attribute='userprofile', related_name='user',  full=True, blank=True)
-
-    class Meta:
-        queryset = User.objects.all()
-        resource_name = 'users'
-
-        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
-        authorization = DjangoAuthorization()
-
-        fields = ['id', 'email', 'password', 'username']
-
-        list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get', 'put']
-
-        filtering = {
-            "username": ALL,
+            "name": ALL,
             "email": ALL,
         }
+    
+    def override_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<pk>\d+?)/check_password/$" % self._meta.resource_name, self.wrap_view('check_password'), name="api_check_password"),
+        ]
+
+    def check_password(self, request, **kwargs):
+        '''
+        method to verify a raw password against the saved encrypted one (only use through SSL!)
+        '''
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        try:
+            obj = self.cached_obj_get(request=request, **self.remove_api_resource_names(kwargs))
+        except ObjectDoesNotExist:
+            return HttpGone()
+        except MultipleObjectsReturned:
+            return HttpMultipleChoices("More than one resource is found at this URI.")
+        
+        valid = check_password(request.GET.get('password'), obj.password)
+
+        self.log_throttled_access(request)
+    
+        bundle = self.build_bundle(obj=obj, request=request)
+        bundle = self.full_dehydrate(bundle)
+        bundle = self.alter_detail_data_to_serialize(request, bundle)
+
+        #add out result
+        bundle.data['password_valid'] = valid
+        bundle.data['password'] = settings.DUMMY_PASSWORD
+        return self.create_response(request, bundle)
 
     def hydrate_password(self, bundle):
-        """Turn our password into a hash usable by Django."""
+        """Turn a passed in password into a hash so it is not saved raw."""
         bundle.data['password'] = make_password(bundle.data.get('password'))
         return bundle
 
     def dehydrate_password(self, bundle):
         return settings.DUMMY_PASSWORD
 
-    def obj_create(self, bundle, request=None, **kwargs):
-        try:
-            bundle = super(UserResource, self).obj_create(bundle, request, **kwargs)
-            bundle.obj.save()
-            profile = UserProfile.objects.get(user_id=bundle.obj.pk)
-            profile.language = bundle.data.get("profile", {u'language': u'EN'}).get("language", u"EN")
-            profile.save()
-        except IntegrityError, e:
-            print e
-            raise BadRequest('That username already exists')
-        return bundle
-
-    def obj_update(self, bundle, request=None, skip_errors=False, **kwargs):
-        """ A ORM-specific implementation of ``obj_update``--monkey patched
-        to prevent multiple calls to hydrate.
-        """
-        if not bundle.obj or not bundle.obj.pk:
-            try:
-                bundle.obj = self.obj_get(bundle.request, **kwargs)
-            except ObjectDoesNotExist:
-                raise NotFound("A model instance matching the provided arguments could not be found.")
-
-        bundle = self.full_hydrate(bundle)
-
-        self.is_valid(bundle, request)
-
-        # TODO: take a look that we can activate this with a later tastypie version
-        # if bundle.errors and not skip_errors:
-        #     self.error_response(bundle.errors, request)
-
-        # Save FKs just in case.
-        self.save_related(bundle)
-
-        # Save the main object.
-        bundle.obj.save()
-
-        # Update userprofile language
-        profile_data = bundle.data.get("profile")
-        if profile_data:
-            language = profile_data.get("language")
-            if language:
-                profile = UserProfile.objects.get(user_id=bundle.obj.pk)
-                profile.language = language
-                profile.save()
-
-        # Now pick up the M2M bits.
-        m2m_bundle = self.hydrate_m2m(bundle)
-        self.save_m2m(m2m_bundle)
-        return bundle
-
-
 class DeviceResource(ModelResource):
-    user = fields.ForeignKey(UserResource, 'user', null=False)
+    contributor = fields.ForeignKey(ContributorResource, 'contributor', null=False)
 
     class Meta:
         queryset = Device.objects.all()
@@ -133,13 +90,13 @@ class DeviceResource(ModelResource):
         authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
         authorization = DjangoAuthorization()
 
-        fields = ['category', 'phone_number', 'user']
+        fields = ['category', 'phone_number', 'contributor']
 
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'put', 'delete']
 
         filtering = {
-            'user': ALL #ALL_WITH_RELATIONS ?       
+            'contributor': ALL #ALL_WITH_RELATIONS ?       
         }
 
 
@@ -154,8 +111,7 @@ class AreaResource(ModelResource):
         fields = ['name', 'city', 'country', 'pop_per_sq_km', 'overall_population']
 
         list_allowed_methods = ['get']
-        # TODO: Why we need a put if we're creating a report with a area with {"pk":1}
-        detail_allowed_methods = ['put', 'get']
+        detail_allowed_methods = ['get']
 
         #allow filtering on the collection to do things like /api/v1/areas/?name_ilike=douala
         filtering = {
@@ -177,7 +133,7 @@ class PowerReportResource(ModelResource):
         authorization = DjangoAuthorization()
 
         #whitelist of fields to be public
-        fields = ['quality', 'duration', 'happened_at', 'has_experienced_outage', 'location', 'area', 'user', 'device']
+        fields = ['quality', 'duration', 'happened_at', 'has_experienced_outage', 'location', 'area', 'contributor', 'device']
 
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get']
@@ -189,8 +145,10 @@ class PowerReportResource(ModelResource):
         }
 
 
-class AggregationObject(object):
-    #generic object to represent dict values as attributes (returned as tastypie response object)
+class GenericResponseObject(object):
+    '''
+    generic object to represent dict values as attributes (returned as tastypie response object)
+    '''
     def __init__(self, initial=None):
         self.__dict__['_data'] = {}
 
@@ -214,7 +172,7 @@ class PowerReportAggregatedResource(Resource):
 
     class Meta:
         resource_name = 'aggregation'
-        object_class = AggregationObject
+        object_class = GenericResponseObject
         include_resource_uri = False
 
         list_allowed_methods = ['get']
@@ -267,5 +225,5 @@ class PowerReportAggregatedResource(Resource):
                 aff_population = Decimal(len(actual_powercut_reports)) / Decimal(len(area_reports))
 
             #create aggregate object
-            result.append(AggregationObject({'area': area, 'avg_duration': avg_duration, 'affected_population': aff_population}))
+            result.append(GenericResponseObject({'area': area, 'avg_duration': avg_duration, 'affected_population': aff_population}))
         return result
