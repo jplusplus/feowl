@@ -7,23 +7,9 @@ from django.db import models
 from tastypie.models import create_api_key
 from django.contrib.auth.models import Permission
 import json
+from django.conf import settings
 
 models.signals.post_save.connect(create_api_key, sender=User)
-
-
-class PowerReportTest(unittest.TestCase):
-    def test_basic(self):
-        """
-        Test basic creation of one object
-        """
-
-        #create dummy data
-        PowerReport(
-            location='POINT(151.207555, -33.88576)',
-            duration=250,
-        )
-
-        self.assertEqual(1, 1)
 
 
 class PowerReportResourceTest(ResourceTestCase):
@@ -39,7 +25,7 @@ class PowerReportResourceTest(ResourceTestCase):
         self.api_key = self.user.api_key.key
         self.c = Client()
         self.post_data = {
-           "area": {"pk": 1},
+           "area": "/api/v1/areas/1/",
            "happened_at": "2012-06-14T12:37:50+00:00",
            "has_experienced_outage": True,
            "duration": 60
@@ -57,7 +43,7 @@ class PowerReportResourceTest(ResourceTestCase):
     def get_credentials(self):
         return {"user_name": self.username, "api_key": self.api_key}
 
-    def test_get_list_unauthorzied(self):
+    def test_get_list_unauthorizied(self):
         """Get reports from the API without authenticated"""
         self.assertHttpUnauthorized(self.c.get('/api/v1/reports/'))
 
@@ -68,7 +54,7 @@ class PowerReportResourceTest(ResourceTestCase):
 
         # Scope out the data for correctness.
         self.assertEqual(len(self.deserialize(resp)['objects']), 5)
-        # Here, we're checking an entire structure for the expected data.
+        # Here we're checking an entire structure for the expected data.
         self.assertEqual(self.deserialize(resp)['objects'][0], {
             'area': u'/api/v1/areas/1/',
             'happened_at': u'2012-06-13T12:37:50+00:00',
@@ -109,9 +95,9 @@ class PowerReportResourceTest(ResourceTestCase):
         """Post a single report to the API with authenticated and with add permissions"""
         add_powerreport = Permission.objects.get(codename="add_powerreport")
         self.user.user_permissions.add(add_powerreport)
-        # Check how many are there first.
-        self.assertEqual(PowerReport.objects.count(), 5)
-        self.assertHttpCreated(self.c.post('/api/v1/reports/?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        # Check how many there are first.
+        self.assertEqual(PowerReport.objects.count(), 5) 
+        self.assertHttpCreated(self.c.post('/api/v1/reports/?user_name=%s&api_key=%s' % (self.username, self.api_key), data=json.dumps(self.post_data), content_type="application/json"))
         # Verify a new one has been added.
         self.assertEqual(PowerReport.objects.count(), 6)
 
@@ -274,7 +260,7 @@ class UserResourceTest(ResourceTestCase):
             'id': '1',
             'username': 'john',
             'email': 'john@example.com',
-            'password': self.user.__dict__["password"],
+            'password': settings.DUMMY_PASSWORD, #self.user.__dict__["password"],
             'profile': {'credibility': '1.00', 'language': 'EN'},
             'resource_uri': '/api/v1/users/1/'
         })
@@ -363,8 +349,9 @@ class DeviceResourceTest(ResourceTestCase):
 
         # We also build a detail URI, since we will be using it all over.
         # DRY, baby. DRY.
-        self.list_url = '/api/v1/devices/'
-        self.detail_url = '{0}{1}/'.format(self.list_url, self.device_1.pk)
+        self.list_url = u'/api/v1/devices/'
+        self.detail_url = u'{0}{1}/'.format(self.list_url, self.device_1.pk)
+        self.user_url = u'/api/v1/users/{0}/'.format(self.user.id)
 
     def get_credentials(self):
         return {"user_name": self.username, "api_key": self.api_key}
@@ -374,7 +361,7 @@ class DeviceResourceTest(ResourceTestCase):
         self.assertHttpUnauthorized(self.c.get(self.list_url))
 
     def test_get_list_json(self):
-        """Get devices from the API with authenticated. With checks if all keys are available"""
+        """Get devices from the API with authenticated. With checks if all keys are available."""
         resp = self.c.get(self.list_url, self.get_credentials())
         self.assertValidJSONResponse(resp)
 
@@ -382,22 +369,23 @@ class DeviceResourceTest(ResourceTestCase):
         self.assertEqual(len(self.deserialize(resp)['objects']), 1)
         # Here, we're checking an entire structure for the expected data.
         self.assertEqual(self.deserialize(resp)['objects'][0], {
-            "category": "MainDevice",
-            "phone_number": "01234567890",
-            "resource_uri": self.detail_url
+            u"category": u"MainDevice",
+            u"phone_number": u"01234567890",
+            u"resource_uri": self.detail_url,
+            u"user": self.user_url
         })
 
     def test_get_detail_unauthenticated(self):
-        """Try to Get a single device from the API without authenticated"""
+        """Try to Get a single device from the API without authentication"""
         self.assertHttpUnauthorized(self.c.get(self.detail_url))
 
     def test_get_detail_json(self):
-        """Get a single device from the API with authenticated. With checks if all keys are available"""
+        """Get a single device from the API with authentication. Also checks if all keys are available."""
         resp = self.c.get(self.detail_url, self.get_credentials())
         self.assertValidJSONResponse(resp)
 
         # We use ``assertKeys`` here to just verify the keys, not all the data.
-        self.assertKeys(self.deserialize(resp), ['category', 'phone_number', 'resource_uri'])
+        self.assertKeys(self.deserialize(resp), ['category', 'phone_number', 'resource_uri', 'user'])
         self.assertEqual(self.deserialize(resp)['category'], "MainDevice")
 
     def test_post_list_unauthenticated(self):

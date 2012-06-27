@@ -17,25 +17,11 @@ from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from tastypie.exceptions import BadRequest
+from django.conf import settings
 
 models.signals.post_save.connect(create_api_key, sender=User)
 
 from decimal import *
-
-
-class DeviceResource(ModelResource):
-    class Meta:
-        queryset = Device.objects.all()
-        resource_name = 'devices'
-
-        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
-        authorization = DjangoAuthorization()
-
-        fields = ['category', 'phone_number']
-
-        list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get', 'put', 'delete']
-
 
 class UserProfileResource(ModelResource):
     class Meta:
@@ -82,6 +68,9 @@ class UserResource(ModelResource):
         """Turn our password into a hash usable by Django."""
         bundle.data['password'] = make_password(bundle.data.get('password'))
         return bundle
+
+    def dehydrate_password(self, bundle):
+        return settings.DUMMY_PASSWORD
 
     def obj_create(self, bundle, request=None, **kwargs):
         try:
@@ -134,6 +123,26 @@ class UserResource(ModelResource):
         return bundle
 
 
+class DeviceResource(ModelResource):
+    user = fields.ForeignKey(UserResource, 'user', null=False)
+
+    class Meta:
+        queryset = Device.objects.all()
+        resource_name = 'devices'
+
+        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
+        authorization = DjangoAuthorization()
+
+        fields = ['category', 'phone_number', 'user']
+
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'put', 'delete']
+
+        filtering = {
+            'user': ALL #ALL_WITH_RELATIONS ?       
+        }
+
+
 class AreaResource(ModelResource):
     class Meta:
         queryset = Area.objects.all()
@@ -150,7 +159,9 @@ class AreaResource(ModelResource):
 
         #allow filtering on the collection to do things like /api/v1/areas/?name_ilike=douala
         filtering = {
-            'name': ALL
+            'name': ALL,
+            'country': ALL,
+            'overall_population': ALL
         }
 
 
