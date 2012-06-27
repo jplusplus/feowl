@@ -2,40 +2,50 @@ from django.contrib.auth.models import User, Permission
 from django.contrib.gis.db import models
 from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
+from tastypie.models import create_api_key
+
+models.signals.post_save.connect(create_api_key, sender=User)
 
 
-class UserProfile(models.Model):
-    """Models for the User"""
+class Contributor(models.Model):
+    """Model for a reporter"""
 
-    user = models.OneToOneField(User)
+    name = models.CharField('name', max_length=30, unique=True,
+        help_text='Required. 30 characters or fewer. Letters, numbers and '
+                    '@/./+/-/_ characters')
+    password = models.CharField('password', max_length=128) 
+    email = models.EmailField('e-mail address', blank=True, unique=True)
+
     credibility = models.DecimalField(max_digits=3, decimal_places=2, default='1.00')
     language = models.CharField(max_length=5, default="EN")
 
 
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
+    """
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            UserProfile.objects.create(user=instance)
 
 
-def add_report_permission(sender, instance, created, **kwargs):
-    if created:
-        add_powerreport = Permission.objects.get(codename="add_powerreport")
-        instance.user_permissions.add(add_powerreport)
+    def add_report_permission(sender, instance, created, **kwargs):
+        if created:
+            add_powerreport = Permission.objects.get(codename="add_powerreport")
+            instance.user_permissions.add(add_powerreport)
 
-post_save.connect(create_user_profile, sender=User)
-post_save.connect(add_report_permission, sender=User)
+    post_save.connect(create_user_profile, sender=User)
+    post_save.connect(add_report_permission, sender=User)
+    """
 
 
 class Device(models.Model):
-    """Models for the Device"""
+    """Model for the Device"""
 
     category = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=30)
-    user = models.ForeignKey(User, blank=True, null=True)
+    contributor = models.ForeignKey(Contributor, blank=True, null=True)
 
 
 class Area(models.Model):
-    """Models for the Area"""
+    """Model for the Area"""
 
     objects = models.GeoManager()
 
@@ -70,7 +80,7 @@ class PowerReport(models.Model):
     has_experienced_outage = models.BooleanField(null=False, blank=False, default=True, help_text="Boolean that indicates if user reported a power cut.")
 
     area = models.ForeignKey(Area, blank=False, null=False)
-    user = models.ForeignKey(User, blank=True, null=True)
+    contributor = models.ForeignKey(Contributor, blank=True, null=True)
     device = models.ForeignKey(Device, blank=True, null=True)
 
     deleted = models.BooleanField(default=False)

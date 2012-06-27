@@ -6,12 +6,9 @@ from tastypie.authorization import DjangoAuthorization
 # from tastypie.authentication import ApiKeyAuthentication
 from tastypie_auth import ConfigurableApiKeyAuthentication
 # from django.contrib.gis.geos import Point
-from models import PowerReport, Device, UserProfile, Area
+from models import PowerReport, Device, Contributor, Area
 
 from django.conf.urls.defaults import url
-from django.contrib.auth.models import User
-from django.db import models
-from tastypie.models import create_api_key
 
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,21 +16,18 @@ from django.db import IntegrityError
 from tastypie.exceptions import BadRequest
 from django.conf import settings
 
-models.signals.post_save.connect(create_api_key, sender=User)
-
 from decimal import *
 
-class UserProfileResource(ModelResource):
+
+class ContributorResource(ModelResource):
     class Meta:
-        queryset = UserProfile.objects.all()
-        resource_name = 'userprofiles'
-        include_resource_uri = False
-        include_absolute_url = False
+        queryset = Contributor.objects.all()
+        resource_name = 'contributors'
 
         authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
         authorization = DjangoAuthorization()
 
-        excludes = ['id']
+        fields = ['id', 'email', 'password', 'name']
 
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'put']
@@ -41,53 +35,38 @@ class UserProfileResource(ModelResource):
         filtering = {
             "credibility": ALL,
             "language": ALL,
-        }
-
-
-class UserResource(ModelResource):
-    profile = fields.ToOneField(UserProfileResource, attribute='userprofile', related_name='user',  full=True, blank=True)
-
-    class Meta:
-        queryset = User.objects.all()
-        resource_name = 'users'
-
-        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
-        authorization = DjangoAuthorization()
-
-        fields = ['id', 'email', 'password', 'username']
-
-        list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get', 'put']
-
-        filtering = {
-            "username": ALL,
+            "name": ALL,
             "email": ALL,
         }
 
+
     def hydrate_password(self, bundle):
-        """Turn our password into a hash usable by Django."""
+        """Turn our password into a hash."""
         bundle.data['password'] = make_password(bundle.data.get('password'))
         return bundle
 
     def dehydrate_password(self, bundle):
         return settings.DUMMY_PASSWORD
 
+    """
     def obj_create(self, bundle, request=None, **kwargs):
         try:
-            bundle = super(UserResource, self).obj_create(bundle, request, **kwargs)
+            bundle = super(ContributorResource, self).obj_create(bundle, request, **kwargs)
             bundle.obj.save()
-            profile = UserProfile.objects.get(user_id=bundle.obj.pk)
+            profile = Contributor.objects.get(user_id=bundle.obj.pk)
             profile.language = bundle.data.get("profile", {u'language': u'EN'}).get("language", u"EN")
             profile.save()
         except IntegrityError, e:
             print e
             raise BadRequest('That username already exists')
         return bundle
+    """
 
+    """
     def obj_update(self, bundle, request=None, skip_errors=False, **kwargs):
-        """ A ORM-specific implementation of ``obj_update``--monkey patched
+        ''' A ORM-specific implementation of ``obj_update``--monkey patched
         to prevent multiple calls to hydrate.
-        """
+        '''
         if not bundle.obj or not bundle.obj.pk:
             try:
                 bundle.obj = self.obj_get(bundle.request, **kwargs)
@@ -121,10 +100,10 @@ class UserResource(ModelResource):
         m2m_bundle = self.hydrate_m2m(bundle)
         self.save_m2m(m2m_bundle)
         return bundle
-
+    """
 
 class DeviceResource(ModelResource):
-    user = fields.ForeignKey(UserResource, 'user', null=False)
+    contributor = fields.ForeignKey(ContributorResource, 'contributor', null=False)
 
     class Meta:
         queryset = Device.objects.all()
@@ -133,13 +112,13 @@ class DeviceResource(ModelResource):
         authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
         authorization = DjangoAuthorization()
 
-        fields = ['category', 'phone_number', 'user']
+        fields = ['category', 'phone_number', 'contributor']
 
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'put', 'delete']
 
         filtering = {
-            'user': ALL #ALL_WITH_RELATIONS ?       
+            'contributor': ALL #ALL_WITH_RELATIONS ?       
         }
 
 
@@ -177,7 +156,7 @@ class PowerReportResource(ModelResource):
         authorization = DjangoAuthorization()
 
         #whitelist of fields to be public
-        fields = ['quality', 'duration', 'happened_at', 'has_experienced_outage', 'location', 'area', 'user', 'device']
+        fields = ['quality', 'duration', 'happened_at', 'has_experienced_outage', 'location', 'area', 'contributor', 'device']
 
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get']

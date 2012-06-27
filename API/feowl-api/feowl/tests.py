@@ -1,6 +1,6 @@
 from django.utils import unittest
 from django.test.client import Client
-from models import PowerReport, Area, UserProfile, Device
+from models import PowerReport, Area, Contributor, Device
 from django.contrib.auth.models import User
 from tastypie_test import ResourceTestCase
 from django.db import models
