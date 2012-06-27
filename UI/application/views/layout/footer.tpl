@@ -3,8 +3,24 @@
 		<div class="container">
 			<hr>
 
-			<footer>
-				<p>&copy; Feowl 2012 | <a href="mailto:contact@feowl.com">contact</a> | <a href="http://feowl.tumblr.com/">blog</a></p> 
+			<footer class="row">
+				<div class="span3">
+					<p>
+						<a href="https://github.com/jplusplus/feowl/">{__ t='Fork us on GitHub!'}</a>
+						{__ t='Feowl files under an Apache licence'}
+					</p>
+				</div>
+				<div class="span4">
+					<p>&copy; Feowl 2012 | <a href="mailto:contact@feowl.com">{__ t='contact'}</a> | <a href="http://feowl.tumblr.com/">{__ t='blog'}</a></p> 
+				</div>
+				<div class="offset1 span4">
+					<p>
+						{__ t='Feowl is financed by the <a href="http://www.freemedia.at/">International Press Institute</a>.'}
+					</p>
+					<p>
+						{__ t='It\'s a project by <a href="http://www.internetsansfrontieres.com/">Internet Sans Frontières</a>, <a href="http://jplusplus.org/">Journalism++</a>, <a href="http://www.tesobe.com/">Tesobe</a> and <a href="http://www.wasamundi.com/">Wasamundi</a>.'}
+					</p>
+				</div>
 			</footer>
 
 		</div>

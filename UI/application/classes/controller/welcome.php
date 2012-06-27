@@ -12,9 +12,9 @@ class Controller_Welcome extends Controller_Template {
 			url::base()."assets/css/bootstrap.min.css",
 			url::base()."assets/css/bootstrap-responsive.min.css",
 			url::base()."assets/less/style.less",
+			url::base()."assets/less/jQRangeSlider.less",	
 			"http://fonts.googleapis.com/css?family=Pacifico"
 		);
-
 
 		// Adds all javascript files in an array
 		$this->template->files_javascript = array(		
@@ -22,10 +22,15 @@ class Controller_Welcome extends Controller_Template {
 			url::base()."assets/js/less.min.js",
 			url::base()."assets/js/bootstrap/bootstrap.min.js",
 			url::base()."assets/js/bootstrap/bs-dropdown.min.js",
+			url::base()."assets/js/chroma.min.js",
+			url::base()."assets/js/kartograph.js",
+			url::base()."assets/js/raphael.min.js",
+			url::base()."assets/js/jquery-ui-1.8.16.custom.min.js",			
+			url::base()."assets/js/jQAllRangeSliders-min.js",
+			url::base()."assets/js/global.js",
+			url::base()."assets/js/explore.js",
 			url::base()."assets/js/global.js"
 		);	
-		 $this->template->content = View::factory('user/info.tpl')
-            ->bind('user', $user);
 
 	}
 

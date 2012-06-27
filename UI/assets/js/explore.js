@@ -19,16 +19,13 @@
 		explore.map = $K.map('#explore-map', mapWidth, mapHeight);
 		explore.map.loadMap('/assets/data/douala-districts.svg', function() {
 			
-			explore.map.loadStyles('styles.css', function() {
-
 				explore.map.addLayer({
 					id: 'douala-arrts',
 					key: 'id'
 				});
 
 				explore.updateMap(explore.map);
-			
-			})
+				
 		});
 	};
 
