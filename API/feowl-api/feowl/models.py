@@ -2,8 +2,9 @@ from django.contrib.auth.models import User, Permission
 from django.contrib.gis.db import models
 from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
-from tastypie.models import create_api_key
+from django.contrib.auth.hashers import make_password, check_password
 
+from tastypie.models import create_api_key
 models.signals.post_save.connect(create_api_key, sender=User)
 
 
@@ -12,9 +13,9 @@ class Contributor(models.Model):
 
     name = models.CharField('name', max_length=30, unique=True,
         help_text='Required. 30 characters or fewer. Letters, numbers and '
-                    '@/./+/-/_ characters')
-    password = models.CharField('password', max_length=128) 
-    email = models.EmailField('e-mail address', blank=True, unique=True)
+                    '@/./+/-/_ characters', blank=False)
+    password = models.CharField('password', max_length=128, blank=False)
+    email = models.EmailField('e-mail address', blank=False, unique=True)
 
     credibility = models.DecimalField(max_digits=3, decimal_places=2, default='1.00')
     language = models.CharField(max_length=5, default="EN")
@@ -34,6 +35,12 @@ class Contributor(models.Model):
     post_save.connect(create_user_profile, sender=User)
     post_save.connect(add_report_permission, sender=User)
     """
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Device(models.Model):
