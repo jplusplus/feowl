@@ -142,7 +142,7 @@ class AreaResource(ModelResource):
         authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
         authorization = DjangoAuthorization()
 
-        fields = ['name', 'city', 'country', 'pop_per_sq_km']
+        fields = ['name', 'city', 'country', 'pop_per_sq_km', 'overall_population']
 
         list_allowed_methods = ['get']
         # TODO: Why we need a put if we're creating a report with a area with {"pk":1}
