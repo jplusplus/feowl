@@ -3,17 +3,13 @@
 from tastypie import fields
 from tastypie.resources import Resource, ModelResource, ALL
 from tastypie.authorization import DjangoAuthorization
-# from tastypie.authentication import ApiKeyAuthentication
-from tastypie_auth import ConfigurableApiKeyAuthentication
-# from django.contrib.gis.geos import Point
+from tastypie.authentication import ApiKeyAuthentication
 from models import PowerReport, Device, Contributor, Area
 
 from django.conf.urls.defaults import url
 
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError
-from tastypie.exceptions import BadRequest
 from django.conf import settings
 
 from decimal import *
@@ -24,7 +20,7 @@ class ContributorResource(ModelResource):
         queryset = Contributor.objects.all()
         resource_name = 'contributors'
 
-        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
+        authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
         fields = ['id', 'email', 'password', 'name', 'language']
@@ -38,7 +34,7 @@ class ContributorResource(ModelResource):
             "name": ALL,
             "email": ALL,
         }
-    
+
     def override_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/(?P<pk>\d+?)/check_password/$" % self._meta.resource_name, self.wrap_view('check_password'), name="api_check_password"),
@@ -58,11 +54,11 @@ class ContributorResource(ModelResource):
             return HttpGone()
         except MultipleObjectsReturned:
             return HttpMultipleChoices("More than one resource is found at this URI.")
-        
+
         valid = check_password(request.GET.get('password'), obj.password)
 
         self.log_throttled_access(request)
-    
+
         bundle = self.build_bundle(obj=obj, request=request)
         bundle = self.full_dehydrate(bundle)
         bundle = self.alter_detail_data_to_serialize(request, bundle)
@@ -80,6 +76,7 @@ class ContributorResource(ModelResource):
     def dehydrate_password(self, bundle):
         return settings.DUMMY_PASSWORD
 
+
 class DeviceResource(ModelResource):
     contributor = fields.ForeignKey(ContributorResource, 'contributor', null=False)
 
@@ -87,7 +84,7 @@ class DeviceResource(ModelResource):
         queryset = Device.objects.all()
         resource_name = 'devices'
 
-        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
+        authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
         fields = ['category', 'phone_number', 'contributor']
@@ -96,7 +93,7 @@ class DeviceResource(ModelResource):
         detail_allowed_methods = ['get', 'put', 'delete']
 
         filtering = {
-            'contributor': ALL #ALL_WITH_RELATIONS ?       
+            'contributor': ALL  # ALL_WITH_RELATIONS ?
         }
 
 
@@ -105,7 +102,7 @@ class AreaResource(ModelResource):
         queryset = Area.objects.all()
         resource_name = 'areas'
 
-        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
+        authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
         fields = ['name', 'city', 'country', 'pop_per_sq_km', 'overall_population']
@@ -129,7 +126,7 @@ class PowerReportResource(ModelResource):
         resource_name = 'reports'
 
         #see: http://www.infoq.com/news/2010/01/rest-api-authentication-schemes
-        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
+        authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
         #whitelist of fields to be public
@@ -178,7 +175,7 @@ class PowerReportAggregatedResource(Resource):
         list_allowed_methods = ['get']
         detail_allowed_methods = []
 
-        authentication = ConfigurableApiKeyAuthentication(username_param='user_name')
+        authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
     def base_urls(self):
