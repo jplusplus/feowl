@@ -39,7 +39,7 @@ class PowerReportResourceTest(ResourceTestCase):
         self.detail_url = '/api/v1/reports/{0}/'.format(self.power_report_1.pk)
 
     def get_credentials(self):
-        return {"user_name": self.username, "api_key": self.api_key}
+        return {"username": self.username, "api_key": self.api_key}
 
     def test_get_list_unauthorizied(self):
         """Get reports from the API without authenticated"""
@@ -85,7 +85,7 @@ class PowerReportResourceTest(ResourceTestCase):
         add_powerreport = Permission.objects.get(codename="add_powerreport")
         self.user.user_permissions.remove(add_powerreport)
         self.assertEqual(PowerReport.objects.count(), 5)
-        self.assertHttpUnauthorized(self.c.post('/api/v1/reports/?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        self.assertHttpUnauthorized(self.c.post('/api/v1/reports/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
         # Verify that nothing was added to the db
         self.assertEqual(PowerReport.objects.count(), 5)
 
@@ -95,7 +95,7 @@ class PowerReportResourceTest(ResourceTestCase):
         self.user.user_permissions.add(add_powerreport)
         # Check how many there are first.
         self.assertEqual(PowerReport.objects.count(), 5)
-        self.assertHttpCreated(self.c.post('/api/v1/reports/?user_name=%s&api_key=%s' % (self.username, self.api_key), data=json.dumps(self.post_data), content_type="application/json"))
+        self.assertHttpCreated(self.c.post('/api/v1/reports/?username=%s&api_key=%s' % (self.username, self.api_key), data=json.dumps(self.post_data), content_type="application/json"))
         # Verify a new one has been added.
         self.assertEqual(PowerReport.objects.count(), 6)
 
@@ -145,7 +145,7 @@ class AreaResourceTest(ResourceTestCase):
         self.detail_url = '/api/v1/areas/{0}/'.format(self.area_1.pk)
 
     def get_credentials(self):
-        return {"user_name": self.username, "api_key": self.api_key}
+        return {"username": self.username, "api_key": self.api_key}
 
     def test_get_list_unauthorzied(self):
         """Get areas from the API without authenticated"""
@@ -187,7 +187,7 @@ class AreaResourceTest(ResourceTestCase):
 
     def test_post_list(self):
         """Try to Post a single area to the API with authenticated"""
-        self.assertHttpMethodNotAllowed(self.c.post('/api/v1/areas/?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        self.assertHttpMethodNotAllowed(self.c.post('/api/v1/areas/?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
 
     def test_put_detail_unauthenticated(self):
         """Try to Put a single area is not allowed from the API with authenticated"""
@@ -241,7 +241,7 @@ class ContributorResourceTest(ResourceTestCase):
         self.detail_url = '{0}{1}/'.format(self.list_url, self.contributor_1.pk)
 
     def get_credentials(self):
-        return {"user_name": self.username, "api_key": self.api_key}
+        return {"username": self.username, "api_key": self.api_key}
 
     def test_get_list_unauthorzied(self):
         """Get areas from the API without authenticated"""
@@ -283,14 +283,14 @@ class ContributorResourceTest(ResourceTestCase):
 
     def test_post_list_without_permissions(self):
         """Try to Post a single user to the API with authenticated and without permission"""
-        self.assertHttpUnauthorized(self.c.post(self.list_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        self.assertHttpUnauthorized(self.c.post(self.list_url + '?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
 
     def test_post_list_with_permissions(self):
         """Try to Post a single user to the API with authenticated and permission"""
         add_contributor = Permission.objects.get(codename="add_contributor")
         self.user.user_permissions.add(add_contributor)
         self.assertEqual(Contributor.objects.count(), 1)
-        self.assertHttpCreated(self.c.post(self.list_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        self.assertHttpCreated(self.c.post(self.list_url + '?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
         self.assertEqual(Contributor.objects.count(), 2)
 
     def test_put_detail_unauthenticated(self):
@@ -306,7 +306,7 @@ class ContributorResourceTest(ResourceTestCase):
         change_contributor = Permission.objects.get(codename="change_contributor")
         self.user.user_permissions.add(change_contributor)
         self.assertEqual(Contributor.objects.count(), 1)
-        self.assertHttpAccepted(self.c.put(self.detail_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.put_data), content_type="application/json"))
+        self.assertHttpAccepted(self.c.put(self.detail_url + '?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.put_data), content_type="application/json"))
         self.assertEqual(Contributor.objects.count(), 1)
         self.assertEqual(Contributor.objects.get(pk=self.contributor_1.pk).email, self.put_data.get("email"))
 
@@ -355,7 +355,7 @@ class DeviceResourceTest(ResourceTestCase):
         self.user_url = u'/api/v1/contributors/{0}/'.format(self.contributor.id)
 
     def get_credentials(self):
-        return {"user_name": self.username, "api_key": self.api_key}
+        return {"username": self.username, "api_key": self.api_key}
 
     def test_get_list_unauthorzied(self):
         """Get devices from the API without authenticated"""
@@ -395,14 +395,14 @@ class DeviceResourceTest(ResourceTestCase):
 
     def test_post_list_without_permissions(self):
         """Try to Post a single device to the API with authenticated and without permission"""
-        self.assertHttpUnauthorized(self.c.post(self.list_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        self.assertHttpUnauthorized(self.c.post(self.list_url + '?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
 
     def test_post_list_with_permissions(self):
         """Post a single device to the API with authenticated and permission"""
         add_device = Permission.objects.get(codename="add_device")
         self.user.user_permissions.add(add_device)
         self.assertEqual(Device.objects.count(), 1)
-        self.assertHttpCreated(self.c.post(self.list_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
+        self.assertHttpCreated(self.c.post(self.list_url + '?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.post_data), content_type="application/json"))
         self.assertEqual(Device.objects.count(), 2)
 
     def test_put_detail_unauthenticated(self):
@@ -418,7 +418,7 @@ class DeviceResourceTest(ResourceTestCase):
         change_device = Permission.objects.get(codename="change_device")
         self.user.user_permissions.add(change_device)
         self.assertEqual(Device.objects.count(), 1)
-        self.assertHttpAccepted(self.c.put(self.detail_url + '?user_name=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.put_data), content_type="application/json"))
+        self.assertHttpAccepted(self.c.put(self.detail_url + '?username=' + self.username + '&api_key=' + self.api_key, data=json.dumps(self.put_data), content_type="application/json"))
         self.assertEqual(Device.objects.count(), 1)
         self.assertEqual(Device.objects.get(pk=self.device_1.pk).phone_number, self.put_data.get("phone_number"))
 
