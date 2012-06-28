@@ -1,5 +1,4 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-      define('SITE_URL','http://www.feowl.com');
       
 class Controller_Welcome extends Controller_Template {
 
