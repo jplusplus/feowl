@@ -1,8 +1,7 @@
-from django.contrib.auth.models import User, Permission
+from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.core.exceptions import ValidationError
-from django.db.models.signals import post_save
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.hashers import make_password
 
 from tastypie.models import create_api_key
 models.signals.post_save.connect(create_api_key, sender=User)
@@ -19,22 +18,6 @@ class Contributor(models.Model):
 
     credibility = models.DecimalField(max_digits=3, decimal_places=2, default='1.00')
     language = models.CharField(max_length=5, default="EN")
-
-
-    """
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            UserProfile.objects.create(user=instance)
-
-
-    def add_report_permission(sender, instance, created, **kwargs):
-        if created:
-            add_powerreport = Permission.objects.get(codename="add_powerreport")
-            instance.user_permissions.add(add_powerreport)
-
-    post_save.connect(create_user_profile, sender=User)
-    post_save.connect(add_report_permission, sender=User)
-    """
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
