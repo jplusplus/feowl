@@ -120,6 +120,8 @@ class AreaResource(ModelResource):
 
 class PowerReportResource(ModelResource):
     area = fields.ForeignKey(AreaResource, 'area', null=False)
+    contributor = fields.ForeignKey(ContributorResource, 'contributor', null=True)
+    device = fields.ForeignKey(DeviceResource, 'device', null=True)
 
     class Meta:
         queryset = PowerReport.objects.all()
