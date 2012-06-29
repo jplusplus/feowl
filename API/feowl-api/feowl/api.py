@@ -78,7 +78,7 @@ class ContributorResource(ModelResource):
 
 
 class DeviceResource(ModelResource):
-    contributor = fields.ForeignKey(ContributorResource, 'contributor', null=False)
+    contributor = fields.ForeignKey(ContributorResource, 'contributor', null=True)
 
     class Meta:
         queryset = Device.objects.all()
