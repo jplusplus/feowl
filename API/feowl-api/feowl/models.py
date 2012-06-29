@@ -1,10 +1,17 @@
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.core.exceptions import ValidationError
+from django.db.models.signals import post_save, pre_save
 from django.contrib.auth.hashers import make_password
 
 from tastypie.models import create_api_key
 models.signals.post_save.connect(create_api_key, sender=User)
+
+def validate_model(sender, **kwargs):
+    if 'raw' in kwargs and not kwargs['raw']:
+        kwargs['instance'].full_clean()
+
+pre_save.connect(validate_model, dispatch_uid='validate_models')
 
 
 class Contributor(models.Model):
