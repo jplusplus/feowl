@@ -60,7 +60,9 @@ class PowerReportResourceTest(ResourceTestCase):
             'location': None,
             'duration': 240,
             'quality': u'1.00',
-            'resource_uri': u'/api/v1/reports/2/'
+            'resource_uri': u'/api/v1/reports/2/',
+            'contributor': None,
+            'device': None
         })
 
     def test_get_detail_unauthenticated(self):
@@ -73,7 +75,7 @@ class PowerReportResourceTest(ResourceTestCase):
         self.assertValidJSONResponse(resp)
 
         # We use ``assertKeys`` here to just verify the keys, not all the data.
-        self.assertKeys(self.deserialize(resp), ['area', 'happened_at', 'has_experienced_outage', 'location', 'duration', 'quality', 'resource_uri'])
+        self.assertKeys(self.deserialize(resp), ['area', 'happened_at', 'has_experienced_outage', 'contributor', 'device', 'location', 'duration', 'quality', 'resource_uri'])
         self.assertEqual(self.deserialize(resp)['duration'], 121)
 
     def test_post_list_unauthenticated(self):
