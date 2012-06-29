@@ -240,7 +240,7 @@ class GenericResponseObject(object):
 class PowerReportAggregatedResource(Resource):
     area = fields.ForeignKey(AreaResource, 'area', help_text="The area the data is about")
     avg_duration = fields.DecimalField('avg_duration', help_text="Average duration of a power cut over all power cuts")
-    affected_population = fields.DecimalField('affected_population', help_text="An approximate percentage of the people in the area that are affected by power cuts.")
+    pos_neg_ratio = fields.DecimalField('pos_neg_ratio', help_text="An approximate percentage of the people in the area that are affected by power cuts.")
 
     class Meta:
         resource_name = 'aggregation'
@@ -293,11 +293,11 @@ class PowerReportAggregatedResource(Resource):
                     avg_duration += r.duration
                 avg_duration = Decimal(avg_duration) / Decimal(len(actual_powercut_reports))
 
-            #affected population percentage
-            aff_population = 0
+            #ratio of power cut to non-power cut reports
+            pos_neg_ratio = 0
             if len(area_reports) and len(actual_powercut_reports):
-                aff_population = Decimal(len(actual_powercut_reports)) / Decimal(len(area_reports))
+                pos_neg_ratio = Decimal(len(actual_powercut_reports)) / Decimal(len(area_reports))
 
             #create aggregate object
-            result.append(GenericResponseObject({'area': area, 'avg_duration': avg_duration, 'affected_population': aff_population}))
+            result.append(GenericResponseObject({'area': area, 'avg_duration': avg_duration, 'pos_neg_ratio': pos_neg_ratio}))
         return result
