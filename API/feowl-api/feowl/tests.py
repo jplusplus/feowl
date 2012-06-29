@@ -24,7 +24,7 @@ class PowerReportResourceTest(ResourceTestCase):
         self.c = Client()
         self.post_data = {
            "area": "/api/v1/areas/1/",
-           "happened_at": "2012-06-14T12:37:50+00:00",
+           "happened_at": "2012-06-14 12:37:50",
            "has_experienced_outage": True,
            "duration": 60
         }
@@ -54,13 +54,13 @@ class PowerReportResourceTest(ResourceTestCase):
         self.assertEqual(len(self.deserialize(resp)['objects']), 5)
         # Here we're checking an entire structure for the expected data.
         self.assertEqual(self.deserialize(resp)['objects'][0], {
-            'area': u'/api/v1/areas/1/',
-            'happened_at': u'2012-06-13T12:37:50+00:00',
+            'area': '/api/v1/areas/1/',
+            'happened_at': '2012-06-13T12:37:50+00:00',
             'has_experienced_outage': True,
             'location': None,
             'duration': 240,
-            'quality': u'1.00',
-            'resource_uri': u'/api/v1/reports/2/',
+            'quality': '1.00',
+            'resource_uri': '/api/v1/reports/2/',
             'contributor': None,
             'device': None
         })
@@ -263,7 +263,7 @@ class ContributorResourceTest(ResourceTestCase):
             'email': 'tobias@test.de',
             'password': settings.DUMMY_PASSWORD,
             'resource_uri': self.detail_url,
-            'language': 'EN'    #EN is the default value
+            'language': 'EN'  # EN is the default value
         })
 
     def test_get_detail_unauthenticated(self):

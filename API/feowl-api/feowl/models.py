@@ -1,22 +1,21 @@
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models
-from django.core.exceptions import ValidationError
-from django.db.models.signals import post_save, pre_save
 from django.contrib.auth.hashers import make_password
 
 from tastypie.models import create_api_key
 models.signals.post_save.connect(create_api_key, sender=User)
+
 
 class Contributor(models.Model):
     """Model for a reporter"""
 
     name = models.CharField('name', max_length=30, unique=True,
         help_text='Required. 30 characters or fewer. Letters, numbers and '
-                    '@/./+/-/_ characters', blank=False)
-    password = models.CharField('password', max_length=128, blank=False)
+                    '@/./+/-/_ characters', blank=True)
+    password = models.CharField('password', max_length=128, blank=True)
     email = models.EmailField('e-mail address', blank=False, unique=True)
 
-    credibility = models.DecimalField(max_digits=3, decimal_places=2, default='1.00')
+    credibility = models.DecimalField(max_digits=3, decimal_places=2, default='1.00', blank=True)
     language = models.CharField(max_length=5, default="EN")
 
     def set_password(self, raw_password):
@@ -29,8 +28,8 @@ class Contributor(models.Model):
 class Device(models.Model):
     """Model for the Device"""
 
-    category = models.CharField(max_length=50)
-    phone_number = models.CharField(max_length=30)
+    category = models.CharField(max_length=50, blank=True)
+    phone_number = models.CharField(max_length=30, blank=True)
     contributor = models.ForeignKey(Contributor, blank=True, null=True)
 
 
@@ -64,7 +63,7 @@ class PowerReport(models.Model):
     #SRID 4326 is WGS84 is lon/lat
     #stay with geometries since they support more postgis functions
     #see: http://postgis.refractions.net/documentation/manual-1.5/ch04.html#PostGIS_GeographyVSGeometry
-    quality = models.DecimalField(max_digits=3, decimal_places=2, default='1.00')
+    quality = models.DecimalField(max_digits=3, decimal_places=2, default='1.00', blank=True)
     duration = models.PositiveIntegerField(null=False, blank=False, help_text="Duration in minutes")
     happened_at = models.DateTimeField(null=False, blank=False, help_text="Datetime preferrably with timezone")
     has_experienced_outage = models.BooleanField(null=False, blank=False, default=True, help_text="Boolean that indicates if user reported a power cut.")

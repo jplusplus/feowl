@@ -1,16 +1,16 @@
-
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.utils.translation import ugettext, ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 from models import PowerReport, Device, Contributor, Area
+
 
 class ContributorAdminForm(forms.ModelForm):
 
     name = forms.RegexField(
         label=_("Name"), max_length=30, regex=r"^[\w.@+-]+$",
-        help_text = _("Required. 30 characters or fewer. Letters, digits and "
+        help_text=_("Required. 30 characters or fewer. Letters, digits and "
                       "@/./+/-/_ only."),
-        error_messages = {
+        error_messages={
             'invalid': _("This value may contain only letters, numbers and "
                          "@/./+/-/_ characters.")})
     password = ReadOnlyPasswordHashField(label=_("Password"),
@@ -29,6 +29,7 @@ class ContributorForm(forms.ModelForm):
     class Meta:
         model = Contributor
 
+
 class PowerReportForm(forms.ModelForm):
     class Meta:
         model = PowerReport
@@ -40,11 +41,13 @@ class PowerReportForm(forms.ModelForm):
         if duration == 0:
             raise forms.ValidationError('Duration values must be larger than 0.')
 
-        return data
+        return duration
+
 
 class DeviceForm(forms.ModelForm):
     class Meta:
         model = Device
+
 
 class AreaForm(forms.ModelForm):
     class Meta:
