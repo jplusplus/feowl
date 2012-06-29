@@ -4,7 +4,7 @@ from tastypie import fields
 from tastypie.resources import Resource, ModelResource, ALL
 from tastypie.authorization import DjangoAuthorization
 from tastypie.authentication import ApiKeyAuthentication
-from models import PowerReport, Device, Contributor, Area
+from tastypie.validation import FormValidation
 
 from django.conf.urls.defaults import url
 
@@ -14,6 +14,8 @@ from django.conf import settings
 
 from decimal import *
 
+from models import PowerReport, Device, Contributor, Area
+from forms import PowerReportForm, DeviceForm, ContributorForm, AreaForm 
 
 class ContributorResource(ModelResource):
     class Meta:
@@ -22,6 +24,8 @@ class ContributorResource(ModelResource):
 
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
+
+        validation = FormValidation(form_class = ContributorForm)
 
         fields = ['id', 'email', 'password', 'name', 'language']
 
@@ -86,6 +90,8 @@ class DeviceResource(ModelResource):
 
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
+        
+        validation = FormValidation(form_class = DeviceForm)
 
         fields = ['category', 'phone_number', 'contributor']
 
@@ -105,6 +111,8 @@ class AreaResource(ModelResource):
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
 
+        validation = FormValidation(form_class = AreaForm)
+
         fields = ['name', 'city', 'country', 'pop_per_sq_km', 'overall_population']
 
         list_allowed_methods = ['get']
@@ -116,7 +124,6 @@ class AreaResource(ModelResource):
             'country': ALL,
             'overall_population': ALL
         }
-
 
 class PowerReportResource(ModelResource):
     area = fields.ForeignKey(AreaResource, 'area', null=False)
@@ -130,6 +137,8 @@ class PowerReportResource(ModelResource):
         #see: http://www.infoq.com/news/2010/01/rest-api-authentication-schemes
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
+        
+        validation = FormValidation(form_class = PowerReportForm)
 
         #whitelist of fields to be public
         fields = ['quality', 'duration', 'happened_at', 'has_experienced_outage', 'location', 'area', 'contributor', 'device']
@@ -179,6 +188,8 @@ class PowerReportAggregatedResource(Resource):
 
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
+
+        #TODO: we need a custom validation class for this as there is no model...
 
     def base_urls(self):
         return [

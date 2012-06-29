@@ -2,9 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import ugettext, ugettext_lazy as _
-
-from models import Contributor
-
+from models import PowerReport, Device, Contributor, Area
 
 class ContributorAdminForm(forms.ModelForm):
 
@@ -25,3 +23,29 @@ class ContributorAdminForm(forms.ModelForm):
 
     class Meta:
         model = Contributor
+
+
+class ContributorForm(forms.ModelForm):
+    class Meta:
+        model = Contributor
+
+class PowerReportForm(forms.ModelForm):
+    class Meta:
+        model = PowerReport
+
+    def clean_duration(self):
+        duration = self.cleaned_data['duration']
+
+        #ensure that duration is a positive number (PositiveInteger fields can be == 0)
+        if duration == 0:
+            raise forms.ValidationError('Duration values must be larger than 0.')
+
+        return data
+
+class DeviceForm(forms.ModelForm):
+    class Meta:
+        model = Device
+
+class AreaForm(forms.ModelForm):
+    class Meta:
+        model = Area

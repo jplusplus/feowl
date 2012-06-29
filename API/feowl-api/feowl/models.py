@@ -7,13 +7,6 @@ from django.contrib.auth.hashers import make_password
 from tastypie.models import create_api_key
 models.signals.post_save.connect(create_api_key, sender=User)
 
-def validate_model(sender, **kwargs):
-    if 'raw' in kwargs and not kwargs['raw']:
-        kwargs['instance'].full_clean()
-
-pre_save.connect(validate_model, dispatch_uid='validate_models')
-
-
 class Contributor(models.Model):
     """Model for a reporter"""
 
@@ -89,13 +82,3 @@ class PowerReport(models.Model):
             return "%s at %s" % (self.contributor, self.happened_at)
         else:
             return "%s" % self.happened_at
-
-    def clean_fields(self, exclude):
-        message_dict = {}
-
-        #ensure that duration is a positive number (PositiveInteger fields can be == 0)
-        if 'duration' not in exclude and self.duration == 0:
-            message_dict['duration'] = ('Duration values must be larger than 0.',)
-
-        if message_dict:
-            raise ValidationError(message_dict)
