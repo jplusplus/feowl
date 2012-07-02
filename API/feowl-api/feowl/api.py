@@ -214,7 +214,8 @@ class PowerReportResource(ModelResource):
             'quality': ALL,
             'duration': ALL,
             'happened_at': ALL,
-            'area': ALL
+            'area': ALL,
+            'contributor': ALL
         }
 
 
