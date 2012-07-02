@@ -167,7 +167,8 @@ class AreaResourceTest(ResourceTestCase):
             'name': 'Douala I',
             'pop_per_sq_km': '0.00',
             'overall_population': 223214,
-            'resource_uri': '/api/v1/areas/1/'
+            'resource_uri': '/api/v1/areas/1/',
+            'id': '1'
         })
 
     def test_get_detail_unauthenticated(self):
@@ -180,7 +181,7 @@ class AreaResourceTest(ResourceTestCase):
         self.assertValidJSONResponse(resp)
 
         # We use ``assertKeys`` here to just verify the keys, not all the data.
-        self.assertKeys(self.deserialize(resp), ['city', 'country', 'name', 'pop_per_sq_km', 'overall_population', 'resource_uri'])
+        self.assertKeys(self.deserialize(resp), ['id', 'city', 'country', 'name', 'pop_per_sq_km', 'overall_population', 'resource_uri'])
         self.assertEqual(self.deserialize(resp)['name'], "Douala I")
 
     def test_post_list_unauthenticated(self):

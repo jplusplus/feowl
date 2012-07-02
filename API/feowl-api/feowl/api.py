@@ -176,7 +176,7 @@ class AreaResource(ModelResource):
 
         validation = ModelFormValidation(form_class=AreaForm)
 
-        fields = ['name', 'city', 'country', 'pop_per_sq_km', 'overall_population']
+        fields = ['id', 'name', 'city', 'country', 'pop_per_sq_km', 'overall_population']
 
         list_allowed_methods = ['get']
         detail_allowed_methods = ['get']
@@ -214,6 +214,7 @@ class PowerReportResource(ModelResource):
             'quality': ALL,
             'duration': ALL,
             'happened_at': ALL,
+            'area': ALL
         }
 
 
