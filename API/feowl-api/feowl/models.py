@@ -6,8 +6,12 @@ from tastypie.models import create_api_key
 models.signals.post_save.connect(create_api_key, sender=User)
 
 
+def get_sentinel_user():
+    return Contributor.objects.get_or_create(name="Anonymous", email="anonymous@feowl.com")[0]
+
+
 class Contributor(models.Model):
-    """Model for a reporter"""
+    """Model for a contributor"""
 
     name = models.CharField('name', max_length=30, unique=True,
         help_text='Required. 30 characters or fewer. Letters, numbers and '
@@ -31,6 +35,11 @@ class Device(models.Model):
     category = models.CharField(max_length=50, blank=True)
     phone_number = models.CharField(max_length=30, blank=True)
     contributor = models.ForeignKey(Contributor, blank=True, null=True)
+
+    def __unicode__(self):
+        if self.contributor:
+            return "{0}'s {1}".format(self.contributor, self.category)
+        return self.category
 
 
 class Area(models.Model):
@@ -69,7 +78,7 @@ class PowerReport(models.Model):
     has_experienced_outage = models.BooleanField(null=False, blank=False, default=True, help_text="Boolean that indicates if user reported a power cut.")
 
     area = models.ForeignKey(Area, blank=False, null=False)
-    contributor = models.ForeignKey(Contributor, blank=True, null=True)
+    contributor = models.ForeignKey(Contributor, blank=True, null=True, on_delete=models.SET(get_sentinel_user))
     device = models.ForeignKey(Device, blank=True, null=True)
 
     deleted = models.BooleanField(default=False)
