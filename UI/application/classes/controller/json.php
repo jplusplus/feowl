@@ -42,16 +42,39 @@ class Controller_Json extends Controller {
 		$params  = Kohana::$config->load("apiauth")->get("default");
 		$params += array(
 			"happened_at__gte" => Arr::get($_GET, 'date_gte'),
-			"happened_at__lte" => Arr::get($_GET, 'date_lte'),
+			"happened_at__lte" => Arr::get($_GET, 'date_lte')
 		);
 
 		$restClient = REST_Client::instance();
 		$rep = $restClient->get("aggregation/reports/", $params);		
 
-		// Displays the items in json
-		echo $rep->body;
+		// Decode the json body and records the agregated objects
+		$res = array("agregation" => json_decode($rep->body)->objects );
 
-		return $rep;	
+		// Is the user asking for a list of every reports ?
+		if( Arr::get($_GET, 'list', false) ) {
+			// Specify the page size
+			$params["limit"] = 15;
+			// Find the current page (that begins to 0)
+			$currentPage = Arr::get($_GET, 'page', 0);
+			// Find the offset according the current page size
+			$params["offset"] = $currentPage * $params["limit"];
+			// Get the reports
+			$rep = $restClient->get("reports/", $params);			
+			// Parse the json object
+			$body = json_decode($rep->body);			
+			// Decode the json body and records the agregated objects
+			$res += array("list" => $body->objects );
+			// Add a current_page parameter
+			$res += array("current_page" => $currentPage);			
+			// Add a next_page parameter if there is a next page
+			if($body->meta->next) $res += array("next_page" => $currentPage+1);
+ 		}
+
+ 		// display the result
+		echo json_encode($res);
+
+		return $res;	
 	}
 	
 	
