@@ -1,22 +1,39 @@
-### Kohana PHP Framework, version 3.1 (release)
+# Feowl User Interface
+## Installation
+### Dependancies
+You must have a basic Apache and PHP environement:
 
-This is the current release version of [Kohana](http://kohanaframework.org/).
-Setup the framework your localhost.
+	sudo apt-get install apache2 php5 libapache2-mod-php5 php5-curlhave
 
-### Twitter Bootstrap v2.0.3
+### System configuration
+The Kohana installation <b>must be at the root of your virtual host or domain</b>.
 
-The file are placed in /assets/css and /assets/js
+Also, you have to allow writing on <em>UI/application/cache</em> and <em>UI/application/logs</em> directories (replace <path> by the path of the Feowl's directory):
 
-### Modules
+	cd <path>
+	chomd 777 -Rf UI/application/logs UI/application/cache
 
-To make it light we just load five(5) modules :  auth, cache, database, orm, userguide
+### API access
+Every Feowl installation must use a unique key for the API. [Do not hesitate to ask a key!](mailto:contact@feowl.com)
+To setup your key, from the Feowl direcotry type:
 
- Kohana::modules(array(\n
-	 'auth'       => MODPATH.'auth',\n       
-	// 'cache'      => MODPATH.'cache',\n      
-	 'database'   => MODPATH.'database',\n  
-	 'orm'        => MODPATH.'orm',\n        
-	 'userguide'  => MODPATH.'userguide',\n 
-	));\n
- 
-###
+	cp UI/application/config/apiauth.php.template UI/application/config/apiauth.php
+	nano UI/application/config/apiauth.php
+	
+And replace:
+
+	return array(
+		"default" => array(
+			"username" => "",
+			"api_key"  => ""
+		)
+	);
+	
+By your credidentials:
+
+	return array(
+		"default" => array(
+			"username" => "example-user",
+			"api_key"  => "example-key"
+		)
+	);
