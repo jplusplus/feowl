@@ -11,14 +11,29 @@
 
 		var $map  = $("#explore-map"),
 		mapWidth  = $map.innerWidth(),
-		mapHeight = $map.innerHeight();
+		mapHeight = $map.innerHeight(),
+		areas	  = {
+			"/api/v1/areas/1/" : "Douala-I",
+			"/api/v1/areas/2/" : "Douala-II",
+			"/api/v1/areas/3/" : "Douala-III",
+			"/api/v1/areas/4/" : "Douala-IV",
+			"/api/v1/areas/5/" : "Douala-V"
+		};
 
-		explore.dep_data = data;
+		// Updates the key for each area
+		for(var index in data.objects) {
+			data.objects[index].id = areas[data.objects[index].area];
+		}
 
-		explore.map = $K.map('#explore-map', mapWidth, mapHeight);
+		// Gives the data objects to the layer
+		explore.dep_data = data.objects;
 
-		explore.map.loadMap('/assets/data/douala-districts.svg', function() {
-			
+		// No layer defined, loads the svg file
+		if(explore.map === null) {
+
+			explore.map = $K.map('#explore-map', mapWidth, mapHeight);
+			explore.map.loadMap('/assets/data/douala-districts.svg', function() {
+				
 				explore.map.addLayer({
 					id: 'douala-arrts',
 					key: 'id'
@@ -26,8 +41,15 @@
 
 				explore.updateMap(explore.map);
 
+			});
 
-		});
+		// Layer exists, update the data
+		} else {
+
+			explore.updateMap(explore.map);			
+		}
+
+		console.log(explore.dep_data);
 	};
 
 
@@ -37,7 +59,7 @@
 	 */
 	explore.updateMap = function() {
 
-		var prop = "uptime"
+		var prop = "avg_duration"
 		,  scale = "q";
 
 		try {
@@ -48,11 +70,11 @@
 			});
 
 			explore.map.choropleth({
-   			layer: 'douala-arrts',
+   				layer: 'douala-arrts',
 				data: explore.dep_data,
 				key: 'id',
 				colors: function(d) {
-					if (d == null) return '#fff';
+					if (d == null) return 'url("/assets/img/stripe.png")';
 					return explore.colorscale.getColor(d[prop]);
 				},
 				duration: 0
@@ -62,15 +84,15 @@
 			  layer: 'douala-arrts',
 			  content: function(id) {
 
-			  	var uptime = null;
+			  	var avg_duration = null;
 			  	// Look for the updatime
 			  	for(var index in explore.dep_data) {
 			  		if(explore.dep_data[index].id == id) {
-			  			uptime = explore.dep_data[index].uptime;
+			  			avg_duration = explore.dep_data[index].avg_duration;
 			  		}
 			  	}
 
-			    return [id, uptime];
+			    return [id, avg_duration];
 			  },
 				style: {
 					classes: 'ui-tooltip-shadow'
@@ -84,17 +106,47 @@
 
 	};
 
+	explore.updateData = function(e, data) {
 
-	(explore.init = function() {
-		"use strict";
+
+		// Extracts the parameters to use
+		var params = {
+			"date_gte": data.values.min.getFullYear() + "-" + (data.values.min.getMonth()+1) + "-" + data.values.min.getDate(),
+			"date_lte": data.values.max.getFullYear() + "-" + (data.values.max.getMonth()+1) + "-" + data.values.max.getDate()
+		};
 
 		$.ajax({
-			url: '/assets/data/districts.json',
+			url: '/json/interval_reports/',
+			data: params,
+			type: "GET",
 			dataType: 'json',
 			success: explore.drawMap
 		});
 
-		$("#explore-range-slider").dateRangeSlider({});			
+	};
+
+
+	(explore.init = function() {
+		"use strict";
+
+		// Which element will be use to create the date slider ?
+		explore.$dateRange = $("#explore-range-slider");
+
+		// Creates the date slider
+		explore.$dateRange.dateRangeSlider({
+			bounds: {
+				max: new Date(),
+				min: new Date("2012-03-01")
+			},
+			defaultValues: {
+				max: new Date(),
+				// Since one month
+				min: new Date( new Date().getTime() - 24 * 60 * 60 * 1000 * 30) 
+			}
+		});	
+
+		// When we create the date slider, a "value changed" event is triggered
+		explore.$dateRange.on("userValuesChanged", explore.updateData)		 		
 
 	})();
 

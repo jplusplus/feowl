@@ -33,5 +33,5 @@ class Controller_Explore extends Controller_Template {
 			url::base()."assets/js/explore.js"
 		);	
 	}
-
+	
 } // End Welcome
