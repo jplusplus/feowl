@@ -3,7 +3,7 @@
 ### Dependancies
 You must have a basic Apache and PHP environement:
 
-	sudo apt-get install apache2 php5 libapache2-mod-php5 php5-curlhave
+	sudo apt-get install apache2 php5 libapache2-mod-php5 php5-curl
 
 ### System configuration
 The Kohana installation <b>must be at the root of your virtual host or domain</b>.
