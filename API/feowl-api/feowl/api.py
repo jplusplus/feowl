@@ -93,7 +93,7 @@ class ContributorResource(ModelResource):
         fields = ['id', 'email', 'password', 'name', 'language']
 
         list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get', 'put']
+        detail_allowed_methods = ['get', 'put', 'delete']
 
         filtering = {
             "credibility": ALL,
