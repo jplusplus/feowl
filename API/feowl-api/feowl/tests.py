@@ -315,11 +315,21 @@ class ContributorResourceTest(ResourceTestCase):
 
     def test_delete_detail_unauthenticated(self):
         """Delete a single user is not allowed from the API without authenticated"""
-        self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url))
+        self.assertHttpUnauthorized(self.c.delete(self.detail_url))
 
-    def test_delete_detail(self):
-        """Delete a single user is not allowed from the API with authenticated"""
-        self.assertHttpMethodNotAllowed(self.c.delete(self.detail_url, self.get_credentials()))
+    def test_delete_detail_without_permission(self):
+        """Delete a single user is allowed from the API with authenticated"""
+        self.assertEqual(Contributor.objects.count(), 1)
+        self.assertHttpUnauthorized(self.c.delete(self.detail_url, self.get_credentials()))
+        self.assertEqual(Contributor.objects.count(), 1)
+
+    def test_delete_detail_with_permision(self):
+        """Delete a single user is allowed from the API with authenticated"""
+        delete_contributor = Permission.objects.get(codename="delete_contributor")
+        self.user.user_permissions.add(delete_contributor)
+        self.assertEqual(Contributor.objects.count(), 1)
+        self.assertHttpAccepted(self.c.delete(self.detail_url, self.get_credentials()))
+        self.assertEqual(Contributor.objects.count(), 0)
 
 
 class DeviceResourceTest(ResourceTestCase):
@@ -437,4 +447,6 @@ class DeviceResourceTest(ResourceTestCase):
         """Delete a single device is not allowed from the API with authenticated and permission"""
         delete_device = Permission.objects.get(codename="delete_device")
         self.user.user_permissions.add(delete_device)
+        self.assertEqual(Device.objects.count(), 1)
         self.assertHttpAccepted(self.c.delete(self.detail_url, self.get_credentials()))
+        self.assertEqual(Device.objects.count(), 0)
