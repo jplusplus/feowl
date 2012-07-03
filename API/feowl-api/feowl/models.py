@@ -72,7 +72,7 @@ class PowerReport(models.Model):
     #SRID 4326 is WGS84 is lon/lat
     #stay with geometries since they support more postgis functions
     #see: http://postgis.refractions.net/documentation/manual-1.5/ch04.html#PostGIS_GeographyVSGeometry
-    quality = models.DecimalField(max_digits=3, decimal_places=2, default='1.00', blank=True)
+    quality = models.DecimalField(max_digits=4, decimal_places=2, default='-1.00', blank=True)
     duration = models.PositiveIntegerField(null=False, blank=False, help_text="Duration in minutes")
     happened_at = models.DateTimeField(null=False, blank=False, help_text="Datetime preferrably with timezone")
     has_experienced_outage = models.BooleanField(null=False, blank=False, default=True, help_text="Boolean that indicates if user reported a power cut.")
