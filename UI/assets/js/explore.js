@@ -48,8 +48,6 @@
 
 			explore.updateMap(explore.map);			
 		}
-
-		console.log(explore.dep_data);
 	};
 
 
