@@ -8,7 +8,7 @@ You must have a basic Apache and PHP environement:
 ### System configuration
 The Kohana installation <b>must be at the root of your virtual host or domain</b>.
 
-Also, you have to allow writing on <em>UI/application/cache</em> and <em>UI/application/logs</em> directories (replace <path> by the path of the Feowl directory):
+Also, you have to allow writing on <em>UI/application/cache</em> and <em>UI/application/logs</em> directories (replace 	&lt;path> by the path of the Feowl directory):
 
 	cd <path>
 	chomd 777 -Rf UI/application/logs UI/application/cache
