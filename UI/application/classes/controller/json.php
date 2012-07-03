@@ -49,7 +49,7 @@ class Controller_Json extends Controller {
 		$rep = $restClient->get("aggregation/reports/", $params);		
 
 		// Displays the items in json
-		echo json_encode($rep);
+		echo $rep->body;
 
 		return $rep;	
 	}
