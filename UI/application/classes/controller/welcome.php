@@ -17,7 +17,7 @@ class Controller_Welcome extends Controller_Template {
 		);
 
 		// Adds all javascript files in an array
-		$this->template->files_javascript = array(		
+		$this->template->files_javascript = array(	
 			url::base()."assets/js/jquery.js",
 			url::base()."assets/js/less.min.js",
 			url::base()."assets/js/bootstrap/bootstrap.min.js",
@@ -32,7 +32,7 @@ class Controller_Welcome extends Controller_Template {
 			url::base()."assets/js/explore.js",
 			url::base()."assets/js/global.js"
 		);	
-
+		
 	}
 
 } // End Welcome
