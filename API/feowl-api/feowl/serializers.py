@@ -23,10 +23,15 @@ class CSVSerializer(Serializer):
 
         writer = csv.writer(response)
         if 'objects' in data:
-            for item in data['objects']:
+            for idx, item in enumerate(data['objects']):
+                if idx == 0:
+                    writer.writerow([unicode(key).encode(
+                                "utf-8", "replace") for key in item.keys()])
                 writer.writerow([unicode(item[key]).encode(
-                            "utf-8", "replace") for key in item.keys()])
+                                "utf-8", "replace") for key in item.keys()])
         else:
+            writer.writerow([unicode(key).encode(
+                            "utf-8", "replace") for key in data.keys()])
             writer.writerow([unicode(data[key]).encode(
                             "utf-8", "replace") for key in data.keys()])
 
