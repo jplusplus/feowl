@@ -71,8 +71,12 @@ class Controller_Json extends Controller {
 			if($body->meta->next) $res += array("next_page" => $currentPage+1);
  		}
 
- 		// display the result
-		echo json_encode($res);
+ 		// Change the content type for JSON
+ 		$this->response->headers('Content-Type','application/json');
+		// Display the content
+		$this->response->body(json_encode($res));
+
+
 
 		return $res;	
 	}
