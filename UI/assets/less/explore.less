@@ -1,3 +1,7 @@
+@import "bootstrap/mixins.less";
+@import "bootstrap/variables.less";
+
+
 #explore-map {
 	height:400px;
 }
@@ -18,4 +22,44 @@
 		text-transform: uppercase;
 	}
 
+}
+
+#explore-legend {
+	
+	margin-bottom:10px;
+
+	.well {
+		padding:8px;
+
+		li {
+			padding-top:4px;
+			padding-bottom:4px;
+			line-height:16px;
+			white-space:nowrap;
+
+			.legend {
+				display:block;
+				float:left;
+				width:15px;
+				height:15px;
+				border:1px solid #A6A6A6;
+				margin-right:5px;
+
+				.box-shadow(0 0 3px rgba(0, 0, 0, 0.15));
+				.border-radius(@inputBorderRadius);
+
+				&.no-relevant {
+					background: url("/assets/img/stripe.png") repeat;
+				}
+
+				&.low {
+					background:#CEE9EA;
+				}
+
+				&.high {
+					background:#309AA3;
+				}
+			}
+		}
+	}
 }

@@ -7,8 +7,19 @@
 		<div class="row">
 			
 			<div class="span7">
-				<div id="explore-map" class="span7"></div>
-				
+				<div class="row">
+					<div id="explore-legend" class="span2">
+						<ul class="nav nav-list well">
+							<li class="nav-header">
+								{__ t='Legend'}
+							</li>
+							<li><span class="legend no-relevant"></span>{__ t='No relevant data'}</li>
+							<li><span class="legend low"></span>{__ t='Low power cuts'}</li>
+							<li><span class="legend high"></span>{__ t='High power cuts'}</li>
+						</ul>
+					</div>	
+					<div id="explore-map" class="span5"></div>		
+				</div>	
 				<div id="explore-range-slider" class="span7"></div>
 			</div>
 
