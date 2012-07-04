@@ -173,7 +173,7 @@
 		var params = {
 			"date_gte"	: values.min.getFullYear() + "-" + (values.min.getMonth()+1) + "-" + values.min.getDate(),
 			"date_lte"	: values.max.getFullYear() + "-" + (values.max.getMonth()+1) + "-" + values.max.getDate(),
-			"list"		: !!explore.$exploreList.length,
+			"list"		: !!explore.$exploreList.length*1,
 			"page"		: explore.currentPage
 		};
 
