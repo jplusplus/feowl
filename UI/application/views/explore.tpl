@@ -47,7 +47,7 @@
 				</tfoot>
 				<tbody>
 					<tr>
-						<td colspan="4">{__ t='Loading'}</td>
+						<td colspan="4" class="tc">{__ t='Loading'}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -55,22 +55,36 @@
 		
 		{literal}
 			<script id="tpl-reports-list" type="text/x-handlebars-template">
-	  			{{#list}}
-					<tr>
-						<td>{{district_name area}}</td>
-						<td>{{duration}}</td>
-						<td>{{short_date_string happened_at}}</td>
-						<td>{{quality}}</td>
-					</tr>
-		  		{{/list}}
 
-		  		{{#if next_page}}
-					<tr class="load-more">
-						<td colspan="4">
-							{/literal}{__ t='Load more'}{literal}
+				{{#if list}}
+
+		  			{{#list}}
+						<tr>
+							<td>{{district_name area}}</td>
+							<td>{{duration}}</td>
+							<td>{{short_date_string happened_at}}</td>
+							<td>{{quality}}</td>
+						</tr>
+			  		{{/list}}
+
+			  		{{#if next_page}}
+						<tr class="load-more">
+							<td colspan="4">
+								{/literal}{__ t='Load more'}{literal}
+							</td>
+						</tr>
+			  		{{/if}}
+
+		  		{{else}}	
+
+					<tr>
+						<td colspan="4" class="tc">
+							{/literal}{__ t='No reports submited for that period'}{literal}
 						</td>
 					</tr>
+
 		  		{{/if}}
+
 			</script>
 		{/literal}
 		
