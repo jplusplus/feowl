@@ -106,7 +106,8 @@ Kohana::modules(array(
 	'database'   	=> MODPATH.'database',	   // Database access
 	'orm'        	=> MODPATH.'orm',          // Object Relationship Mapping
 	'userguide'  	=> MODPATH.'userguide',    // User guide and API documentation
-  	'smarty'  	 	=> MODPATH.'smarty'	  	   // Smarty Template Engine
+  	'smarty'  	 	=> MODPATH.'smarty',	   // Smarty Template Engine
+  	'i18nget'  	 	=> MODPATH.'i18nget'	   // Retrieve all string to translate
 ));
 
 
