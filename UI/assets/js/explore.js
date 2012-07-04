@@ -101,6 +101,11 @@
 
 		// Layer exists, update the data
 		} else {
+			// Add layer twice to prevent a fill bug with Kartograph
+			explore.map.addLayer({
+				id: 'douala-arrts',
+				key: 'id'
+			});
 
 			explore.updateMap(explore.map);			
 		}
