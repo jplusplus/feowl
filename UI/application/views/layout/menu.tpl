@@ -13,14 +13,14 @@
         <ul class="nav pull-right">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="icon-user"></i> Account
+                    <i class="icon-user"></i> {__ t='Account'}
                     <b class="caret"></b>
                 </a>
 
                 <ul class="dropdown-menu">                    
-                    <li><a href="{url::site('user/index')}">Profile</a></li>
+                    <li><a href="{url::site('user/index')}">{__ t='Profile'}</a></li>
                     <li class="divider"></li>
-                    <li><a href="{url::site('user/logout')}">Sign Out</a></li>
+                    <li><a href="{url::site('user/logout')}">{__ t='Sign Out'}</a></li>
                 </ul>
             </li>
 
@@ -55,9 +55,9 @@
 
 
         <ul class="nav">
-            <li class="active"><a href="{url::site('')}">Home</a></li>
-            <li class="active"><a href="{url::site('/explore')}">Explore</a></li>
-            <li class="active"><a href="{url::site('/contribute')}">Contribute</a></li>
+            <li class="active"><a href="{url::site('')}">{__ t='Home'}</a></li>
+            <li class="active"><a href="{url::site('/explore')}">{__ t='Explore'}</a></li>
+            <li class="active"><a href="{url::site('/contribute')}">{__ t='Contribute'}</a></li>
         </ul>
 
     </div>
