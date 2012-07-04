@@ -4,10 +4,14 @@ from tastypie.serializers import Serializer
 
 
 class CSVSerializer(Serializer):
-    formats = ['json', 'jsonp', 'csv']
+    formats = ['json', 'jsonp', 'xml', 'yaml', 'html', 'plist', 'csv']
     content_types = {
         'json': 'application/json',
         'jsonp': 'text/javascript',
+        'xml': 'application/xml',
+        'yaml': 'text/yaml',
+        'html': 'text/html',
+        'plist': 'application/x-plist',
         'csv': 'text/csv',
     }
 
