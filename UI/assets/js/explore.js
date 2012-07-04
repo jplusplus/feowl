@@ -127,8 +127,9 @@
    				layer: 'douala-arrts',
 				data: explore.reportsAgregation,
 				key: 'id',
-				colors: function(d) {
-					if (d == null) return 'url("/assets/img/stripe.png")';
+				colors: function(d) {		
+					// For now, no power cut means no relevant data 			
+					if (d == null || d[prop] == 0) return 'url("/assets/img/stripe.png")';
 					return explore.colorscale.getColor(d[prop]);
 				},
 				duration: 0
