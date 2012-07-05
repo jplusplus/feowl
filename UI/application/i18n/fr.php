@@ -28,7 +28,8 @@ return array(
 	// views/layout/footer.tpl
 /// TODO	'Fork us on GitHub!' => '', // 9
 /// TODO	'Feowl files under an Apache licence' => '', // 10
-/// TODO	'contact'}</a> | <a href="http://feowl.tumblr.com/">{__ t='blog' => '', // 14
+/// TODO	'contact' => '', // 14
+/// TODO	'blog' => '', // 14
 /// TODO	'Feowl is financed by the <a href="http://www.freemedia.at/">International Press Institute</a>.' => '', // 18
 /// TODO	'It\'s a project by <a href="http://www.internetsansfrontieres.com/">Internet Sans Frontières</a>, <a href="http://jplusplus.org/">Journalism++</a>, <a href="http://www.tesobe.com/">Tesobe</a> and <a href="http://www.wasamundi.com/">Wasamundi</a>.' => '', // 21
 

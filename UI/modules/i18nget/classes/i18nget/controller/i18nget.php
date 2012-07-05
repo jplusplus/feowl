@@ -128,7 +128,7 @@ class I18nget_Controller_I18nget extends Controller {
 				}
 
 				// Additional matching for {__ t=''} function (smarty)
-				if( preg_match_all("/{__\s+t\=(('|\")(?P<phrase>(.+))('|\"))\s?}/u", $file_line, $matches) ) {
+				if( preg_match_all("/{__\s+t\=(('|\")(?P<phrase>((?!__)|(?! ?array ?\().)+)('|\"))\s?}/u", $file_line, $matches) ) {
 	
 					$new_phrases = array_diff(array_unique($matches['phrase']), $unique_phrases_helper);
 
