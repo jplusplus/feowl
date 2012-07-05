@@ -13,6 +13,7 @@ from decimal import *
 from forms import PowerReportForm, DeviceForm, ContributorForm, AreaForm
 from models import PowerReport, Device, Contributor, Area
 from validation import ModelFormValidation
+from serializers import CSVSerializer
 
 
 class ContributorResource(ModelResource):
@@ -22,7 +23,6 @@ class ContributorResource(ModelResource):
 
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
-
         validation = ModelFormValidation(form_class=ContributorForm)
 
         fields = ['id', 'email', 'password', 'name', 'language']
@@ -138,6 +138,8 @@ class PowerReportResource(ModelResource):
         authorization = DjangoAuthorization()
 
         validation = ModelFormValidation(form_class=PowerReportForm)
+
+        serializer = CSVSerializer()
 
         #whitelist of fields to be public
         fields = ['quality', 'duration', 'happened_at', 'has_experienced_outage', 'location', 'area', 'contributor', 'device']
