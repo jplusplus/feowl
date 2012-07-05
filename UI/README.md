@@ -15,7 +15,7 @@ Also, you have to allow writing on <em>UI/application/cache</em> and <em>UI/appl
 
 ### API access
 Every Feowl installation must use a unique key for the API. [Do not hesitate to ask for a key!](mailto:contact@feowl.com)
-To setup your key, from the Feowl direcotry type:
+To setup your key, from the Feowl directory type:
 
 	cp UI/application/config/apiauth.php.template UI/application/config/apiauth.php
 	nano UI/application/config/apiauth.php
