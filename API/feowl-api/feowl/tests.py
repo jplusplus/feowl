@@ -78,6 +78,18 @@ class PowerReportResourceTest(ResourceTestCase):
         self.assertKeys(self.deserialize(resp), ['area', 'happened_at', 'has_experienced_outage', 'contributor', 'device', 'location', 'duration', 'quality', 'resource_uri'])
         self.assertEqual(self.deserialize(resp)['duration'], 121)
 
+    def test_get_detail_csv(self):
+        """Get a single report from the API with authenticated. With checks if all keys are available"""
+        content = 'area,contributor,device,happened_at,has_experienced_outage,location,duration,quality,resource_uri\r\n/api/v1/areas/1/,None,None,2012-06-13T09:56:25+00:00,True,POINT (10.0195312486050003 3.6011423196581309),121,1.00,/api/v1/reports/1/\r\n'
+        resp = self.c.get('/api/v1/reports/1/?username=' + self.username + '&api_key=' + self.api_key + '&format=csv')
+        self.assertEquals(resp.content, content)
+
+    def test_get_list_csv(self):
+        """Get a single report from the API with authenticated. With checks if all keys are available"""
+        content = 'area,contributor,device,happened_at,has_experienced_outage,location,duration,quality,resource_uri\r\n/api/v1/areas/1/,None,None,2012-06-13T12:37:50+00:00,True,None,240,1.00,/api/v1/reports/2/\r\n/api/v1/areas/5/,None,None,2012-06-13T12:38:06+00:00,True,None,32,1.00,/api/v1/reports/3/\r\n/api/v1/areas/2/,None,None,2012-06-13T12:38:18+00:00,True,None,1231,1.00,/api/v1/reports/4/\r\n/api/v1/areas/2/,None,None,2012-06-13T12:38:27+00:00,True,None,564,1.00,/api/v1/reports/5/\r\n/api/v1/areas/1/,None,None,2012-06-13T09:56:25+00:00,True,POINT (10.0195312486050003 3.6011423196581309),121,1.00,/api/v1/reports/1/\r\n'
+        resp = self.c.get('/api/v1/reports/?username=' + self.username + '&api_key=' + self.api_key + '&format=csv')
+        self.assertEquals(resp.content, content)
+
     def test_post_list_unauthenticated(self):
         """Try to Post a single report to the API without authenticated"""
         self.assertHttpUnauthorized(self.c.post('/api/v1/reports/', data=self.post_data))
