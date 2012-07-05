@@ -71,7 +71,7 @@ class I18nget_Controller_I18nget extends Controller {
 
 		$data = array();
 		$unique_phrases_helper = array();
-		$scan_files = $this->get_dir_files($path, array('php'));
+		$scan_files = $this->get_dir_files($path, array('php', 'tpl'));
 
         //echo Debug::dump($this->request, 9999);
         //print_r(Request::$current->uri());
@@ -91,6 +91,7 @@ class I18nget_Controller_I18nget extends Controller {
 			foreach ($file_lines as $num_line => $file_line)
 			{
 				$num_line++;
+
 // 				echo Kohana::debug($num_line, $file_line, $file_path_human);
 
 // 				if (preg_match_all('/(?P<key>\w+):(?P<name>[\p{L}+|\D+])/u', $file_line, $matches))
@@ -104,12 +105,13 @@ class I18nget_Controller_I18nget extends Controller {
 // 				if (preg_match_all("/__\((?P<phrase>((?!__).)+)\)/u", $file_line, $matches)) /// NOTE IT WORKS!!!
 // 				if (preg_match_all("/__\((?P<phrase>((?!__)|(?!array).)+)\)/u", $file_line, $matches))
 // 				if (preg_match_all("/__\(('|\")(?P<phrase>((?!__)|(?! ?array ?\().)+)('|\")/u", $file_line, $matches)) /// NOTE IT WORKS!!!
+				
+				// Classic matching for __ function
 				if (preg_match_all("/__\(('|\")(?P<phrase>((?!__)|(?! ?array ?\().)+)('\)|',|\"\)|\",)/u", $file_line, $matches)) /// NOTE IT WORKS!!!
 				{
 // 					echo Kohana::debug($file_path_human, $num_line, $file_line, $matches);
 // 					echo Kohana::debug($file_path_human, $num_line, $file_line, $matches['phrase']);
 // 					echo Kohana::debug($matches['phrase']);
-
 
 					$new_phrases = array_diff(array_unique($matches['phrase']), $unique_phrases_helper);
 
@@ -123,6 +125,24 @@ class I18nget_Controller_I18nget extends Controller {
 
 						$unique_phrases_helper = array_merge($new_phrases, $unique_phrases_helper);
 					}
+				}
+
+				// Additional matching for {__ t=''} function (smarty)
+				if( preg_match_all("/{__\s+t\=(('|\")(?P<phrase>(.+))('|\"))\s?}/u", $file_line, $matches) ) {
+	
+					$new_phrases = array_diff(array_unique($matches['phrase']), $unique_phrases_helper);
+
+					if ($new_phrases) {
+
+						$data_file[] = array(
+							'line_number' => $num_line,
+							'line_string' => $file_line,
+							'phrases' => $new_phrases,
+						);
+
+						$unique_phrases_helper = array_merge($new_phrases, $unique_phrases_helper);
+					}
+
 				}
 			}
 
