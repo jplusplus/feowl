@@ -1,11 +1,11 @@
 # Use PHP5 Single php.ini as default
-AddHandler application/x-httpd-php5s .php
+#AddHandler application/x-httpd-php5s .php
 
 # Turn on URL rewriting
 RewriteEngine On
 
 # Installation directory
-RewriteBase /
+RewriteBase /feowl/UI
 
 # Protect hidden files from being viewed
 <Files .*>

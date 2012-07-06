@@ -79,7 +79,7 @@ if (isset($_SERVER['KOHANA_ENV']))
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 Kohana::init(array(
-	'base_url'   => '/',
+	'base_url'   => '/feowl/UI',
 	'index_file' =>'',
 ));
 
@@ -141,6 +141,6 @@ define("SITE_FB_ADMIN", 	'686299757');
 // Route to the index
 Route::set('default', '(<controller>(/<action>(/<id>)))')
 	->defaults(array(
-		'controller' => 'welcome',
+		'controller' => 'home',
 		'action'     => 'index',
 	));

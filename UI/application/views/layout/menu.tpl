@@ -5,8 +5,8 @@
 
     <div class="container">
 
-        <a href="{url::site('')}" class="brand">
-            <img src="{url::site('assets/img/logo_small.png')}" class="pull-left logo"/>
+        <a href="{url::site()}" class="brand">
+            <img src="{url::base()}assets/img/logo_small.png" class="pull-left logo"/>
             <span>Feowl</span>
         </a>    
 
@@ -18,9 +18,9 @@
                 </a>
 
                 <ul class="dropdown-menu">                    
-                    <li><a href="{url::site('user/index')}">{__ t='Profile'}</a></li>
+                    <li><a href="#">{__ t='Login'}</a></li>
                     <li class="divider"></li>
-                    <li><a href="{url::site('user/logout')}">{__ t='Sign Out'}</a></li>
+                    <li><a href="{url::site('user/signup')}">{__ t='Signup'}</a></li>
                 </ul>
             </li>
 
@@ -51,13 +51,12 @@
                 </ul>
             </li>
 
-        </ul>      
-
-
+        </ul> 
+		
         <ul class="nav">
-            <li class="active"><a href="{url::site('')}">{__ t='Home'}</a></li>
-            <li class="active"><a href="{url::site('/explore')}">{__ t='Explore'}</a></li>
-            <li class="active"><a href="{url::site('/contribute')}">{__ t='Contribute'}</a></li>
+            <li class="{$active_home|default:''}"><a href="{url::site()}">{__ t='Home'}</a></li>
+            <li class="{$active_explore|default:''}"><a href="{url::site('explore')}">{__ t='Explore'}</a></li>
+            <li class="{$active_contribute|default:''}"><a href="{url::site('contribute')}">{__ t='Contribute'}</a></li>
         </ul>
 
     </div>

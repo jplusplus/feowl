@@ -10,53 +10,74 @@
  */
 class Controller_Contribute extends Controller_Template {
  
-    public $template = "template/contribute.tpl";
+    public $template = "template/sub_template.tpl";
+	public $area;
+	public $duration;
+	public $happened_at;
+	public $has_experienced_outage;
 	
     public function action_index()
     {
-        $this->template->content = View::factory('contribute/contribute.tpl');
-         
+        $this->template->left_content = View::factory('contribute/how_to.tpl');
+		$this->template->right_content = View::factory('contribute/contribute.tpl');
     }
 	public function action_switch()
 	{
-	//check for ajax request
-	if( HTTP_Request::GET == $this->request->method() AND $this->request->is_ajax() )
-	 {
-	 $this->auto_render = False;
-	 $attrib = Arr::get($_GET,'type');
-	 //@todo do all validation and cleaning of data
-	 $json_items['is_powercut']=$attrib;
-	 $json_items['duration']=Arr::get($_GET,'c2');
-	 $json_items['happend_at']=Arr::get($_GET,'c3');
-	 $json_items['when']=Arr::get($_GET,'c1').":".Arr::get($_GET,'c1_1');
-	 //@todo, do a json controller
-	 echo json_encode($json_items);
-	//@todo, do an api controller to post to api
-	 
-	 }
+			//check for ajax request
+		if( HTTP_Request::GET == $this->request->method() AND $this->request->is_ajax() )
+		{
+			//format happened at
+			$hour = Arr::get($_GET,'c1');
+			$min  = Arr::get($_GET,'c1_1');
+			$date = explode("/", Arr::get($_GET,'c1_0'));
+			 
+			$this->happened_at = date('c', mktime($hour, $min, 0, $date[0], $date[1], $date[2]));
+			$this->has_experienced_outage = (bool)Arr::get($_GET,'type');
+			//@todo, this input should be int from the input, not forced
+			$this->duration = 60;//Arr::get($_GET,'c2');
+
+			//format area
+			$area = Arr::get($_GET,'c3');
+			if($area=="Douala I") $area =1;
+			elseif($area=="Douala II") $area =2;
+			elseif($area=="Douala III") $area =3;
+			elseif($area=="Douala IV") $area =4;
+			elseif($area=="Douala IV") $area =5;
+			$this->area = array('pk'=>$area);	
+			 
+			//@todo do all validation and cleaning of data
+			$json_items['area']= $this->area;  
+			$json_items['happened_at']= $this->happened_at;
+			$json_items['has_experienced_outage']= $this->has_experienced_outage;    
+			$json_items['duration']= $this->duration;
+			 
+			//send to api
+			$data_string = json_encode($json_items);   
+			$results = Model_Reports::create_report($data_string);
+
+			
+			//print_r($results); exit;
+			//treat the return value as array
+			$data = json_decode($results,true);
+			print_r($data);
+			//foreach($data['objects'] as $object):
+			//echo $object['area'];
+			//endforeach;
+			//exit;
+			//@todo, return the right notice and display with twitter boostrap + backbone.js
+		}
 	}
 	
 	public function after()
 	{
-	    // Adds all stylesheet files
-		$this->template->files_stylesheet = array(
-			url::base()."assets/css/bootstrap.min.css",
-			url::base()."assets/css/bootstrap-responsive.min.css",
-			url::base()."assets/less/style.less",
-			"http://fonts.googleapis.com/css?family=Pacifico"
-		);
-
-		// Adds all javascript files
+		// Adds all optional javascript files
 		$this->template->files_javascript = array(		
-			url::base()."assets/js/jquery.js",
-			url::base()."assets/js/less.min.js",
-			url::base()."assets/js/bootstrap/bootstrap.min.js",
-			url::base()."assets/js/bootstrap/bs-dropdown.min.js",
+			url::base()."assets/js/glDatePicker.js",
 			url::base()."assets/js/formToWizard.js",
-			url::base()."assets/js/script.js",
-			url::base()."assets/js/global.js"	
+			url::base()."assets/js/script-contribute.js"
 		);	
-	parent::after();
+		$this->template->active_contribute = "active";
+		parent::after();
 	}
      
    

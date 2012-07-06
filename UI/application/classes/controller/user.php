@@ -10,9 +10,11 @@
  */
 class Controller_User extends Controller_Template {
  
+    public $template = "template/sub_template.tpl";
+	
     public function action_index()
     {
-        $this->template->content = View::factory('user/info')
+        $this->template->content = View::factory('user/info.tpl')
             ->bind('user', $user);
          
         // Load the user information
@@ -25,50 +27,49 @@ class Controller_User extends Controller_Template {
         }
     }
      
+	 //post to the api to creat an account for a contributor
     public function action_signup()
     {
-        $this->template->content = View::factory('user/signup')
+        $this->template->right_content = View::factory('user/signup.tpl')
             ->bind('errors', $errors)
             ->bind('message', $message);
+		$this->template->left_content = View::factory('user/info.tpl');
              
         if (HTTP_Request::POST == $this->request->method())
-        {    
-	
-            try {
-				//print_r($_POST);exit;	
-                // Create the user using form values
-                $user = ORM::factory('user')->create_user($this->request->post(), array(
-                    'username',
-                    'password',
-                    'email',
-                    'userphone',
-					'userhome'
-                ));
-                 
-                // Grant user login role
-                $user->add('roles', ORM::factory('role', array('name' => 'login')));
+        {    //echo "I love Feowl"; exit;
+			try{
+				//build json items
+				$json_items['name'] = Arr::get($_POST,'username');	
+				$json_items['password'] = Arr::get($_POST,'userpassword');
+				$json_items['email'] = Arr::get($_POST,'useremail');	
+				$json_items['language'] = Arr::get($_POST,'language');				 	 
+				//send to api
+				$data_string = json_encode($json_items);   
+				$results =Model_Contributors::create_contributor($data_string);
                  
                 // Set success message
-                $message = "You have added user '{$user->username}' to the database";
-				//@todo send welcome email
-				//Print_r(Arr::get($_POST, 'username'));exit;
-				Auth::Instance()->force_login(Arr::get($_POST, 'email'));
-				// Reset values so form is not sticky
-                $_POST = array();
-				Request::current()->redirect('user/index');
-				//@todo force login in to step 2
-                 
-            } catch (ORM_Validation_Exception $e) {
-                 
+                $message = json_decode($results);
+				//$message['error_message']=$results->error_message;
+				//$message['success_message']=$results['success_message'];
+				//echo $message->error_message; exit;
+				//View::factory()->set_global('alert', $message->error_message);
+				$session = Session::instance();
+				$session->set('alert', $message->error_message);
+				Request::current()->redirect('home');
+				//@todo force login to next step
+			}
+			catch(Exception $e) {
+                // echo "na me";
                 // Set failure message
-                $message = 'There were errors, please see form below.';
-                 
-                // Set errors using custom messages
-                $errors = $e->errors('models');
+               echo $results['error_message'];exit;
+			   
+			   //View::factory()->set('message',$message);
+			   //@todo return request to client
             }
-        }
+		}
     }
      
+	 //login the user
     public function action_login()
     {
         $this->template->content = View::factory('user/login')
@@ -92,6 +93,7 @@ class Controller_User extends Controller_Template {
         }
     }
      
+	 //logout the user
     public function action_logout()
     {
         // Log user out
@@ -100,5 +102,21 @@ class Controller_User extends Controller_Template {
         // Redirect to login page
         Request::current()->redirect('user/login');
     }
+	
+	 //Use the after method to load static files
+	public function after()
+	{
+		// Adds all javascript files
+		$this->template->files_javascript = array(		
+			url::base()."assets/js/bootstrap/bs-dropdown.js",
+			url::base()."assets/js/bootstrap/bs-tooltip.js",
+			url::base()."assets/js/bootstrap/bs-popover.js",
+			url::base()."assets/js/formToWizard.js",
+			url::base()."assets/js/glDatePicker.js",
+			url::base()."assets/js/script-user.js",
+			"http://jzaefferer.github.com/jquery-validation/jquery.validate.js"
+		);	
+		parent::after();
+	}
  
 }
