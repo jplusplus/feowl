@@ -8,39 +8,39 @@ return array(
 /// TODO	'feowl, foewl, empowers, power, cut, power cut, accurate, accuration, insights, insight, pool, electricity, cameroon, africa, supply' => '', // 133
 
 	// views/explore.tpl
-/// TODO	'Explore the data collected by Feowl' => '', // 9
-/// TODO	'Legend' => '', // 17
+	'Explore the data collected by Feowl' => 'Explorez les données collectées par Feowl', // 9
+	'Legend' => 'Légende', // 17
 /// TODO	'No relevant data' => '', // 19
 /// TODO	'Low power cuts' => '', // 20
 /// TODO	'High power cuts' => '', // 21
-/// TODO	'User reports' => '', // 30
-/// TODO	'District' => '', // 34
-/// TODO	'Duration' => '', // 35
-/// TODO	'Date' => '', // 36
-/// TODO	'Quality' => '', // 37
-/// TODO	'Loading' => '', // 50
-/// TODO	'Load more' => '', // 73
-/// TODO	'No reports submited for that period' => '', // 82
+	'User reports' => 'Rapports des utilisateurs', // 30
+	'District' => 'Arrondissement', // 34
+	'Duration' => 'Durée', // 35
+	'Date' => 'Date', // 36
+	'Quality' => 'Qualité', // 37
+	'Loading' => 'Chargement', // 50
+	'Load more' => 'Voir plus', // 73
+	'No reports submited for that period' => 'Aucun rapport soumis durant cette période', // 82
 
 	// views/welcome.tpl
-/// TODO	'Welcome to Feowl' => '', // 27
+	'Welcome to Feowl' => 'Bienvenue sur Feowl	', // 27
 
 	// views/layout/footer.tpl
-/// TODO	'Fork us on GitHub!' => '', // 9
-/// TODO	'Feowl files under an Apache licence' => '', // 10
-/// TODO	'contact' => '', // 14
-/// TODO	'blog' => '', // 14
-/// TODO	'Feowl is financed by the <a href="http://www.freemedia.at/">International Press Institute</a>.' => '', // 18
-/// TODO	'It\'s a project by <a href="http://www.internetsansfrontieres.com/">Internet Sans Frontières</a>, <a href="http://jplusplus.org/">Journalism++</a>, <a href="http://www.tesobe.com/">Tesobe</a> and <a href="http://www.wasamundi.com/">Wasamundi</a>.' => '', // 21
+	'Fork us on GitHub!' => 'Cloner sur GitHub!', // 9
+	'Feowl files under an Apache licence' => 'Le code source de Feowl est sous licence Apache', // 10
+	'contact' => 'contact', // 14
+	'blog' => 'blog', // 14
+	'Feowl is financed by the <a href="http://www.freemedia.at/">International Press Institute</a>.' => 'Feowl est financé par le <a href="http://www.freemedia.at/">International Press Institute</a>.', // 18
+	'It\'s a project by <a href="http://www.internetsansfrontieres.com/">Internet Sans Frontières</a>, <a href="http://jplusplus.org/">Journalism++</a>, <a href="http://www.tesobe.com/">Tesobe</a> and <a href="http://www.wasamundi.com/">Wasamundi</a>.' => 'Ce projet est mené  par <a href="http://www.internetsansfrontieres.com/">Internet Sans Frontières</a>, <a href="http://jplusplus.org/">Journalism++</a>, <a href="http://www.tesobe.com/">Tesobe</a> et <a href="http://www.wasamundi.com/">Wasamundi</a>.', // 21
 
 	// views/layout/menu.tpl
-/// TODO	'Account' => '', // 16
-/// TODO	'Profile' => '', // 21
-/// TODO	'Sign Out' => '', // 23
-/// TODO	'Language' => '', // 29
-/// TODO	'Home' => '', // 58
-/// TODO	'Explore' => '', // 59
-/// TODO	'Contribute' => '', // 60
+	'Account' => 'Acompte', // 16
+	'Profile' => 'Profil', // 21
+	'Sign Out' => 'Déconnexion', // 23
+	'Language' => 'Langue', // 29
+	'Home' => 'Accueil', // 58
+	'Explore' => 'Explorer', // 59
+	'Contribute' => 'Contribuer', // 60
 
 	// Orphan phrases
 	'User Guide' => 'Guide Utilisateur',
