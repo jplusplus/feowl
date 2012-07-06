@@ -90,3 +90,5 @@ class PowerReport(models.Model):
             return "%s at %s" % (self.contributor, self.happened_at)
         else:
             return "%s" % self.happened_at
+
+			
