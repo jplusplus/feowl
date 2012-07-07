@@ -11,11 +11,11 @@
 	{/if}
 	
 	<div class="container">
-	
+		<div class="row">
 		{$left_content|default:'No content supplied'}
 	
 		{$right_content|default:'No content supplied'}
-
+		</div>
 	</div>
 	
 {include file='layout/footer.tpl'}

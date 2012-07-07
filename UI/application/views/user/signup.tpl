@@ -43,7 +43,7 @@
 	
 	<div class="control-group">
 	<div class="controls">
-	<input type='submit' class="btn btn-primary btn-large sbtn" name='submit' value='Signup and Contribute !'/>
+	<input type='submit' class="btn btn-primary btn-large sbtn" name='submit' value=' Signup and Contribute ! '/>
 	</div> 
 	</div>  
 	
