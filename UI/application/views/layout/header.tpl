@@ -17,14 +17,15 @@
 		<link href="{URL::base()}assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" />
 		<link href="{URL::base()}assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" media="all" />
 		<link href="{URL::base()}assets/less/style.less" rel="stylesheet/less" type="text/css" media="all" />
-		{* .less js *}
-		<script src="{URL::base()}assets/js/less.min.js" type="text/javascript"></script>
+		
 		<link href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css" media="all" />
 		
 		{* Optional CSS *}
 		{if isset($files_stylesheet)}
         {include file='tool/header-file.tpl' type='stylesheet' list=$files_stylesheet after="" before=""}             
         {/if}
+		{* .less js *}
+		<script src="{URL::base()}assets/js/less.min.js" type="text/javascript"></script>
 		
 		<meta property="og:title" content="{$smarty.const.SITE_DESCRIPTION}" />
         <meta property="og:type" content="website" />

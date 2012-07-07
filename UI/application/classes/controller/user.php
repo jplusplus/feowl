@@ -54,22 +54,24 @@ class Controller_User extends Controller_Template {
 				//echo $message->error_message; exit;
 				//View::factory()->set_global('alert', $message->error_message);
 				$session = Session::instance();
+				//TODO Set the right notice when API is completed
 				$session->set('alert', $message->error_message);
 				Request::current()->redirect('home');
 				//@todo force login to next step
 			}
 			catch(Exception $e) {
                 // echo "na me";
-                // Set failure message
-               echo $results['error_message'];exit;
-			   
+                // Set failure message TODO: Set various notices
+				$session = Session::instance();
+				$session->set('alert', "Technical Error :)");
+				Request::current()->redirect('home');
 			   //View::factory()->set('message',$message);
 			   //@todo return request to client
             }
 		}
     }
      
-	 //login the user
+	//login the user
     public function action_login()
     {
         $this->template->content = View::factory('user/login')
