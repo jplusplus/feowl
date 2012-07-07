@@ -27,7 +27,6 @@
 	
 	{* Global js *}
 	<script src="{URL::base()}assets/js/jquery.js" type="text/javascript"></script>
-	<script src="{URL::base()}assets/js/less.min.js" type="text/javascript"></script>
 	<script src="{URL::base()}assets/js/bootstrap/bootstrap.min.js" type="text/javascript"></script>
 	<script src="{URL::base()}assets/js/genral.js" type="text/javascript"></script>
 	
