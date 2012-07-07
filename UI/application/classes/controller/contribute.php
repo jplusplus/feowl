@@ -29,20 +29,13 @@ class Controller_Contribute extends Controller_Template {
 			//format happened at
 			$hour = Arr::get($_GET,'c1');
 			$min  = Arr::get($_GET,'c1_1');
-			$date = explode("/", Arr::get($_GET,'c1_0'));
-			 
+			$date = explode("/", date("d/m/y",time()));
 			$this->happened_at = date('c', mktime($hour, $min, 0, $date[0], $date[1], $date[2]));
 			$this->has_experienced_outage = (bool)Arr::get($_GET,'type');
 			//@todo, this input should be int from the input, not forced
-			$this->duration = 60;//Arr::get($_GET,'c2');
-
+			$this->duration = (int)Arr::get($_GET,'c2');
 			//format area
 			$area = Arr::get($_GET,'c3');
-			if($area=="Douala I") $area =1;
-			elseif($area=="Douala II") $area =2;
-			elseif($area=="Douala III") $area =3;
-			elseif($area=="Douala IV") $area =4;
-			elseif($area=="Douala IV") $area =5;
 			$this->area = array('pk'=>$area);	
 			 
 			//@todo do all validation and cleaning of data
@@ -50,6 +43,7 @@ class Controller_Contribute extends Controller_Template {
 			$json_items['happened_at']= $this->happened_at;
 			$json_items['has_experienced_outage']= $this->has_experienced_outage;    
 			$json_items['duration']= $this->duration;
+			print_r($json_items);exit;
 			 
 			//send to api
 			$data_string = json_encode($json_items);   
@@ -60,10 +54,6 @@ class Controller_Contribute extends Controller_Template {
 			//treat the return value as array
 			$data = json_decode($results,true);
 			print_r($data);
-			//foreach($data['objects'] as $object):
-			//echo $object['area'];
-			//endforeach;
-			//exit;
 			//@todo, return the right notice and display with twitter boostrap + backbone.js
 		}
 	}
@@ -72,8 +62,6 @@ class Controller_Contribute extends Controller_Template {
 	{
 		// Adds all optional javascript files
 		$this->template->files_javascript = array(		
-			url::base()."assets/js/glDatePicker.js",
-			url::base()."assets/js/formToWizard.js",
 			url::base()."assets/js/script-contribute.js"
 		);	
 		$this->template->active_contribute = "active";
