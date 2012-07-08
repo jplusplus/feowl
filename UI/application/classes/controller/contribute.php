@@ -43,17 +43,14 @@ class Controller_Contribute extends Controller_Template {
 			$json_items['happened_at']= $this->happened_at;
 			$json_items['has_experienced_outage']= $this->has_experienced_outage;    
 			$json_items['duration']= $this->duration;
-			print_r($json_items);exit;
 			 
 			//send to api
 			$data_string = json_encode($json_items);   
 			$results = Model_Reports::create_report($data_string);
-
-			
-			//print_r($results); exit;
-			//treat the return value as array
-			$data = json_decode($results,true);
-			print_r($data);
+            //return data
+			$data = json_decode($results);
+			echo $data->error_message;
+			exit;
 			//@todo, return the right notice and display with twitter boostrap + backbone.js
 		}
 	}
