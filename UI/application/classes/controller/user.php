@@ -33,7 +33,7 @@ class Controller_User extends Controller_Template {
         $this->template->right_content = View::factory('user/signup.tpl')
             ->bind('errors', $errors)
             ->bind('message', $message);
-		$this->template->left_content = View::factory('user/info.tpl');
+		$this->template->left_content = View::factory('user/signup_info.tpl');
              
         if (HTTP_Request::POST == $this->request->method())
         {    //echo "I love Feowl"; exit;
@@ -74,8 +74,9 @@ class Controller_User extends Controller_Template {
 	//login the user
     public function action_login()
     {
-        $this->template->content = View::factory('user/login')
+        $this->template->right_content = View::factory('user/login.tpl')
             ->bind('message', $message);
+		$this->template->left_content = View::factory('user/login_info.tpl');
              
         if (HTTP_Request::POST == $this->request->method())
         {
@@ -86,7 +87,7 @@ class Controller_User extends Controller_Template {
             // If successful, redirect user
             if ($user)
             {
-                Request::current()->redirect('user/index');
+                Request::current()->redirect('contribute');
             }
             else
             {
