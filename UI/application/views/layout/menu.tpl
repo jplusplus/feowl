@@ -18,7 +18,7 @@
                 </a>
 
                 <ul class="dropdown-menu">                    
-                    <li><a href="#">{__ t='Login'}</a></li>
+                    <li><a href="{url::site('user/login')}">{__ t='Login'}</a></li>
                     <li class="divider"></li>
                     <li><a href="{url::site('user/signup')}">{__ t='Signup'}</a></li>
                 </ul>

@@ -1,52 +1,77 @@
 $(document).ready(function() {
     //initialize
-	$("#ContributeSteps,.endContainer").hide();
-	$("#date").glDatePicker();
-	
+	$(".endContainer").hide();
     $('.contribute').click(function(){      
-			var a = $(this).attr('id');
-			if(a=="YES")
+			var a = $('input[name=contribute]:checked').val();
+			if(a=="true")
 			{
-			$(".start").hide();
-			$("#ContributeSteps").show();
-			$("#ContributeForm").formToWizard({ submitButton: 'Save' });
-			$("#Save").click(function(){
-			//@todo do inline validation with twitter boostrap
+			//@todo, generalize this process
+			 $(".contribute1").addClass("current");
+			 $(".contribute1").change(function(){
+			  $(".contribute1").removeClass("current");
+			 $(".contribute1-1").addClass("current");
+			 });
+			  $(".contribute1-1").change(function(){
+			  $(".contribute1-1").removeClass("current");
+			 $(".contribute2").addClass("current");
+			 });
+			  $(".contribute2").change(function(){
+			  $(".contribute2").removeClass("current");
+			 $(".contribute3").addClass("current");
+			 });
+			$(".contribute3").change(function(){
+			//@todo do inline validation 
 				//get  selected
-				//when : date	
-				var c1_0 = $("#date").val(); 
-				 //when : hour
-				var c1 = $(".contribute1 option:selected").text();
-				// When : minutes	
-				var c1_1 = $(".contribute1-1 option:selected").text();
-				 //duration in minutes	
-				var c2 = $(".contribute2 option:selected").text();
+				var c = a; 
+				var c1 = $(".contribute1 option:selected").val();
+				// When
+				var c1_1 = $(".contribute1-1 option:selected").val();
+				//how long
+				var c2 = $(".contribute2 option:selected").val();
 				//area	
-				var c3 = $(".contribute3 option:selected").text();
-				var url = "contribute/switch?type="+"true&c1_0="+c1_0+"&c1="+c1+"&c1_1="+c1_1+"&c2="+c2+"&c3="+c3;
-			$.get(url, {
+				var c3 = $(".contribute3 option:selected").val();
+				var url = "contribute/switch?type="+ c+"&c1="+c1+"&c1_1="+c1_1+"&c2="+c2+"&c3="+c3;
+				
+				$.get(url, {
 			}, 
-			function(response){   		 
-				setTimeout("endAjax('endContainer', '"+escape(response)+"')", 200);
-			});
-			 $("#ContributeSteps,.start").hide();
-			  //append the required notice
+			function(data){   		 
+				//append the required notice
 	           $(".endContainer").show();
-			    $(".notice").empty().append("Many Thanks!");
-			   //terminate
+			    $(".endContainer .alert").append(data + " Many Thanks! ");
 			});
-			}else if( a=="NO"){
-			//do nothing
-			//go to final step
-			   $("#ContributeSteps,.start").hide();
-	           $(".endContainer").show();	
+         });
+				}
+					else if( a=="false"){
+			//go to step 4
+			//terminate
+			  $(".contribute1").removeClass("current");
+			 $(".contribute3").addClass("current");	
+			 $(".contribute3").addClass("false");	
+              $(".contribute3.false").change(function(){			 
+			  //get  selected
+				var c = a; 
+				var c1 = 0;
+				// When
+				var c1_1 = 0;
+				//how long
+				var c2 = 0;
+				//area	
+				var c3 = $(".contribute3 option:selected").val();
+				var url = "contribute/switch?type="+ c+"&c1="+c1+"&c1_1="+c1_1+"&c2="+c2+"&c3="+c3; 
+				$.get(url, {
+			}, 
+			function(data){   		 
+				//append the required notice
+	           $(".endContainer").show();
+			    $(".endContainer .alert").append(data + " Many Thanks! ");
+			});
+				
+			 });}
+		  
 			   //terminate
-			}
+			   return false;
+			});
+		
 		});	
-});
-//for returning html notice from server
-function endAjax(id, response){
-		  $('#'+id).html(unescape(response));
-		  $('#'+id).fadeIn();
-	   }
+
 	 
