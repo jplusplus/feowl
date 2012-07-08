@@ -104,7 +104,7 @@ Kohana::modules(array(
 	'rest_client'	=> MODPATH.'rest_client', // Query builder but for REST services
 	'auth'       	=> MODPATH.'auth',         // Basic authentication
 	'database'   	=> MODPATH.'database',	   // Database access
-	'orm'        	=> MODPATH.'orm',          // Object Relationship Mapping
+	//'orm'        	=> MODPATH.'orm',          // Object Relationship Mapping
 	'userguide'  	=> MODPATH.'userguide',    // User guide and API documentation
   	'smarty'  	 	=> MODPATH.'smarty',	   // Smarty Template Engine
   	'i18nget'  	 	=> MODPATH.'i18nget'	   // Retrieve all string to translate

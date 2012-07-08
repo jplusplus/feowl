@@ -12,19 +12,41 @@ class Controller_User extends Controller_Template {
  
     public $template = "template/sub_template.tpl";
 	
+	public function before(){
+		try {
+			$this->session = Session::instance();
+		} catch(ErrorException $e) {
+			session_destroy();
+		}
+		// Execute parent::before first
+		parent::before();
+		// Open session
+		$this->session = Session::instance();
+	}
+	
+	 //Use the after method to load static files
+	public function after()
+	{
+		// Adds all javascript files
+		$this->template->files_javascript = array(		
+			url::base()."assets/js/script-user.js",
+			"http://jzaefferer.github.com/jquery-validation/jquery.validate.js"
+		);	
+		parent::after();
+	}
+	
     public function action_index()
     {
-        $this->template->content = View::factory('user/info.tpl')
-            ->bind('user', $user);
-         
         // Load the user information
         $user = Auth::instance()->get_user();
          
         // if a user is not logged in, redirect to login page
         if (!$user)
         {
-            Request::current()->redirect('user/signup');
-        }
+            Request::current()->redirect('user/login');
+        }else{
+			Request::current()->redirect('contribute');
+		}
     }
      
 	 //post to the api to creat an account for a contributor
@@ -52,20 +74,17 @@ class Controller_User extends Controller_Template {
 				//$message['error_message']=$results->error_message;
 				//$message['success_message']=$results['success_message'];
 				//echo $message->error_message; exit;
-				//View::factory()->set_global('alert', $message->error_message);
-				$session = Session::instance();
+				
 				//TODO Set the right notice when API is completed
-				$session->set('alert', $message->error_message);
+				$this->session->set('alert', $message->error_message);
 				Request::current()->redirect('home');
 				//@todo force login to next step
 			}
 			catch(Exception $e) {
                 // echo "na me";
                 // Set failure message TODO: Set various notices
-				$session = Session::instance();
-				$session->set('alert', "Technical Error :)");
+				$this->session->set('alert', "Technical Error :)");
 				Request::current()->redirect('home');
-			   //View::factory()->set('message',$message);
 			   //@todo return request to client
             }
 		}
@@ -77,17 +96,23 @@ class Controller_User extends Controller_Template {
         $this->template->right_content = View::factory('user/login.tpl')
             ->bind('message', $message);
 		$this->template->left_content = View::factory('user/login_info.tpl');
-             
+         
+		//echo Auth::instance()->mmm(); exist;	
+		//$pwd = Auth::instance()->hash('christinme');
+		//	echo $pwd; exit;
+		//$user = Model_Users::all();
         if (HTTP_Request::POST == $this->request->method())
         {
-            // Attempt to login user
+		   // Attempt to login user
             $remember = array_key_exists('remember', $this->request->post());
-            $user = Auth::instance()->login($this->request->post('username'), $this->request->post('password'), $remember);
-             
+            $user = Auth::instance()->login($this->request->post('email'), $this->request->post('password'), $remember);
+
             // If successful, redirect user
             if ($user)
             {
                 Request::current()->redirect('contribute');
+				$this->session->set('alert', print_r($user));
+				Request::current()->redirect('home');
             }
             else
             {
@@ -106,15 +131,4 @@ class Controller_User extends Controller_Template {
         Request::current()->redirect('user/login');
     }
 	
-	 //Use the after method to load static files
-	public function after()
-	{
-		// Adds all javascript files
-		$this->template->files_javascript = array(		
-			url::base()."assets/js/script-user.js",
-			"http://jzaefferer.github.com/jquery-validation/jquery.validate.js"
-		);	
-		parent::after();
-	}
- 
 }

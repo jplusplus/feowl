@@ -10,6 +10,13 @@
  */
 class Model_Users extends Model{
 
+	//get all users TODO.. return users from the API
+	public static function all(){
+		$user1 = array('username'=>'test1', 'password'=>'uiuiuiui1', 'email'=>'test1@test.com');
+		$user2 = array('username'=>'test2', 'password'=>'uiuiuiui2', 'email'=>'test2@test.com');
+		return array($user1, $user2);
+	}
+	
 	//this method creates a new user
 	public static function create(){
 	

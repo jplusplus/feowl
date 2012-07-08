@@ -25,10 +25,10 @@ abstract class Kohana_Auth {
 			// Load the configuration for this type
 			$config = Kohana::config('auth');
 
-			if ( ! $type = $config->get('driver'))
-			{
+			//if ( ! $type = $config->get('driver'))
+		//	{
 				$type = 'file';
-			}
+		//	}
 
 			// Set the session class name
 			$class = 'Auth_'.ucfirst($type);
