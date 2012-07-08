@@ -49,6 +49,7 @@ class Controller_Contribute extends Controller_Template {
 			$results = Model_Reports::create_report($data_string);
             //return data
 			$data = json_decode($results);
+			//@todo, proper error handling
 			echo $data->error_message;
 			exit;
 			//@todo, return the right notice and display with twitter boostrap + backbone.js

@@ -110,11 +110,6 @@ class Controller_User extends Controller_Template {
 	{
 		// Adds all javascript files
 		$this->template->files_javascript = array(		
-			url::base()."assets/js/bootstrap/bs-dropdown.js",
-			url::base()."assets/js/bootstrap/bs-tooltip.js",
-			url::base()."assets/js/bootstrap/bs-popover.js",
-			url::base()."assets/js/formToWizard.js",
-			url::base()."assets/js/glDatePicker.js",
 			url::base()."assets/js/script-user.js",
 			"http://jzaefferer.github.com/jquery-validation/jquery.validate.js"
 		);	
