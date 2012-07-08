@@ -97,17 +97,13 @@ class Controller_User extends Controller_Template {
             ->bind('message', $message);
 		$this->template->left_content = View::factory('user/login_info.tpl');
          
-		//echo Auth::instance()->mmm(); exist;	
-		//$pwd = Auth::instance()->hash('christinme');
-		//	echo $pwd; exit;
-		//$user = Model_Users::all();
         if (HTTP_Request::POST == $this->request->method())
         {
 		   // Attempt to login user
             $remember = array_key_exists('remember', $this->request->post());
             $user = Auth::instance()->login($this->request->post('email'), $this->request->post('password'), $remember);
 
-            // If successful, redirect user
+            // If successful, redirect user to contribute page
             if ($user)
             {
                 Request::current()->redirect('contribute');

@@ -23,7 +23,7 @@ class API {
     public static function send_request($api_link,$data,$action="POST")
 	{
 	    //action
-		$data_to_feowl = 'username='.Kohana::config('user.username').'&api_key='.Kohana::config('user.api_key');
+		$data_to_feowl = 'username='.Kohana::config('apiauth.username').'&api_key='.Kohana::config('apiauth.api_key');
 		$to_feowl = curl_init($api_link.$data_to_feowl);
 		curl_setopt($to_feowl, CURLOPT_CUSTOMREQUEST, $action);                                                                     
 		curl_setopt($to_feowl, CURLOPT_POSTFIELDS, $data);                                                                  
