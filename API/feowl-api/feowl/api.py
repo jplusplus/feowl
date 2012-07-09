@@ -1,6 +1,8 @@
 from tastypie import fields
 from tastypie.authorization import DjangoAuthorization
-from tastypie.authentication import ApiKeyAuthentication
+#TODO: Should changed back with Version 0.9.12 of tastypie
+# from tastypie.authentication import ApiKeyAuthentication
+from authentication import ApiKeyAuthentication
 from tastypie.resources import Resource, ModelResource, ALL
 
 from django.conf import settings
