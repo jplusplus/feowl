@@ -1,3 +1,4 @@
+#TODO: Should remove with Version 0.9.12 of tastypie
 import time
 from urlparse import urlparse
 from django.conf import settings
