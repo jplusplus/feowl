@@ -2,6 +2,20 @@
 <div class="signup-form">
 	<form method='post' action="{url::site('user/signup')}" class="form-horizontal" id="signup" >            
 	
+	{if isset($error_2) OR isset($error_1)}
+	<div class="error">
+	<div class="alert">
+		{if isset($error_1)}
+			{$error_1}
+		{/if}
+		{if isset($error_2)}
+			{$error_2}
+		{/if}
+		<a class="close" data-dismiss="alert" href="#">&times;</a>
+	</div>	
+	</div>
+	{/if}
+	
 	<div class="control-group light-border">
 	<label class="control-label">{__ t='Name'}</label>
 	<div class="controls">
@@ -20,13 +34,6 @@
 	<label class="control-label">{__ t='Password'}</label>
 	<div class="controls">
 	<input type="password" class="input-xlarge" id="pwd" name="userpassword" rel="popover" data-content="Enter a desired password" data-original-title="Password">
-	</div>
-	</div>
-	
-	<div class="control-group light-border">
-	<label class="control-label">{__ t='Confirm Password'} </label>
-	<div class="controls">
-	<input type="password" class="input-xlarge" id="cpwd" name="usercpassword" rel="popover" data-content="Confirm desired password" data-original-title="Password">
 	</div>
 	</div>
 	

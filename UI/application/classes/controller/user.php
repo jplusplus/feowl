@@ -53,8 +53,7 @@ class Controller_User extends Controller_Template {
     public function action_signup()
     {
         $this->template->right_content = View::factory('user/signup.tpl')
-            ->bind('errors', $errors)
-            ->bind('message', $message);
+            ->bind('error_1', $error_1)->bind('error_2', $error_2);
 		$this->template->left_content = View::factory('user/signup_info.tpl');
              
         if (HTTP_Request::POST == $this->request->method())
@@ -69,23 +68,32 @@ class Controller_User extends Controller_Template {
 				$data_string = json_encode($json_items);   
 				$results =Model_Contributors::create_contributor($data_string);
                  
-                // Set success message
-                $message = json_decode($results);
-				//$message['error_message']=$results->error_message;
-				//$message['success_message']=$results['success_message'];
-				//echo $message->error_message; exit;
-				
-				//TODO Set the right notice when API is completed
-				$this->session->set('alert', $message->error_message);
-				Request::current()->redirect('home');
+				$http_status = json_decode($results['http_status']);
+				$json_result = json_decode($results['json_result'], true); 
+				 
+				if($http_status == 201){
+					$notice = "Thanks for signing up! We would sent you an email to
+					verity your account";
+					//set notice in session
+					$this->session->set('alert', $notice);
+					Request::current()->redirect('home');
+				}elseif(isset($json_result['error_message'])){
+					$error_1 = $json_result['error_message']; 
+				}else{
+					//error 400 :)
+					if(isset($json_result['name'][0])):
+						$error_1 = $json_result['name'][0]." ";
+					endif;
+					if(isset($json_result['email'][0])):
+						$error_2 = $json_result['email'][0]; 
+					endif;
+				}
+			
 				//@todo force login to next step
 			}
 			catch(Exception $e) {
-                // echo "na me";
                 // Set failure message TODO: Set various notices
 				$this->session->set('alert', "Technical Error :)");
-				Request::current()->redirect('home');
-			   //@todo return request to client
             }
 		}
     }
