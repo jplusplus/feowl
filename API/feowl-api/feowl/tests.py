@@ -65,6 +65,14 @@ class PowerReportResourceTest(ResourceTestCase):
             'device': None
         })
 
+    def test_header_auth(self):
+        resp = self.c.get(self.detail_url, **{'HTTP_AUTHORIZATION': 'ApiKey ' + self.username + ':' + self.api_key})
+        self.assertValidJSONResponse(resp)
+
+        # We use ``assertKeys`` here to just verify the keys, not all the data.
+        self.assertKeys(self.deserialize(resp), ['area', 'happened_at', 'has_experienced_outage', 'contributor', 'device', 'location', 'duration', 'quality', 'resource_uri'])
+        self.assertEqual(self.deserialize(resp)['duration'], 121)
+
     def test_get_detail_unauthenticated(self):
         """Try to Get a single report from the API without authenticated"""
         self.assertHttpUnauthorized(self.c.get(self.detail_url))
