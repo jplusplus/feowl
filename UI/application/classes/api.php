@@ -24,17 +24,19 @@ class API {
 	{
 	    //action
 		$data_to_feowl = 'username='.Kohana::config('apiauth.username').'&api_key='.Kohana::config('apiauth.api_key');
+		
 		$to_feowl = curl_init($api_link.$data_to_feowl);
 		curl_setopt($to_feowl, CURLOPT_CUSTOMREQUEST, $action);                                                                     
 		curl_setopt($to_feowl, CURLOPT_POSTFIELDS, $data);                                                                  
 		curl_setopt($to_feowl, CURLOPT_RETURNTRANSFER, true);                                                                      
 		curl_setopt($to_feowl, CURLOPT_HTTPHEADER, array(                                                                          
 	    'Content-Type: application/json',                                                                                
-	    'Content-Length: ' . strlen($data_to_feowl))                                                                       
+	    'Content-Length: ' . strlen($data))                                                                       
 		);                                                                                                                   
 		$from_feowl = curl_exec($to_feowl);
+		$http_status = curl_getinfo($to_feowl, CURLINFO_HTTP_CODE);
 		curl_close ($to_feowl);
-		return $from_feowl;
+		return array('http_status'=>$http_status, 'json_result'=>$from_feowl);
 	}
  
     
