@@ -88,7 +88,7 @@
 		if(explore.map === null) {
 
 			explore.map = $K.map( explore.$exploreMap );
-			explore.map.loadMap('/assets/data/douala-districts.svg', function() {
+			explore.map.loadMap('assets/data/douala-districts.svg', function() {
 				
 				explore.map.addLayer({
 					id: 'douala-arrts',
@@ -188,7 +188,7 @@
 
 
 		$.ajax({
-			url: '/json/interval_reports/',
+			url: 'json/interval_reports/',
 			data: params,
 			type: "GET",
 			dataType: 'json',
