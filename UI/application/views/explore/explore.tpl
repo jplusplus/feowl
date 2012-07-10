@@ -23,7 +23,7 @@
 
 		<div>
 			<h2>{__ t='User reports'}</h2>
-			<table class="table table-striped" id="explore-list">
+			<table class="table table-striped table-condensed" id="explore-list">
 				<thead>
 					<tr>
 						<th>{__ t='District'}</th>
