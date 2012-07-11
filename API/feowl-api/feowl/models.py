@@ -21,6 +21,7 @@ class Contributor(models.Model):
 
     credibility = models.DecimalField(max_digits=3, decimal_places=2, default='1.00', blank=True)
     language = models.CharField(max_length=5, default="EN")
+    enquiry = models.DateField(null=True, blank=True)
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
@@ -90,5 +91,3 @@ class PowerReport(models.Model):
             return "%s at %s" % (self.contributor, self.happened_at)
         else:
             return "%s" % self.happened_at
-
-			
