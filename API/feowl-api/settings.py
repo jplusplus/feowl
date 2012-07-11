@@ -217,3 +217,4 @@ LOGGING = {
 
 #replace the real user password with some text when user records are fetched via the api
 DUMMY_PASSWORD = u'✌ & ♥'           # peace and love, yo!
+ANONYMOUS_USER_NAME = "Anonymous"

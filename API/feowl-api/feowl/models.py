@@ -2,12 +2,14 @@ from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.contrib.auth.hashers import make_password
 
+import settings
+
 from tastypie.models import create_api_key
 models.signals.post_save.connect(create_api_key, sender=User)
 
 
 def get_sentinel_user():
-    return Contributor.objects.get_or_create(name="Anonymous", email="anonymous@feowl.com")[0]
+    return Contributor.objects.get_or_create(name=settings.ANONYMOUS_USER_NAME, email="anonymous@feowl.com")[0]
 
 
 class Contributor(models.Model):
