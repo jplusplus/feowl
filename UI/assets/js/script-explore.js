@@ -186,6 +186,8 @@
 			"page"		: explore.currentPage
 		};
 
+		// Adds a loading overlay on the map
+		explore.$exploreSpace.loading();
 
 		$.ajax({
 			url: 'json/interval_reports/',
@@ -197,6 +199,8 @@
 				if(data.agregation) explore.drawMap(data);
 				// Draw the list only if we have listed reports
 				if(data.list) 		explore.drawList(data);
+				// Removes the loading overlay
+				explore.$exploreSpace.loading(false);
 			}
 		});
 
@@ -228,6 +232,8 @@
 		explore.$exploreMap = $("#explore-map");
 		// Element to use to display the list
 		explore.$exploreList = $("#explore-list");
+		// Element to use as a workspace
+		explore.$exploreSpace = $("#explore-space");
 
 		// Creates the date slider
 		explore.$dateRange.dateRangeSlider({
