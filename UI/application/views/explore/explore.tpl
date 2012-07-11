@@ -12,9 +12,9 @@
 					<li class="nav-header">
 						{__ t='Legend'}
 					</li>
-					<li><span class="legend no-relevant"></span>{__ t='No relevant data'}</li>
-					<li><span class="legend low"></span>{__ t='Low power cuts'}</li>
-					<li><span class="legend high"></span>{__ t='High power cuts'}</li>
+					<li><span class="legend no-relevant"></span>{__ t='No enough data'}</li>
+					<li><span class="legend low"></span>{__ t='Less power cuts'}</li>
+					<li><span class="legend high"></span>{__ t='More power cuts'}</li>
 				</ul>
 			</div>	
 			<div id="explore-map" class="span10"></div>		

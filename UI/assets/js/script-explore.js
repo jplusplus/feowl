@@ -129,7 +129,7 @@
 
 			explore.colorscale = new chroma.ColorScale({
 				colors: ['#fafafa','#168891'],
-				limits: chroma.limits(explore.reportsAgregation, scale, 7, prop)
+				limits: chroma.limits(explore.reportsAgregation, scale, 5, prop)
 			});
 
 			explore.map.choropleth({

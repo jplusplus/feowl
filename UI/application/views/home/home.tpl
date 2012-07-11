@@ -11,9 +11,9 @@
 							<li class="nav-header">
 								{__ t='Legend'}
 							</li>
-							<li><span class="legend no-relevant"></span>{__ t='No relevant data'}</li>
-							<li><span class="legend low"></span>{__ t='Low power cuts'}</li>
-							<li><span class="legend high"></span>{__ t='High power cuts'}</li>
+							<li><span class="legend no-relevant"></span>{__ t='No enough data'}</li>
+							<li><span class="legend low"></span>{__ t='Less power cuts'}</li>
+							<li><span class="legend high"></span>{__ t='More power cuts'}</li>
 						</ul>
 					</div>	
 					
@@ -28,13 +28,9 @@
 			</div>
 
 			<div class="span4 offset1 intro">
-				<h2>{__ t='Welcome to Feowl'}</h2>
-				<p>
-					The surface is fine and powdery. I can kick it up loosely with my toe. It does adhere in fine layers, like powdered charcoal, to the sole and sides of my boots. I only go in a small fraction of an inch, maybe an eighth of an inch, but I can see the footprints of my boots and the treads in the fine, sandy particles. There seems to be no difficult in moving around, as we suspected.
+				<h2>{__ t='Welcome to Feowl'}</h2>				
+					{__ t='<p>Feowl is a community-driven platform that produces accurate and actionable public data on the electricity supply in Douala.</p><p>Feowl will poll reliable voluntary contributors and will ask them about their power cut experience: Did they witness one? When was that? Where?</p><p>Feowl will aggregate, compute and analyze the data received via polls and will display them on this platform using the best visualization techniques.</p><p>Feowl was made possible thanks to a grant received from the International Press Institute.</p>'}
 				</p>
-				<p>
-					The Earth is the only world known so far to harbor life. There is nowhere else, at least in the near future, to which our species could migrate.
-				</p>		
 				<p class="call-to-contribute">
 					<a class="btn btn-large btn-primary" href="{url::site('contribute')}">Contribue to Feowl!</a>
 				</p>		
