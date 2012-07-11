@@ -35,7 +35,7 @@ class Controller_Home extends Controller_Template {
 			url::base()."assets/js/jquery.qtip.min.js",				
 			url::base()."assets/js/jQAllRangeSliders-min.js",
 			url::base()."assets/js/global.js",
-			url::base()."assets/js/explore.js",
+			url::base()."assets/js/script-explore.js",
 		);
 		$this->template->active_home = "active";
 		$alert = Session::instance()->get_once('alert');

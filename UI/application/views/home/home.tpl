@@ -2,8 +2,10 @@
 
 		<div class="row">
 			
-			<div class="span7">
+			<div class="span7" id="explore-space">
+				
 				<div class="row">
+					
 					<div id="explore-legend" class="span2">
 						<ul class="nav nav-list well">
 							<li class="nav-header">
@@ -14,9 +16,15 @@
 							<li><span class="legend high"></span>{__ t='High power cuts'}</li>
 						</ul>
 					</div>	
-					<div id="explore-map" class="span5"></div>		
+					
+					<div id="explore-map" class="span5"></div>	
+					
+					<div class="span7">
+						<div id="explore-range-slider"></div>
+					</div>
+
 				</div>	
-				<div id="explore-range-slider" class="span7"></div>
+			
 			</div>
 
 			<div class="span4 offset1 intro">

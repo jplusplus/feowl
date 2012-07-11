@@ -32,7 +32,7 @@ class Controller_Explore extends Controller_Template {
 			url::base()."assets/js/jquery.qtip.min.js",				
 			url::base()."assets/js/jQAllRangeSliders-min.js",
 			url::base()."assets/js/global.js",
-			url::base()."assets/js/explore.js"
+			url::base()."assets/js/script-explore.js"
 		);
 		$this->template->active_explore = "active";
 		parent::after();		
