@@ -15,8 +15,9 @@ v1_api.register(ContributorResource())
 v1_api.register(AreaResource())
 
 urlpatterns = patterns('',
-    url(r'^admin/', include(admin.site.urls)),
     # url(r'^grappelli/', include('grappelli.urls')),
     url(r'^api/', include(v1_api.urls)),
     url(r'^test/', TemplateView.as_view(template_name="test.html")),
+    url(r'^admin/translation/', include('rosetta.urls')),
+    url(r'^admin/', include(admin.site.urls)),
 )

@@ -62,6 +62,16 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+LANGUAGE_CODE = "en"
+
+LANGUAGES = (
+    ('en', 'English'),
+    ('fr', u'Francais'),
+    ('de', u'Deutsch'),
+)
+
+ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'
+
 # enable Timezone support
 USE_TZ = True
 
@@ -104,8 +114,6 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '@ei90c#1l730c5ru0*2$1zuqr90^fy3_4(wyys&^3ojqqytkwy'
 
-AUTH_PROFILE_MODULE = 'feowl.UserProfile'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -127,6 +135,8 @@ TEMPLATE_DIRS = (
    here('templates'),
 )
 
+TEMPLATESADMIN_TEMPLATE_DIRS = TEMPLATE_DIRS
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -140,7 +150,9 @@ INSTALLED_APPS = (
     'tastypie',
     'feowl',
     'django_extensions',
-    'south'
+    'south',
+    'rosetta',
+    'templatesadmin'
 )
 
 # A sample logging configuration. The only tangible logging
