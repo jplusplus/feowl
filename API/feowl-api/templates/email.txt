@@ -1,1 +1,2 @@
-Hallo {{ name }}
+{% load i18n %}
+{% trans "Hallo" %} {{ name }}
