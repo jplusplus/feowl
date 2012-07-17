@@ -65,7 +65,7 @@ USE_L10N = True
 LANGUAGE_CODE = "en"
 
 LANGUAGES = (
-    ('en', 'English'),
+    ('en', u'English'),
     ('fr', u'Francais'),
     ('de', u'Deutsch'),
 )
