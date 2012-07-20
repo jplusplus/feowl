@@ -1,0 +1,6 @@
+{% load i18n %}
+{% language newsletter_language %}
+
+{% trans "Hello" %} {{ name }}
+
+{% endlanguage %}

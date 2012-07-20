@@ -2,12 +2,14 @@ from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.contrib.auth.hashers import make_password
 
+import settings
+
 from tastypie.models import create_api_key
 models.signals.post_save.connect(create_api_key, sender=User)
 
 
 def get_sentinel_user():
-    return Contributor.objects.get_or_create(name="Anonymous", email="anonymous@feowl.com")[0]
+    return Contributor.objects.get_or_create(name=settings.ANONYMOUS_USER_NAME, email=settings.ANONYMOUS_EMAIL)[0]
 
 
 class Contributor(models.Model):
@@ -21,6 +23,7 @@ class Contributor(models.Model):
 
     credibility = models.DecimalField(max_digits=3, decimal_places=2, default='1.00', blank=True)
     language = models.CharField(max_length=5, default="EN")
+    enquiry = models.DateField(null=True, blank=True)
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
@@ -90,5 +93,3 @@ class PowerReport(models.Model):
             return "%s at %s" % (self.contributor, self.happened_at)
         else:
             return "%s" % self.happened_at
-
-			

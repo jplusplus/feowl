@@ -62,6 +62,16 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+LANGUAGE_CODE = "en"
+
+LANGUAGES = (
+    ('en', u'English'),
+    ('fr', u'Francais'),
+    ('de', u'Deutsch'),
+)
+
+ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'
+
 # enable Timezone support
 USE_TZ = True
 
@@ -84,8 +94,6 @@ STATIC_ROOT = here('django/static/')
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
-ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
-
 GRAPPELLI_ADMIN_TITLE = "FEOWL Admin"
 
 SOUTH_TESTS_MIGRATE = False
@@ -105,8 +113,6 @@ STATICFILES_FINDERS = (
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '@ei90c#1l730c5ru0*2$1zuqr90^fy3_4(wyys&^3ojqqytkwy'
-
-AUTH_PROFILE_MODULE = 'feowl.UserProfile'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -129,6 +135,8 @@ TEMPLATE_DIRS = (
    here('templates'),
 )
 
+TEMPLATESADMIN_TEMPLATE_DIRS = TEMPLATE_DIRS
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -142,7 +150,9 @@ INSTALLED_APPS = (
     'tastypie',
     'feowl',
     'django_extensions',
-    'south'
+    'south',
+    'rosetta',
+    'templatesadmin'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -153,6 +163,11 @@ INSTALLED_APPS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
     'formatters': {
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
@@ -181,6 +196,7 @@ LOGGING = {
         },
         'mail_admins': {
             'level': 'ERROR',
+            'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         }
     },
@@ -212,5 +228,7 @@ LOGGING = {
 # some common values
 
 #replace the real user password with some text when user records are fetched via the api
-DUMMY_PASSWORD = u'✌ & ♥'           #peace and love, yo!
-
+DUMMY_PASSWORD = u'✌ & ♥'           # peace and love, yo!
+ANONYMOUS_USER_NAME = "Anonymous"
+ANONYMOUS_EMAIL = "anonymous@feowl.com"
+NEWSLETTER_FROM = "newsletter@feowl.com"
