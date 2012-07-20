@@ -1,0 +1,1 @@
+  <div class="span5">  <h2>{__ t='Login'}</h2>  <p>{__ t='Login and report power cuts'}  </p>           <small>{__ t='Feowl team.'}</small>            </div>

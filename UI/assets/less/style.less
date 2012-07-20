@@ -3,3 +3,79 @@
 
 @import "layouts.less";
 @import "explore.less";
+
+.tl, table td.tl { text-align:left; }
+.tc, table td.tc { text-align:center; }
+.tr, table td.tr { text-align:right; }
+
+.signup-form .form-horizontal  input{
+	width:170px;
+	
+}
+.light-border input{
+	.border-radius(5px);
+	border:@grayLight 1px solid;
+}
+.signup-form{
+	padding-top:7px;
+}
+.signup-form .form-horizontal .control-label {
+	margin:0 0 0 10px;
+	width:130px;
+	font-weight:@headingsFontWeight;
+}
+.signup-form .form-horizontal select{
+	width:180px;
+	border:@grayLight 1px solid;
+	.border-radius(5px);
+}
+
+.bg-color{
+	background-color:darken(@white, 20%);
+	padding:10px 5px 5px;
+	.border-radius(15px);
+	.box-shadow(0 0 3px rgba(0, 0, 0, 0.15));
+}
+.contribute-form , .contribute-form-s{
+	padding-top:7px;
+}
+.contribute-form .form-horizontal .control-label {
+	margin:0 0 0 10px;
+	width:240px;
+	text-align:left;
+}
+
+.contribute-form .bold{
+	font-weight:@headingsFontWeight;
+}
+.contribute-form .form-horizontal select{
+	width:130px;
+	border:@grayLight 1px solid;
+	.border-radius(5px);
+}
+.alert{
+	background-color:#168891; 
+	border:none;
+	color:@white;
+	text-shadow:none;
+	text-align:center;
+}
+
+.error .alert {
+	background-color:#f3edd2;
+	color:@warningText;
+}
+
+.js-loading-overlay {
+	background: url("../img/loading.gif") center center  no-repeat #EEEEEE;
+	.opacity(80);
+
+	width:100%;
+	height: 100%;
+
+	position: absolute;
+	top:0; 
+	left:0;
+
+	z-index:999;
+}

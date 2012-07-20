@@ -1,2 +1,5 @@
 logs/*
 cache/*
+# secret API access
+config/apiauth.php
+config/user.php

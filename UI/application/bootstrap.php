@@ -79,7 +79,7 @@ if (isset($_SERVER['KOHANA_ENV']))
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 Kohana::init(array(
-	'base_url'   => '/',
+	'base_url'   => '/feowl/UI',
 	'index_file' =>'',
 ));
 
@@ -97,15 +97,17 @@ Kohana::$config->attach(new Config_File);
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
 Kohana::modules(array(
-	'auth'       => MODPATH.'auth',       // Basic authentication
-	// 'cache'      => MODPATH.'cache',      // Caching with multiple backends
-	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
-	'database'   => MODPATH.'database',   // Database access
 	// 'image'      => MODPATH.'image',      // Image manipulation
-	'orm'        => MODPATH.'orm',        // Object Relationship Mapping
+	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
+	// 'cache'      => MODPATH.'cache',      // Caching with multiple backends
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
-	'userguide'  => MODPATH.'userguide',  // User guide and API documentation
-    'smarty' 	 => MODPATH.'smarty'	  // Smarty Template Engine
+	'rest_client'	=> MODPATH.'rest_client', // Query builder but for REST services
+	'auth'       	=> MODPATH.'auth',         // Basic authentication
+	'database'   	=> MODPATH.'database',	   // Database access
+	//'orm'        	=> MODPATH.'orm',          // Object Relationship Mapping
+	'userguide'  	=> MODPATH.'userguide',    // User guide and API documentation
+  	'smarty'  	 	=> MODPATH.'smarty',	   // Smarty Template Engine
+  	'i18nget'  	 	=> MODPATH.'i18nget'	   // Retrieve all string to translate
 ));
 
 
@@ -124,6 +126,13 @@ if(!in_array($lang, $lang_uris_supported ) ) {
 i18n::lang($lang);
 
 
+// Defines site descriptions
+define("SITE_DESCRIPTION",  __('Feowl empowers local media and their stakeholders with accurate and actionable insights on the electricity supply') );
+define("SITE_URL", 			'http://feowl.com');
+define("SITE_TITLE",       'Feowl');
+define("SITE_TAGS",			__('feowl, foewl, empowers, power, cut, power cut, accurate, accuration, insights, insight, pool, electricity, cameroon, africa, supply') );
+define("SITE_FB_ADMIN", 	'686299757');
+
 
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
@@ -132,6 +141,6 @@ i18n::lang($lang);
 // Route to the index
 Route::set('default', '(<controller>(/<action>(/<id>)))')
 	->defaults(array(
-		'controller' => 'welcome',
+		'controller' => 'home',
 		'action'     => 'index',
 	));

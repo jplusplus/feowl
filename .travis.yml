@@ -1,9 +1,11 @@
+notifications:
+  email: false
 language: python
 python:
     - 2.6
     - 2.7
 before_install:
-    - sudo apt-get install postgresql-9.1-postgis
+    - sudo apt-get install postgresql-9.1-postgis python-gdal
 install:
     - pip install -r API/feowl-api/requirements.txt --use-mirrors
 before_script:
@@ -18,4 +20,4 @@ before_script:
     - psql -c "UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template_postgis';" -U postgres
     - createdb --template=template_postgis --owner=postgres feowl
 script:
-    - python API/feowl-api/manage.py test feowl
+    - python API/feowl-api/manage.py test -v3 feowl

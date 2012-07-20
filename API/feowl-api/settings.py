@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 import os
 import sys
 #for relative paths
@@ -7,6 +8,7 @@ PROJECT_ROOT = here('.')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+TASTYPIE_FULL_DEBUG = DEBUG
 
 ADMINS = (
      ('Alexander Slabiak', 'alex@tesobe.com'),
@@ -23,6 +25,9 @@ DATABASES = {
         'PASSWORD': 'passwd123',
         'HOST': 'localhost',
         'PORT': '',
+        'OPTIONS': {
+            'autocommit': True,
+        }
     }
 }
 
@@ -32,6 +37,7 @@ if 'test' in sys.argv:
 #proper geos path for os x
 if sys.platform == 'darwin':
     GEOS_LIBRARY_PATH = '/opt/local/lib/libgeos_c.dylib'
+    GDAL_LIBRARY_PATH = '/opt/local/lib/libgdal.dylib'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -56,6 +62,19 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+LANGUAGE_CODE = "en"
+
+LANGUAGES = (
+    ('en', u'English'),
+    ('fr', u'Francais'),
+    ('de', u'Deutsch'),
+)
+
+ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'
+
+# enable Timezone support
+USE_TZ = True
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = here('/django/media/')
@@ -74,6 +93,10 @@ STATIC_ROOT = here('django/static/')
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
+
+GRAPPELLI_ADMIN_TITLE = "FEOWL Admin"
+
+SOUTH_TESTS_MIGRATE = False
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -112,17 +135,24 @@ TEMPLATE_DIRS = (
    here('templates'),
 )
 
+TEMPLATESADMIN_TEMPLATE_DIRS = TEMPLATE_DIRS
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+    #'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'grappelli',
     'django.contrib.admin',
     'django.contrib.gis',
     'tastypie',
-    'feowl'
+    'feowl',
+    'django_extensions',
+    'south',
+    'rosetta',
+    'templatesadmin'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -133,6 +163,11 @@ INSTALLED_APPS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
     'formatters': {
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
@@ -161,6 +196,7 @@ LOGGING = {
         },
         'mail_admins': {
             'level': 'ERROR',
+            'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         }
     },
@@ -188,3 +224,11 @@ LOGGING = {
         }
     }
 }
+
+# some common values
+
+#replace the real user password with some text when user records are fetched via the api
+DUMMY_PASSWORD = u'✌ & ♥'           # peace and love, yo!
+ANONYMOUS_USER_NAME = "Anonymous"
+ANONYMOUS_EMAIL = "anonymous@feowl.com"
+NEWSLETTER_FROM = "newsletter@feowl.com"

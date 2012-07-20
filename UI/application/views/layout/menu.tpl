@@ -5,22 +5,22 @@
 
     <div class="container">
 
-        <a href="{url::site('')}" class="brand">
-            <img src="{url::site('assets/img/logo_small.png')}" class="pull-left logo"/>
+        <a href="{url::site()}" class="brand">
+            <img src="{url::base()}assets/img/logo_small.png" class="pull-left logo"/>
             <span>Feowl</span>
         </a>    
 
         <ul class="nav pull-right">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="icon-user"></i> Account
+                    <i class="icon-user"></i> {__ t='Account'}
                     <b class="caret"></b>
                 </a>
 
                 <ul class="dropdown-menu">                    
-                    <li><a href="{url::site('user/index')}">Profile</a></li>
+                    <li><a href="{url::site('user/login')}">{__ t='Login'}</a></li>
                     <li class="divider"></li>
-                    <li><a href="{url::site('user/logout')}">Sign Out</a></li>
+                    <li><a href="{url::site('user/signup')}">{__ t='Signup'}</a></li>
                 </ul>
             </li>
 
@@ -51,18 +51,12 @@
                 </ul>
             </li>
 
-        </ul>      
-
-
+        </ul> 
+		
         <ul class="nav">
-            <li class="active"><a href="{url::site('')}">Home</a></li>
-            <li class="active"><a href="{url::site('/explore')}">Explore</a></li>
-            <li class="active"><a href="{url::site('/contribute')}">Contribute</a></li>
-            <li>
-                <form action="" class="navbar-search pull-left">
-                    <input type="text" placeholder="Search" class="search-query span2">
-                </form>
-            </li>
+            <li class="{$active_home|default:''}"><a href="{url::site()}">{__ t='Home'}</a></li>
+            <li class="{$active_explore|default:''}"><a href="{url::site('explore')}">{__ t='Explore'}</a></li>
+            <li class="{$active_contribute|default:''}"><a href="{url::site('contribute')}">{__ t='Contribute'}</a></li>
         </ul>
 
     </div>
