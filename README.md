@@ -1,3 +1,5 @@
+**We are now on https://github.com/Feowl**
+
 [![Build Status](https://secure.travis-ci.org/jplusplus/feowl.png?branch=master)](http://travis-ci.org/jplusplus/feowl)
 
 ![Feowl Logo](http://www.feowl.com/comingsoon/assets/feowl_150px.png)
